@@ -92,9 +92,8 @@ function Inspector({ item }) {
   const compareItem = () => {
     let theSame = true;
 
-    tempGenerate({ [focusedItem]: tempItem }).then(res => {
-      setTempData(res.data[0]);
-    });
+    const data = tempGenerate({ [focusedItem]: tempItem });
+    setTempData(data[0]);
 
     if (item.type !== type.type) theSame = false;
     else if (Boolean(item.size || size) && item.size !== size) theSame = false;

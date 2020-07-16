@@ -1,5 +1,8 @@
+import * as gen from "gen-engine";
+
 import { getLibraryPack } from "plugins/canvases/utils/packUtils";
 import { get } from "plugins/requests";
+import { updateSchemasOnEngine } from "tree/actions/engine";
 
 function setCatToSelected(tree,cat) {
   tree.set(["selectedCategory"], cat);
@@ -8,13 +11,8 @@ function setCatToSelected(tree,cat) {
 export function generateFromCat(tree,category, amount = 1) {
   const library = tree.get(["focus", "lib"]);
 
-  get("/generate", { library, category, amount }).then((res)=>{
-    tree.set('mockData',res.data);
-  }).catch((err)=>{
-    //TODO: notify type does not exist
-    tree.set('mockData',null);
-    console.log(err.response.data.message)
-  })
+  const data = gen.generate([library, category],amount);
+  tree.set('mockData',data);
 }
 
 export function setCats(tree, cats) {
@@ -35,6 +33,7 @@ export function addCategory(tree, category) {
   get("/addCategory", { library, category })
     .then(res => {
       tree.set("cats", res.data);
+      updateSchemasOnEngine();
     })
     .catch(err => {
       console.log(err.response.data.message);
@@ -48,11 +47,11 @@ export function editCategory(tree, data) {
 
   get("/editCategory", {library, oldName, newName }).then(res => {
     tree.set("cats", res.data);
+    updateSchemasOnEngine();
 
     if(selectedCategory === oldName){
       tree.set("selectedCategory", newName);
     }
-
   });
 }
 
@@ -61,6 +60,7 @@ export function removeCategory(tree, category) {
 
   get("/removeCategory", { library, category }).then(res => {
     tree.set("cats", res.data);
+    updateSchemasOnEngine();
   });
 }
 

@@ -1,4 +1,5 @@
 import { get } from "plugins/requests";
+import { updateSchemasOnEngine } from "tree/actions/engine";
 
 function setLibToSelected(tree,lib) {
   tree.set(["selectedLibrary"], lib);
@@ -24,6 +25,7 @@ export function addLib(tree, lib) {
   get("/addLibrary", { library: lib })
     .then(res => {
       tree.set("libs", res.data);
+      updateSchemasOnEngine();
     })
     .catch(err => {
       console.log(err.response.data.message);
@@ -33,6 +35,7 @@ export function addLib(tree, lib) {
 export function removeLib(tree, lib) {
   get("/removeLibrary", { library: lib }).then(res => {
     tree.set("libs", res.data);
+    updateSchemasOnEngine();
   });
 }
 
@@ -41,6 +44,7 @@ export function editLib(tree, data) {
 
   get("/editLibrary", { oldName, newName }).then(res => {
     tree.set("libs", res.data);
+    updateSchemasOnEngine();
   });
 }
 

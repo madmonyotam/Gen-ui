@@ -1,24 +1,19 @@
+import * as gen from "gen-engine";
+
 import { get } from "plugins/requests";
 import { getLibraryPack } from "plugins/canvases/utils/packUtils";
+import { updateSchemasOnEngine } from "tree/actions/engine";
 
 export function setItems(tree, items) {
   tree.set(["items"], items);
 }
 
 export function generate(tree, { items, amount = 1 }) {
-  get("/generate", { schema: items, amount })
-    .then(res => {
-      tree.set("mockData", res.data);
-    })
-    .catch(err => {
-      //TODO: notify type does not exist
-      tree.set("mockData", null);
-      console.error(err.response);
-    });
+  tree.set("mockData", gen.generate(items,amount));
 }
 
 export function tempGenerate(items) {
-  return get("/generate", { schema: items, amount:1 })
+  return gen.generate(items,1);
 }
 
 function replaceSchema(tree, items) {
@@ -30,6 +25,7 @@ function replaceSchema(tree, items) {
     .then(res => {
       tree.set("items", res.data);
       libraryPack.onChangeFromEditor(library, category, res.data);
+      updateSchemasOnEngine();
     })
     .catch(err => {
       //TODO: notify type does not exist
@@ -113,6 +109,7 @@ export function editItem(tree, data) {
 
   get("/editItem", {library, category, oldName, newName }).then(res => {
     tree.set("items", res.data);
+    updateSchemasOnEngine();
   });
 }
 
@@ -125,6 +122,7 @@ export function addItem(tree, value) {
   get("/addItem", { library, category, field })
     .then(res => {
       tree.set("items", res.data);
+      updateSchemasOnEngine();
     })
     .catch(err => {
       console.error(err.response);
@@ -138,6 +136,7 @@ export function removeItem(tree, field) {
 
   get("/removeFromSchema", { library, category, field }).then(res => {
     tree.set("items", res.data);
+    updateSchemasOnEngine();
     generate(tree, { items: res.data, amount: 1 });
   });
 }

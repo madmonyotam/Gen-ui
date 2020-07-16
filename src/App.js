@@ -4,6 +4,8 @@ import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { color } from "plugins/access";
 import Main from "Views/Main";
 import Login from "Views/Login";
+import { updateSchemasOnEngine } from "tree/actions/engine";
+
 
 const primary = color('materialUI.primary');
 const secondary = color('materialUI.secondary');
@@ -26,7 +28,9 @@ function App({tree}) {
   const token = localStorage.getItem('token');
 
   const handleLoggedIn = () => {
-    setIsLoggedIn(true);
+    updateSchemasOnEngine(() => {
+      setIsLoggedIn(true);
+    })
   }
 
   const View = token || isLoggedIn ? Main : Login;

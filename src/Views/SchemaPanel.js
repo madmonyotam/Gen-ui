@@ -33,7 +33,7 @@ const TopBar = styled(Row)`
 const InnerColumn = styled(Column)`
   min-width: 0;
   transition: flex ${access.time("schemaPanel.transition")}ms;
-  border-right: 1px solid ${access.color("schemaPanel.border")}
+  border-right: 1px solid ${access.color("schemaPanel.border")};
   overflow: hidden;
   box-shadow: unset;
 `;
