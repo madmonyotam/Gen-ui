@@ -1,19 +1,24 @@
-import React, { useState, useEffect } from "react";
-import { useBranch } from "baobab-react/hooks";
-import styled from "styled-components";
-import { Button } from "@material-ui/core";
-import Input from "plugins/inputs/Input";
-import Start from "plugins/tools/Start";
-import { move, dropCircles, ripple } from "plugins/canvases/utils/canvasActions";
-import { paintFrame } from "plugins/canvases/paint/Frames";
+import React, { useState, Fragment } from 'react';
+import firebase from 'firebase';
 
-import * as access from "plugins/access";
-import { Column, Center, Absolute } from "plugins/Layouts";
+import styled from 'styled-components';
+import { Button } from '@material-ui/core';
+
+import * as access from 'plugins/access';
+
+import Input from 'plugins/inputs/Input';
+import Start from 'plugins/tools/Start';
+import { move } from 'plugins/canvases/utils/canvasActions';
+import { paintFrame } from 'plugins/canvases/paint/Frames';
+
+import { updateSchemasOnEngine } from "tree/actions/engine";
+import { Column, Absolute } from 'plugins/Layouts';
+
 
 const View = styled.div`
   height: 100vh;
   width: 100vw;
-`
+`;
 
 const LogInColumn = styled(Column)`
   padding-top: 25px;
@@ -28,88 +33,150 @@ const InputsCont = styled.div`
   height: 200px;
 `;
 
+const ButtonsCont = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+`;
+
 const Logo = styled.img`
-    width:60px; 
-    height:60px; 
-    margin:15px;
-    border-radius: 50%;
-    transform: rotate(${props=> props.rotate*180}deg);
-    transition: all 250ms; 
-    box-shadow: 0px 0px 11px 4px #a1b1cf3b;
+  width: 60px;
+  height: 60px;
+  margin: 15px;
+  border-radius: 50%;
+  transform: rotate(${(props) => props.rotate * 180}deg);
+  transition: all 250ms;
+  box-shadow: 0px 0px 11px 4px #a1b1cf3b;
 `;
 
 function Login({ onLoggedIn }) {
   const [rotate, setRotate] = useState(0);
-
-  const renderEmail = () => {
-    return (
-      <Input
-        label={access.translate('Email')}
-        variant={ 'standard' }
-        initValue={''}
-        style={{ width: 300 }}
-        onChange={v => null }
-      />
-    );
-  };
-
-  const renderPassword = () => {
-    return (
-      <Input
-        label={access.translate('Password')}
-        variant={ 'standard' }
-        initValue={''}
-        style={{ width: 300 }}
-        onChange={v => null }
-      />
-    );
-  };
+  const [register, setRegister] = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const onCanvasReady = (canvas, width, height) => {
     const frame = paintFrame(canvas, width, height);
-    move(canvas, frame, access.color("canvases.fg"));
+    move(canvas, frame, access.color('canvases.fg'));
   };
 
-  const renderStart = () => {
+  const handleLogin = () => {
+    firebase.auth().signInWithEmailAndPassword(email, password).then((user) => {
+
+      console.log({user})
+      updateSchemasOnEngine(() => {
+        onLoggedIn();
+      })
+
+    }).catch(function(error) {
+      // var errorCode = error.code;
+      // var errorMessage = error.message;
+      setPassword('');
+
+      // TODO: handle error
+    });
+  }
+
+  const renderCanvas = () => {
     const margin = {
       top: 0,
       bottom: 0,
       left: 0,
-      right: 0
+      right: 0,
     };
 
     return <Start canvasReady={onCanvasReady} margin={margin} />;
   };
 
+  const renderEmail = () => {
+    return <Input label={access.translate('Email')} variant={'standard'} initValue={''} style={{ width: 300 }} value={email} onChange={setEmail} />;
+  };
+
+  const renderPassword = () => {
+    return <Input label={access.translate('Password')} type={'password'} variant={'standard'} initValue={''} style={{ width: 300 }} value={password} onChange={setPassword} />;
+  };
+
+  const renderName = () => {
+    return <Input label={access.translate('Name')} variant={'standard'} initValue={''} style={{ width: 300 }} value={name} onChange={setName} />;
+  };
+
+  const renderSwitchRegister = () => {
+    const label = register ? access.translate('Sign In') : access.translate('Register');
+
+    return (
+      <Button variant='text' color='secondary' size='small' style={{ width: 'fit-content', fontSize: 9 }} onClick={()=>{ setRegister(!register) }}>
+        { label }
+      </Button>
+    );
+  };
+
+  const renderLoginButtons = () => {
+    const label = register ? access.translate('Send') : access.translate('Log In');
+
+    return (
+      <ButtonsCont>
+        <Button variant='outlined' color='secondary' style={{ width: 'fit-content', marginBottom: 5 }} onClick={handleLogin}>
+          {label}
+        </Button>
+        {renderSwitchRegister()}
+      </ButtonsCont>
+    );
+  };
+
+  const renderSignIn = () => {
+    if( register ) return null;
+
+    return (
+      <Fragment>
+        <img alt='logo' src={process.env.PUBLIC_URL + '/gen_logo.png'} />
+        <InputsCont>
+          {renderEmail()}
+          {renderPassword()}
+        </InputsCont>
+      </Fragment>
+    );
+  };
+
+  const renderRegister = () => {
+    if( !register ) return null;
+
+    return (
+      <Fragment>
+        <img alt='logo' src={process.env.PUBLIC_URL + '/gen_logo.png'} />
+        <InputsCont>
+          {renderName()}
+          {renderEmail()}
+          {renderPassword()}
+        </InputsCont>
+      </Fragment>
+    );
+  };
+
   return (
     <View>
-                
-        {renderStart()}
+      {renderCanvas()}
 
-        <Absolute top={'22vh'} bottom={'22vh'} left={'35vw'} right={'35vw'}>
+      <Absolute top={'22vh'} bottom={'22vh'} left={'35vw'} right={'35vw'}>
+        <LogInColumn height={'56vh'} background={access.color('backgrounds.secondary')} radius={'10px'}>
+          {renderSignIn()}
+          {renderRegister()}
+          {renderLoginButtons()}
+        </LogInColumn>
+      </Absolute>
 
-            <LogInColumn height={'56vh'} background={ access.color("backgrounds.secondary") } radius={ '10px' }>
-              <img alt="logo" src={process.env.PUBLIC_URL + "/gen_logo.png"} />
-              <Button variant="outlined" color="secondary" style={ {width: 'fit-content'} } onClick={ onLoggedIn }>
-                {access.translate("Log in with google")}
-              </Button>
-
-              <InputsCont>
-                { renderEmail() }
-                { renderPassword() }
-              </InputsCont>
-
-              <Button variant="outlined" color="secondary" style={ {width: 'fit-content'} } onClick={ onLoggedIn }>
-                {access.translate("Sign In")}
-              </Button>
-
-            </LogInColumn>
-        </Absolute>
-        
-        <Absolute left={'unset'} top={'unset'}> 
-          <Logo alt={'logo'} src={process.env.PUBLIC_URL + "/gen_icon.png"} onClick={()=>{ setRotate(rotate+1) }} rotate={rotate}/>
-        </Absolute>
-
+      <Absolute left={'unset'} top={'unset'}>
+        <Logo
+          alt={'logo'}
+          src={process.env.PUBLIC_URL + '/gen_icon.png'}
+          onClick={() => {
+            setRotate(rotate + 1);
+          }}
+          rotate={rotate}
+        />
+      </Absolute>
     </View>
   );
 }
