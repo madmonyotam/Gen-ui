@@ -28,7 +28,7 @@ function App({tree}) {
   const token = localStorage.getItem('token');
 
   const firebaseConfig = {
-    apiKey: 'AIzaSyCtaO4EMCLnjGFfBUYQOXWfT3YmH7SRqOc',
+    apiKey: 'test',
     projectId: 'mocking-gen-dev'
   };
 
