@@ -1,0 +1,77 @@
+export default {
+  colors: {
+    black: '#000000',
+    white: '#ffffff',
+    blue01: '#39536f',
+    blue02: '#496a8c',
+    blue03: '#5980a9',
+    blue04: '#aec9e8',
+    blue05: '#21354a',
+    blue06: '#293d52',
+    blueLight01: '#bfd6ef',
+    grey01: '#808080',
+    grey02: '#e8e8e8',
+  },
+  materialUI: {
+    primary: 'colors.blue01',
+    secondary: 'colors.blue02',
+  },
+  backgrounds: {
+    primary: 'colors.blue01',
+    secondary: 'colors.blueLight01',
+    active: 'colors.blue02',
+    hover: 'colors.blue03',
+    code: 'colors.grey02',
+  },
+  texts: {
+    primary: 'colors.white',
+    secondary: 'colors.blue01',
+    placeholder: 'colors.grey01',
+  },
+  searchBar: {
+    bg: 'backgrounds.primary',
+    fg: 'texts.primary',
+  },
+  bottomBar: {
+    bg: 'backgrounds.primary',
+    fg: 'texts.primary',
+    outline: 'colors.blueLight01',
+  },
+  schemaPanel: {
+    bg: 'colors.white',
+    divider: 'colors.blue02',
+    selected: 'texts.primary',
+    notSelected: 'colors.blue03',
+    border: 'backgrounds.primary',
+  },
+  menuPanel: {
+    bg: 'colors.grey02',
+    icon: 'colors.grey02',
+  },
+  canvases: {
+    bg: 'backgrounds.secondary',
+    fg: 'texts.secondary',
+    moveOnCircle: 'colors.blueLight01',
+    moveOnText: 'colors.blue01',
+    packBgStart: 'backgrounds.primary',
+    packBgEnd: 'backgrounds.hover',
+    clickColor: 'colors.blue06',
+  },
+  types: {
+    bg: 'colors.blue05',
+    packBgStart: 'colors.blue04',
+    packBgEnd: 'colors.white',
+    clickColor: 'colors.white',
+  },
+  tags: {
+    bg: 'backgrounds.primary',
+    fg: 'texts.primary',
+    moveOnTag: 'colors.blueLight01',
+    moveOnText: 'colors.blue01',
+  },
+  menu: {
+    bg: 'colors.white',
+    headerFg: 'texts.primary',
+    headerBg: 'backgrounds.primary',
+  },
+};

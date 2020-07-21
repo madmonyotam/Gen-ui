@@ -8,8 +8,6 @@ import * as access from "plugins/access";
 import Main from "Views/Main";
 import Login from "Views/Login";
 
-
-
 const primary = access.color('materialUI.primary');
 const secondary = access.color('materialUI.secondary');
 
@@ -37,7 +35,6 @@ function App({tree}) {
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
  }
-
 
   const handleLoggedIn = () => {
     setIsLoggedIn(true);

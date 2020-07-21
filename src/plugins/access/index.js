@@ -1,81 +1,80 @@
 
-import colors from "plugins/config/colors";
-import icons from "plugins/config/icons";
-import dimensions from "plugins/config/dimensions";
-import timeings from "plugins/config/time";
-import general from "plugins/config/general";
+import { isUndefined, isObject, isString } from 'lodash';
+import { getFromConfig } from 'plugins/access/gate';
+import memoize from 'memoizee';
 
-function get(collection, path) {
-    if(!path) return collection;
-    
-    let value = collection;
-    
-    if (typeof path === 'string') {
-        path = path.split(/[.,]/);
-    }
-    
-    for (let i = 0; i < path.length; i++) {
-        if(typeof value === 'undefined'){
-            return undefined;
-        }
-        value = value[path[i]];  
-    }
-    
-    return value; 
+const memo = (func) => {
+  return memoize(func, { primitive: true });
 };
 
-export const dim = (path) => {
-    let dimension = get(dimensions,path);
-    return dimension;
+const get = (collection, path, delimiter = '.') => {
+  if (!path) return collection;
+  
+  let value = collection;
+
+  if (typeof path === 'string') {
+    path = path.split(delimiter);
+  }
+
+  for (let i = 0; i < path.length; i++) {
+    if (typeof value === 'undefined') {
+      return undefined;
+    }
+    value = value[path[i]];
+  }
+
+  return value;
 };
 
-export const time = (path) => {
-    let timing = get(timeings,path);
-    return timing;
+const getNested = (type, path, delimiter = '.') => {
+  const collection = getFromConfig(type);
+  const code = get(collection, path, delimiter);
+
+  if (isUndefined(code)) return undefined;
+  if (isObject(code)) return code;
+  if (isString(code)) {
+    if (code.indexOf(delimiter) > -1) return getNested(type, code);
+  }
+
+  return code;
 };
 
-export const core = (path) => {
-    let val = get(general,path);
-    return val;
-}
-
-export const color = (path) => {
-    let code = get(colors,path);
-    
-    if ( !(typeof code === 'string') ) {     
-        return code;
-    } 
-
-    if ( code.startsWith('#') ) {
-      return code;
-    } 
-
-    if ( code.indexOf('.') > -1 || code.indexOf(',') > -1 ){
-        return color(code);
-    }
-
-    return undefined;
+const getDimension = (path) => {
+  return getNested('dimensions', path);
 };
 
-export const icon = (path, getType = false) => {
-    const typeOrName = getType ? 'type' : 'name';
+const getFormat = (path) => {
+  return getNested('formats', path, '_');
+};
 
-    let code = get(icons,path);
-    
-    if ( typeof code === 'string' && (code.indexOf('.') > -1 || code.indexOf(',') > -1) ){
-        return icon(code,getType);
-    }
+const getGeneral = (path) => {
+  return getNested('general', path);
+};
 
-    if(!code) return undefined;
+const getColor = (path) => {
+  return getNested('colors', path);
+};
 
-    if ( !code[typeOrName] ) {     
-        return code;
-    }
+const getIcon = (path, getType = false) => {
+  const typeOrName = getType ? 'type' : 'name';
+  let code = getNested('icons', path);
 
-    return code[typeOrName];
+  return code[typeOrName];
+};
+
+const getTimeing = (path) => {
+  let timing = get('timeings',path);
+  return timing;
 };
 
 export const translate = (value) => {
-    return value;
+  return value;
 }
+
+export const dim = memo(getDimension);
+export const icon = memo(getIcon);
+export const color = memo(getColor);
+export const format = memo(getFormat);
+export const time = memo(getTimeing);
+export const core = memo(getGeneral);
 
