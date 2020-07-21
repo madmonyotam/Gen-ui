@@ -64,21 +64,41 @@ function Login({ onLoggedIn }) {
   };
 
   const handleLogin = () => {
-    firebase.auth().signInWithEmailAndPassword(email, password).then((user) => {
+    firebase.auth().signInWithEmailAndPassword(email, password).then((res) => {
+      localStorage.setItem('gen-token',res.user.xa);
 
-      console.log({user})
       updateSchemasOnEngine(() => {
         onLoggedIn();
       })
 
     }).catch(function(error) {
-      // var errorCode = error.code;
-      // var errorMessage = error.message;
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log({errorCode, errorMessage});
+
       setPassword('');
 
       // TODO: handle error
     });
-  }
+  };
+
+  const handleRegister = () => {
+    
+    firebase.auth().createUserWithEmailAndPassword(email, password).then((res) => {
+      res.user.updateProfile({
+        displayName: name
+      }).then(() => {
+        setName('');
+        setPassword('');
+        setRegister(false);
+      })
+    }).catch(function(error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log({errorCode, errorMessage});
+      // TODO: handle error
+    });
+  };
 
   const renderCanvas = () => {
     const margin = {
@@ -115,10 +135,11 @@ function Login({ onLoggedIn }) {
 
   const renderLoginButtons = () => {
     const label = register ? access.translate('Send') : access.translate('Log In');
+    const func = register ? handleRegister : handleLogin;
 
     return (
       <ButtonsCont>
-        <Button variant='outlined' color='secondary' style={{ width: 'fit-content', marginBottom: 5 }} onClick={handleLogin}>
+        <Button variant='outlined' color='secondary' style={{ width: 'fit-content', marginBottom: 5 }} onClick={func}>
           {label}
         </Button>
         {renderSwitchRegister()}

@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import {useRoot} from 'baobab-react/hooks';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import { color } from "plugins/access";
-import Main from "Views/Main";
-import Login from "Views/Login";
 import firebase from 'firebase';
 
+import * as access from "plugins/access";
 
-const primary = color('materialUI.primary');
-const secondary = color('materialUI.secondary');
+import Main from "Views/Main";
+import Login from "Views/Login";
+
+
+
+const primary = access.color('materialUI.primary');
+const secondary = access.color('materialUI.secondary');
 
 const theme = createMuiTheme({
   palette: {
@@ -25,11 +28,10 @@ const theme = createMuiTheme({
 function App({tree}) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const Root = useRoot(tree);
-  const token = localStorage.getItem('token');
-
+  const token = localStorage.getItem('gen-token');
   const firebaseConfig = {
-    apiKey: 'test',
-    projectId: 'mocking-gen-dev'
+    apiKey: access.core('keys.apiKey'),
+    projectId: access.core('keys.projectId')
   };
 
   if (!firebase.apps.length) {
@@ -39,29 +41,6 @@ function App({tree}) {
 
   const handleLoggedIn = () => {
     setIsLoggedIn(true);
-
-    // firebase.auth().createUserWithEmailAndPassword('madmonyotan@gmail.com', 'Snake123!').then((user) => {
-    //   console.log({user})
-    // }).catch(function(error) {
-    //   var errorCode = error.code;
-    //   var errorMessage = error.message;
-
-    //   console.log({errorCode, errorMessage})
-    // });
-
-    // firebase.auth().signInWithEmailAndPassword('madmonyotam@gmail.com', 'Snake123!').then((user) => {
-
-    //   console.log({user})
-    //   updateSchemasOnEngine(() => {
-    //     setIsLoggedIn(true);
-    //   })
-
-    // }).catch(function(error) {
-    //   var errorCode = error.code;
-    //   var errorMessage = error.message;
-
-    //   console.log({errorCode, errorMessage})
-    // });
   }
 
   const View = token || isLoggedIn ? Main : Login;
