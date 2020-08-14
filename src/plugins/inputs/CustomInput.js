@@ -43,7 +43,6 @@ const InputValue = styled(InputBase)`
 
 const CustomInput = (props) => {
     const { item, onChange, depth, style, iconStyle } = props;
-
     return (
         <Wrap elevation={depth} style={style} >
             <InputIcon style={ iconStyle }> { item.icon } </InputIcon>

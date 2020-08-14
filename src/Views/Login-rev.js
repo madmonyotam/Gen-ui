@@ -30,24 +30,32 @@ const LogInColumn = styled(Column)`
   flex: initial;
   justify-content: flex-start;
   width: 30vw;
-  min-width: 350px;
-  padding: 15px;
+  min-width: 450px;
+  padding: 25px;
   min-height: 500px;
+  overflow: unset;
 `;
 
 const InputsCont = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
-  height: 200px;
+  align-items: center;
+  height: auto;
+  flex: 1;
+  justify-content: flex-start;
+  margin-top: 20px;
 `;
 
 const ButtonsCont = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: auto;
+  align-items: flex-start;
+  flex-direction: column;
+  height: 100px;
   width: 100%;
+  z-index: 3;
+  flex: .5;
+  margin-top: 20px;
+
 `;
 
 const Logo = styled.img`
@@ -64,6 +72,17 @@ const MainLogo = styled.img`
   margin: 15px auto;
   width: inherit;
   max-width: 400px;
+`;
+
+const MainLogoWrap = styled.div`
+  z-index: 1;
+  position: absolute;
+  width: 100%;
+  top: -100px;
+  left: 0;
+  right: 0;
+  display: flex; 
+  justify-content: center;
 `;
 
 function Login({ onLoggedIn }) {
@@ -124,29 +143,7 @@ function Login({ onLoggedIn }) {
     };
 
     return <Start canvasReady={onCanvasReady} margin={margin} />;
-  };
-
-  const renderEmail = () => {
-    return <Input label={access.translate('Email')} variant={'standard'} initValue={''} style={{ width: 300 }} value={email} onChange={setEmail} />;
-  };
-
-  const renderPassword = () => {
-    return <Input label={access.translate('Password')} type={'password'} variant={'standard'} initValue={''} style={{ width: 300 }} value={password} onChange={setPassword} />;
-  };
-
-  const renderName = () => {
-    return <Input label={access.translate('Name')} variant={'standard'} initValue={''} style={{ width: 300 }} value={name} onChange={setName} />;
-  };
-
-  const renderSwitchRegister = () => {
-    const label = register ? access.translate('Sign In') : access.translate('Register');
-
-    return (
-      <Button variant='text' color='secondary' size='small' style={{ width: 'fit-content', fontSize: 9 }} onClick={()=>{ setRegister(!register) }}>
-        { label }
-      </Button>
-    );
-  };
+  }; 
 
   const renderLoginButtons = () => {
     const label = register ? access.translate('Register') : access.translate('Log In');
@@ -154,83 +151,93 @@ function Login({ onLoggedIn }) {
     const logVariant = !register ? 'contained' : 'text';
     const regVariant = register ? 'contained' : 'text';
 
+    const onClick = e => setRegister(!register)
+
     return (
       <ButtonsCont>
         <Button variant={ logVariant } 
                 color='secondary' 
-                style={{ color: '#ededed' }}
-                onClick={ e => setRegister(!register) }>
+                style={{ minHeight: 40,color: '#ededed', minWidth: 100, marginBottom: 25 }}
+                onClick={ onClick }>
           { access.translate('Login') }
         </Button>
         <Button variant={ regVariant } 
                 color='secondary' 
-                style={{ color: '#ededed' }}
-                onClick={ e => setRegister(!register) }> 
+                style={{ minHeight: 40,color: '#ededed', minWidth: 100 }}
+                onClick={ onClick }> 
           { access.translate('Register') }
         </Button>
-        {/* {renderSwitchRegister()} */}
       </ButtonsCont>
     );
   };
 
-  const renderSignIn = () => {
-    if( register ) return null;
 
+  const inputs = [{
+    name: 'name',
+    value: name,
+    onChange: e => { setName(e.target.value) },
+    icon: 'account_circle',
+  },{
+    onChange: e => { setEmail(e.target.value) },
+    name: 'email',
+    type: 'email',
+    icon: 'email',
+    value: email
+  },{
+    onChange: e => { setPassword(e.target.value) },
+    name: 'password',
+    type: 'password',
+    icon: 'lock',
+    value: password
+  }]
+
+  const renderForm = () => {
+    const render_inputs = inputs.filter( inp => register ? inp : inp.name !== 'name' )
     return (
         <InputsCont>
-          {renderEmail()}
-          <CustomInput item={{
-            onChange: setEmail,
-            name: 'email',
-            type: 'email',
-            icon: 'email',
-            value: email
-          }}/>
-          <CustomInput />
-          {renderPassword()}
+          {
+            render_inputs.map(item => <CustomInput key={ item.name } style={{ marginBottom: 25 }} onChange={ item.onChange } item={ item }/>)
+          }
         </InputsCont>
     );
   };
-
-  const renderRegister = () => {
-    if( !register ) return null;
-
-    return (
-        <InputsCont>
-          {renderName()}
-          {renderEmail()}
-          {renderPassword()}
-        </InputsCont>
-    );
-  };
-
 
   const label = register ? access.translate('Sign Up') : access.translate('Sign In'); 
-
+  const sign_func = register ? handleRegister : handleLogin;
   return (
     <View background={ access.color('backgrounds.secondary') }>
       {/* {renderCanvas()} */}
 
       <LogInColumn height={'auto'} background={access.color('backgrounds.primary')} radius={'10px'}>
-        <div style={{ height: '100%', width: '100%' }} >
-          { renderLoginButtons() }
+        <div style={{
+            height: '100%', 
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'row',
+            paddingTop: '30%', 
+          }} >
           
-          <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+
+          <MainLogoWrap >
             <MainLogo
               alt='main-logo'
               src={process.env.PUBLIC_URL + '/gen_logo.png'}
-            />        
-          </div>
+              />        
+          </MainLogoWrap>
           
-          { renderSignIn() }
-          { renderRegister() }
+          { renderLoginButtons() }
+          { renderForm() }
         
         </div>
 
 
-        <Button variant={'contained'} color='secondary'>
-          {/* // onClick={e => setRegister(!register)}> */}
+        <Button 
+          variant={'contained'} 
+          color='secondary'
+          onClick={ e => sign_func() }>
+
           { label }
+
         </Button>
       </LogInColumn> 
 
