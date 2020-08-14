@@ -6,7 +6,7 @@ import firebase from 'firebase';
 import * as access from "plugins/access";
 
 import Main from "Views/Main";
-import Login from "Views/Login";
+import Login from "Views/Login-rev";
 
 const primary = access.color('materialUI.primary');
 const secondary = access.color('materialUI.secondary');
