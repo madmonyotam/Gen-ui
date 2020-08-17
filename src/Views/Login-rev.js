@@ -1,18 +1,17 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState } from 'react';
 import firebase from 'firebase';
 
 import styled from 'styled-components';
-import { Button } from '@material-ui/core';
+import { Button, Divider } from '@material-ui/core';
 
 import * as access from 'plugins/access';
 
-import Input from 'plugins/inputs/Input';
 import CustomInput from 'plugins/inputs/CustomInput';
 import Start from 'plugins/tools/Start';
 import { move } from 'plugins/canvases/utils/canvasActions';
 import { paintFrame } from 'plugins/canvases/paint/Frames';
 
-import { updateSchemasOnEngine } from "tree/actions/engine";
+import { updateSchemasOnEngine } from 'tree/actions/engine';
 import { Column, Absolute } from 'plugins/Layouts';
 
 
@@ -32,7 +31,7 @@ const LogInColumn = styled(Column)`
   width: 30vw;
   min-width: 450px;
   padding: 25px;
-  min-height: 500px;
+  min-height: 425px;
   overflow: unset;
 `;
 
@@ -78,7 +77,7 @@ const MainLogoWrap = styled.div`
   z-index: 1;
   position: absolute;
   width: 100%;
-  top: -100px;
+  top: -125px;
   left: 0;
   right: 0;
   display: flex; 
@@ -91,6 +90,7 @@ function Login({ onLoggedIn }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const onCanvasReady = (canvas, width, height) => {
     const frame = paintFrame(canvas, width, height);
@@ -98,9 +98,13 @@ function Login({ onLoggedIn }) {
   };
 
   const handleLogin = () => {
+    setLoading(true)
+
     firebase.auth().signInWithEmailAndPassword(email, password).then((res) => {
       localStorage.setItem('gen-token',res.user.xa);
 
+      setLoading(false)
+      
       updateSchemasOnEngine(() => {
         onLoggedIn();
       })
@@ -108,8 +112,10 @@ function Login({ onLoggedIn }) {
     }).catch(function(error) {
       const errorCode = error.code;
       const errorMessage = error.message;
-      console.log({errorCode, errorMessage});
 
+      console.log({errorCode, errorMessage});
+      
+      setLoading(false)
       setPassword('');
 
       // TODO: handle error
@@ -117,8 +123,12 @@ function Login({ onLoggedIn }) {
   };
 
   const handleRegister = () => {
-    
+    setLoading(true)
+
     firebase.auth().createUserWithEmailAndPassword(email, password).then((res) => {
+
+      setLoading(false)
+
       res.user.updateProfile({
         displayName: name
       }).then(() => {
@@ -146,8 +156,7 @@ function Login({ onLoggedIn }) {
   }; 
 
   const renderLoginButtons = () => {
-    const label = register ? access.translate('Register') : access.translate('Log In');
-    const func = register ? handleRegister : handleLogin;
+    
     const logVariant = !register ? 'contained' : 'text';
     const regVariant = register ? 'contained' : 'text';
 
@@ -157,11 +166,13 @@ function Login({ onLoggedIn }) {
       <ButtonsCont>
         <Button variant={ logVariant } 
                 color='secondary' 
+                disableElevation={ true }
                 style={{ minHeight: 40,color: '#ededed', minWidth: 100, marginBottom: 25 }}
                 onClick={ onClick }>
           { access.translate('Login') }
         </Button>
         <Button variant={ regVariant } 
+                disableElevation={ true }
                 color='secondary' 
                 style={{ minHeight: 40,color: '#ededed', minWidth: 100 }}
                 onClick={ onClick }> 
@@ -173,10 +184,10 @@ function Login({ onLoggedIn }) {
 
 
   const inputs = [{
-    name: 'name',
-    value: name,
     onChange: e => { setName(e.target.value) },
+    name: 'name',
     icon: 'account_circle',
+    value: name,
   },{
     onChange: e => { setEmail(e.target.value) },
     name: 'email',
@@ -191,8 +202,8 @@ function Login({ onLoggedIn }) {
     value: password
   }]
 
+  const render_inputs = inputs.filter( inp => register ? inp : inp.name !== 'name' )
   const renderForm = () => {
-    const render_inputs = inputs.filter( inp => register ? inp : inp.name !== 'name' )
     return (
         <InputsCont>
           {
@@ -206,7 +217,7 @@ function Login({ onLoggedIn }) {
   const sign_func = register ? handleRegister : handleLogin;
   return (
     <View background={ access.color('backgrounds.secondary') }>
-      {/* {renderCanvas()} */}
+      {renderCanvas()}
 
       <LogInColumn height={'auto'} background={access.color('backgrounds.primary')} radius={'10px'}>
         <div style={{
@@ -230,11 +241,15 @@ function Login({ onLoggedIn }) {
         
         </div>
 
-
+        <Divider style={{ marginBottom: 15 }}/>
         <Button 
           variant={'contained'} 
           color='secondary'
-          onClick={ e => sign_func() }>
+          style={{
+            maxWidth: '100px',
+            alignSelf: 'flex-end',
+          }}
+          onClick={ sign_func }>
 
           { label }
 

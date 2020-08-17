@@ -51,7 +51,7 @@ export default class Start extends Component {
   render() {
     this.id = 'cont' + v4();
 
-    return <div id={this.id} style={{ height: '100%', width: '100%' }} />;
+    return <div id={this.id} style={{ position: 'fixed', height: '100%', width: '100%' }} />;
   }
 }
 
