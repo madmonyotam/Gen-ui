@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import firebase from 'firebase';
-
+import Request from 'plugins/request';
 import styled from 'styled-components';
-import { Button, Divider } from '@material-ui/core';
+import { Button, Divider, LinearProgress } from '@material-ui/core';
 
 import * as access from 'plugins/access';
 
@@ -84,6 +83,14 @@ const MainLogoWrap = styled.div`
   justify-content: center;
 `;
 
+const InsideWrapper = styled.div`
+  height: 100%; 
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding-top: 30%;
+`
+
 function Login({ onLoggedIn }) {
   const [rotate, setRotate] = useState(0);
   const [register, setRegister] = useState(false);
@@ -99,49 +106,56 @@ function Login({ onLoggedIn }) {
 
   const handleLogin = () => {
     setLoading(true)
-
-    firebase.auth().signInWithEmailAndPassword(email, password).then((res) => {
-      localStorage.setItem('gen-token',res.user.xa);
-
-      setLoading(false)
-      
-      updateSchemasOnEngine(() => {
-        onLoggedIn();
+    Request.login(email, password)
+      .then( () => {
+        setLoading(false)
+        updateSchemasOnEngine(onLoggedIn)
       })
-
-    }).catch(function(error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-
-      console.log({errorCode, errorMessage});
-      
-      setLoading(false)
-      setPassword('');
-
-      // TODO: handle error
-    });
+      .catch( error => {
+        // const errorCode = error.code;
+        // const errorMessage = error.message;
+        
+        setPassword('');
+        setLoading(false)
+        // console.log({errorCode, errorMessage});
+      });
   };
 
   const handleRegister = () => {
     setLoading(true)
-
-    firebase.auth().createUserWithEmailAndPassword(email, password).then((res) => {
-
-      setLoading(false)
-
-      res.user.updateProfile({
-        displayName: name
-      }).then(() => {
+    Request.register(email, password, name)
+      .then( res => {
         setName('');
         setPassword('');
         setRegister(false);
+        setLoading(false)
+        console.log(res)
       })
-    }).catch(function(error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log({errorCode, errorMessage});
-      // TODO: handle error
-    });
+      .catch( error => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log({errorCode, errorMessage});
+        setLoading(false)
+        // TODO: handle error
+      });
+
+    // firebase.auth().createUserWithEmailAndPassword(email, password).then((res) => {
+
+    //   setLoading(false)
+
+    //   res.user.updateProfile({
+    //     displayName: name
+    //   }).then(() => {
+    //     setName('');
+    //     setPassword('');
+    //     setRegister(false);
+    //   })
+    // }).catch(function(error) {
+    //   const errorCode = error.code;
+    //   const errorMessage = error.message;
+    //   console.log({errorCode, errorMessage});
+    //   // TODO: handle error
+    // });
   };
 
   const renderCanvas = () => {
@@ -215,40 +229,32 @@ function Login({ onLoggedIn }) {
 
   const label = register ? access.translate('Sign Up') : access.translate('Sign In'); 
   const sign_func = register ? handleRegister : handleLogin;
+  
   return (
     <View background={ access.color('backgrounds.secondary') }>
-      {renderCanvas()}
+      
+      { renderCanvas() }
 
       <LogInColumn height={'auto'} background={access.color('backgrounds.primary')} radius={'10px'}>
-        <div style={{
-            height: '100%', 
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'row',
-            paddingTop: '30%', 
-          }} >
-          
+        <InsideWrapper>
 
           <MainLogoWrap >
-            <MainLogo
-              alt='main-logo'
-              src={process.env.PUBLIC_URL + '/gen_logo.png'}
-              />        
+            <MainLogo alt='main-logo' src={process.env.PUBLIC_URL + '/gen_logo.png'} />
           </MainLogoWrap>
-          
-          { renderLoginButtons() }
-          { renderForm() }
-        
-        </div>
 
-        <Divider style={{ marginBottom: 15 }}/>
+          {renderLoginButtons()}
+          {renderForm()}
+
+        </InsideWrapper> 
+
+        {
+          loading ? <div style={{ marginBottom: 15 }}><LinearProgress /></div> : <Divider style={{ marginBottom: 15 }} />
+        }
+
         <Button 
           variant={'contained'} 
           color='secondary'
-          style={{
-            maxWidth: '100px',
-            alignSelf: 'flex-end',
-          }}
+          style={{ maxWidth: '100px', alignSelf: 'flex-end' }}
           onClick={ sign_func }>
 
           { label }
@@ -256,22 +262,11 @@ function Login({ onLoggedIn }) {
         </Button>
       </LogInColumn> 
 
-
-      {/* 
-        <LogInColumn height={'56vh'} background={access.color('backgrounds.secondary')} radius={'10px'}>
-          {renderSignIn()}
-          {renderRegister()}
-          {renderLoginButtons()}
-        </LogInColumn>
-      */}
-
       <Absolute left={'unset'} top={'unset'}>
         <Logo
           alt={'logo'}
           src={process.env.PUBLIC_URL + '/gen_icon.png'}
-          onClick={() => {
-            setRotate(rotate + 1);
-          }}
+          onClick={() => { setRotate(rotate + 1) }}
           rotate={rotate}
         />
       </Absolute>

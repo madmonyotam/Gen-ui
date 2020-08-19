@@ -1,21 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 
 import styled from 'styled-components';
-import { makeStyles, Paper, Divider, InputBase, Icon } from "@material-ui/core";
-/**
- *
-const View = styled.div`
-  height: 100vh;
-  width: 100vw;
-  background: ${ props => props.background };
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
- */
+import { Paper, Divider, InputBase, Icon } from "@material-ui/core";
+
 const Wrap = styled(Paper)`
     width: 100%;
     height: 40px;

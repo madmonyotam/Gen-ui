@@ -16,7 +16,9 @@ import * as catsActions from "tree/actions/cats";
 import * as itemsActions from "tree/actions/items";
 
 import { getLibraryPack } from "plugins/canvases/utils/packUtils";
-import { get } from "plugins/requests";
+// import { get } from "plugins/requests";
+import Request from 'plugins/request';
+
 
 const CollapseColumn = styled(Column)`
   min-width: 50px;
@@ -36,9 +38,10 @@ function LeftPanel({ viewKey }) {
   const stableDispatch = useCallback(dispatch, []) 
 
   useEffect(() => {
-    get("/getAllLibraries").then(res => {
-      stableDispatch(libsActions.setLibs, res.data);
-    });
+    Request.get('/getAllLibraries')
+      .then(res => {
+        stableDispatch(libsActions.setLibs, res.data);
+      });
   }, [stableDispatch]);
 
   const RenderList = () => {

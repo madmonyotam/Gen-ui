@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {useRoot} from 'baobab-react/hooks';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import firebase from 'firebase';
-
+import { setHeaders } from 'plugins/request';
 import * as access from "plugins/access";
 
 import Main from "Views/Main";
@@ -27,6 +27,8 @@ function App({tree}) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const Root = useRoot(tree);
   const token = localStorage.getItem('gen-token');
+  if (token) setHeaders({ Authorization: token });
+
   const firebaseConfig = {
     apiKey: access.core('keys.apiKey'),
     projectId: access.core('keys.projectId')
@@ -34,7 +36,7 @@ function App({tree}) {
 
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
- }
+  }
 
   const handleLoggedIn = () => {
     setIsLoggedIn(true);
