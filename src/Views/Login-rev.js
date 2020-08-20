@@ -107,7 +107,8 @@ function Login({ onLoggedIn }) {
   const handleLogin = () => {
     setLoading(true)
     Request.login(email, password)
-      .then( () => {
+      .then( (res) => {
+        console.log(res.user)
         setLoading(false)
         updateSchemasOnEngine(onLoggedIn)
       })
@@ -138,24 +139,6 @@ function Login({ onLoggedIn }) {
         setLoading(false)
         // TODO: handle error
       });
-
-    // firebase.auth().createUserWithEmailAndPassword(email, password).then((res) => {
-
-    //   setLoading(false)
-
-    //   res.user.updateProfile({
-    //     displayName: name
-    //   }).then(() => {
-    //     setName('');
-    //     setPassword('');
-    //     setRegister(false);
-    //   })
-    // }).catch(function(error) {
-    //   const errorCode = error.code;
-    //   const errorMessage = error.message;
-    //   console.log({errorCode, errorMessage});
-    //   // TODO: handle error
-    // });
   };
 
   const renderCanvas = () => {

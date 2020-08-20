@@ -8,6 +8,7 @@ import * as access from "plugins/access";
 import MenuPanel from "Views/MenuPanel";
 import SchemaPanel from "Views/SchemaPanel";
 import Mask from "plugins/tools/Mask";
+import Wrapper from "plugins/tools/Wrapper";
 import MainCanvas from "plugins/canvases/MainCanvas";
 import Menu from "plugins/menuModal/Menu";
 
@@ -43,16 +44,19 @@ function Main() {
   }
 
   return (
-    <Mask
-      opacity={1}
-      mask={access.color("backgrounds.secondary")}
-      style={{ display: "flex" }}
-    >
-      <MenuPanel viewKey={viewKey} />
-      <SchemaPanel />
-      <MainCanvas key={viewKey} />
-      <Menu />
-    </Mask>
+    <Wrapper>
+       <Mask
+         opacity={1}
+         top={ '60px' }
+         mask={access.color("backgrounds.secondary")}
+         style={{ display: "flex" }}
+       >
+         <MenuPanel viewKey={viewKey} />
+         <SchemaPanel />
+         <MainCanvas key={viewKey} />
+         <Menu />
+       </Mask>
+    </Wrapper>
   );
 }
 

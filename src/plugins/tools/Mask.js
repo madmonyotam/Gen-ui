@@ -9,6 +9,7 @@ const Mask = styled.div`
   right: ${props => props.right || 0};
   opacity: ${props => props.opacity};
   background: ${props => props.mask};
+  z-index: 0;
 `;
 
 Mask.defaultProps = {
