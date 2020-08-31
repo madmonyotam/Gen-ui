@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import Request from 'plugins/request';
+import Firebase from 'plugins/request';
+
 import styled from 'styled-components';
 import { Button, Divider, LinearProgress } from '@material-ui/core';
 
@@ -91,7 +92,7 @@ const InsideWrapper = styled.div`
   padding-top: 30%;
 `
 
-function Login({ onLoggedIn }) {
+const Login = ({ onLoggedIn }) => {
   const [rotate, setRotate] = useState(0);
   const [register, setRegister] = useState(false);
   const [name, setName] = useState('');
@@ -106,9 +107,9 @@ function Login({ onLoggedIn }) {
 
   const handleLogin = () => {
     setLoading(true)
-    Request.login(email, password)
+    Firebase.login(email, password)
       .then( (res) => {
-        console.log(res.user)
+        
         setLoading(false)
         updateSchemasOnEngine(onLoggedIn)
       })
@@ -124,13 +125,13 @@ function Login({ onLoggedIn }) {
 
   const handleRegister = () => {
     setLoading(true)
-    Request.register(email, password, name)
+    Firebase.register(email, password, name)
       .then( res => {
         setName('');
         setPassword('');
         setRegister(false);
         setLoading(false)
-        console.log(res)
+        // console.log(res)
       })
       .catch( error => {
         const errorCode = error.code;

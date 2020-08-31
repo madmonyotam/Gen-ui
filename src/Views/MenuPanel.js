@@ -19,6 +19,8 @@ import { getLibraryPack } from "plugins/canvases/utils/packUtils";
 // import { get } from "plugins/requests";
 import Request from 'plugins/request';
 
+//import useFetch from 'plugins/request/useFetch'
+
 
 const CollapseColumn = styled(Column)`
   min-width: 50px;
@@ -37,15 +39,18 @@ function LeftPanel({ viewKey }) {
 
   const stableDispatch = useCallback(dispatch, []) 
 
-  useEffect(() => {
-    Request.get('/getAllLibraries')
-      .then(res => {
-        stableDispatch(libsActions.setLibs, res.data);
-      });
-  }, [stableDispatch]);
+  // const [res, setFetch] = useFetch();
+  // console.log(res)
+  //const [res, onChange] = useFetch('/getAllLibraries');
+
+  // useEffect(() => {
+  //   Request.get('/getAllLibraries')
+  //         .then(res => { 
+  //           stableDispatch(libsActions.setLibs, res.data);
+  //         })
+  // }, [stableDispatch]);
 
   const RenderList = () => {
-    
 
     const getListOf = () => {
       let listOf = "libs";
@@ -109,16 +114,20 @@ function LeftPanel({ viewKey }) {
 
     switch (getListOf()) {
       case "libs":
-        return libs.map(label => (
-          <ListItem
-            key={label}
-            label={label}
-            handleRowClick={handleClickOnLib}
-            handleRemove={handleRemoveLib}
-            handleEdit={handleEditLib}
-          />
-        ));
+        if (libs) {
+          return libs.map(label => (
+            <ListItem
+              key={label}
+              label={label}
+              handleRowClick={handleClickOnLib}
+              handleRemove={handleRemoveLib}
+              handleEdit={handleEditLib}
+            />
+          ));
+        }
+
       case "cats":
+        console.log('cats ->', cats)
         return cats.map(label => (
           <ListItem
             key={label}
@@ -130,6 +139,7 @@ function LeftPanel({ viewKey }) {
           />
         ));
       case "items":
+        console.log(items)
         return Object.keys(items).map(label => (
           <ListItem
             key={label}
@@ -260,7 +270,7 @@ function LeftPanel({ viewKey }) {
       background={access.color("menuPanel.bg")}
     >
       <SearchBar label={label} nested={focus.lib} onBack={handleBack} />
-      {renderContent()}
+      { renderContent() }
       <BottomBarMenu viewKey={viewKey} />
     </CollapseColumn>
   );

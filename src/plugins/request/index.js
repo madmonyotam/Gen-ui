@@ -47,6 +47,8 @@ export const setHeaders = params => {
 	}
 }
 
+export const getHeaders = () => headers;
+
 const register = async (email, password, name) => {
 	const res = await firebase.auth().createUserWithEmailAndPassword(email, password);
 	res.user.updateProfile({
@@ -58,6 +60,7 @@ const login = async (email, password) => {
 	const res = await firebase.auth().signInWithEmailAndPassword(email, password);
 	localStorage.setItem('gen-token', res.user.xa);
 	localStorage.setItem('gen-user-name', res.user.displayName)
+	localStorage.setItem('gen-user-email', res.user.email)
 	setHeaders({ Authorization: res.user.xa })
 	return res;
 }
