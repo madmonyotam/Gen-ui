@@ -1,4 +1,15 @@
 import React, { useState } from "react";
+
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+  useHistory,
+  useLocation
+} from "react-router-dom";
+
 import {useRoot} from 'baobab-react/hooks';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import firebase from 'firebase';
@@ -42,12 +53,45 @@ function App({tree}) {
     setIsLoggedIn(true);
   }
 
-  const View = token || isLoggedIn ? Main : Login;
+  const View = (token || isLoggedIn) ? Main : Login;
+    
+  // function PrivateRoute({ children, ...rest }) {
+  //   return (
+  //     <Route
+  //       {...rest}
+  //       render={({ location }) =>
+  //         (token || isLoggedIn) ? (
+  //           children
+  //         ) : (
+  //             <Redirect
+  //               to={{
+  //                 pathname: "/login",
+  //                 state: { from: location }
+  //               }}
+  //             />
+  //           )
+  //       }
+  //     />
+  //   );
+  // }
+
+  // const path = (isLoggedIn || token) ? '/protected' : '/login'
 
   return (
     <Root>
       <ThemeProvider theme={theme}>
-        <View onLoggedIn={ handleLoggedIn } />
+        <View onLoggedIn={ handleLoggedIn }/>
+        {/* <Router path={ path }>
+          <Switch>
+            <Route path="/login">
+              <Login onLoggedIn={ handleLoggedIn }/> 
+            </Route>
+
+            <PrivateRoute path="/protected">
+              <Main onLoggedIn={ handleLoggedIn } />
+            </PrivateRoute>
+          </Switch>
+        </Router> */}
       </ThemeProvider>
     </Root>
   );

@@ -70,7 +70,7 @@ function Main() {
       </InitMask>
     );
   }
-  console.log('projects', projects)
+  
   return (
     <Wrapper>
       <TopPanel user={{ userName, email }} />

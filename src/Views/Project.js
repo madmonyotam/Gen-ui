@@ -8,7 +8,6 @@ import * as access from "plugins/access";
 import MenuPanel from "Views/MenuPanel";
 import SchemaPanel from "Views/SchemaPanel";
 import Mask from "plugins/tools/Mask";
-// import Wrapper from "plugins/tools/Wrapper";
 
 import MainCanvas from "plugins/canvases/MainCanvas";
 import Menu from "plugins/menuModal/Menu";
@@ -23,6 +22,13 @@ const InitMask = styled(Mask)`
 function Project() {
     const { viewKey } = useBranch({ viewKey: ["viewKey"] });
     const [loading, setLoading] = useState(true);
+
+  // useEffect(() => {
+  //   Request.get('/getAllLibraries')
+  //     .then(res => {
+  //       stableDispatch(libsActions.setLibs, res.data);
+  //     })
+  // }, [stableDispatch]);
 
     useEffect(() => {
         const t = setTimeout(() => {
