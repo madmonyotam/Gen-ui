@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { useBranch } from "baobab-react/hooks";
-import LinearProgress from "@material-ui/core/LinearProgress";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import { useBranch } from 'baobab-react/hooks';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import styled from 'styled-components';
 
-import * as access from "plugins/access";
+import * as access from 'plugins/access';
 
-import MenuPanel from "Views/MenuPanel";
-import SchemaPanel from "Views/SchemaPanel";
-import Mask from "plugins/tools/Mask";
+import MenuPanel from 'Views/MenuPanel';
+import SchemaPanel from 'Views/SchemaPanel';
+import Mask from 'plugins/tools/Mask';
 
-import MainCanvas from "plugins/canvases/MainCanvas";
-import Menu from "plugins/menuModal/Menu";
+import MainCanvas from 'plugins/canvases/MainCanvas';
+import Menu from 'plugins/menuModal/Menu';
 
 const InitMask = styled(Mask)`
   display: flex;
@@ -20,49 +20,49 @@ const InitMask = styled(Mask)`
 `;
 
 function Project() {
-    const { viewKey } = useBranch({ viewKey: ["viewKey"] });
-    const [loading, setLoading] = useState(true);
+	const { viewKey } = useBranch({ viewKey: ['viewKey'] });
+	const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   Request.get('/getAllLibraries')
-  //     .then(res => {
-  //       stableDispatch(libsActions.setLibs, res.data);
-  //     })
-  // }, [stableDispatch]);
+	// useEffect(() => {
+	//   Request.get('/getAllLibraries')
+	//     .then(res => {
+	//       stableDispatch(libsActions.setLibs, res.data);
+	//     })
+	// }, [stableDispatch]);
 
-    useEffect(() => {
-        const t = setTimeout(() => {
-            setLoading(false);
-        }, 1500);
-        return () => {
-            clearTimeout(t);
-        };
-    }, []);
+	useEffect(() => {
+		const t = setTimeout(() => {
+			setLoading(false);
+		}, 1500);
+		return () => {
+			clearTimeout(t);
+		};
+	}, []);
 
-    if (loading) {
-        return (
-            <InitMask opacity={1} mask={access.color("backgrounds.secondary")}>
-                <img alt="logo" src={process.env.PUBLIC_URL + "/gen_logo.png"} />
-                <div style={{ width: 400 }}>
-                    <LinearProgress value={50} color={"primary"} />
-                </div>
-            </InitMask>
-        );
-    }
+	if (loading) {
+		return (
+			<InitMask opacity={1} mask={access.color('backgrounds.secondary')}>
+				<img alt="logo" src={process.env.PUBLIC_URL + '/gen_logo.png'} />
+				<div style={{ width: 400 }}>
+					<LinearProgress value={50} color={'primary'} />
+				</div>
+			</InitMask>
+		);
+	}
     
-    return (
-        <Mask
-            opacity={1}
-            top={'60px'}
-            mask={access.color("backgrounds.secondary")}
-            style={{ display: "flex" }}
-        >
-            <MenuPanel viewKey={viewKey} />
-            <SchemaPanel />
-            <MainCanvas key={viewKey} />
-            <Menu />
-        </Mask>
-    );
+	return (
+		<Mask
+			opacity={1}
+			top={'60px'}
+			mask={access.color('backgrounds.secondary')}
+			style={{ display: 'flex' }}
+		>
+			<MenuPanel viewKey={viewKey} />
+			<SchemaPanel />
+			<MainCanvas key={viewKey} />
+			<Menu />
+		</Mask>
+	);
 }
 
 export default Project;
