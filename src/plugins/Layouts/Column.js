@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import PropTypes from "prop-types";
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const Column = styled.div`
   z-index: ${props => props.zIndex};
@@ -17,20 +17,20 @@ const Column = styled.div`
 `;
 
 Column.defaultProps = {
-  zIndex: 1,
-  flex: 0.2,
-  height: '100%',
-  background: 'inherit',
-  shadowColor: "rgb(93, 107, 140)",
-  radius: '0px'
-  }
+	zIndex: 1,
+	flex: 0.2,
+	height: '100%',
+	background: 'inherit',
+	shadowColor: 'rgb(93, 107, 140)',
+	radius: '0px'
+};
 
 Column.propTypes = {
-  flex: PropTypes.number,
-  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  background: PropTypes.string,
-  shadowColor: PropTypes.string,
-  radius: PropTypes.string
+	flex: PropTypes.number,
+	height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+	background: PropTypes.string,
+	shadowColor: PropTypes.string,
+	radius: PropTypes.string
 };
 
 export default Column;

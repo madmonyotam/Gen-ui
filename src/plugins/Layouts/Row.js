@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import PropTypes from "prop-types";
-import { color } from "plugins/access";
+import PropTypes from 'prop-types';
+import { color } from 'plugins/access';
 
 const Row = styled.div`  
   z-index: ${props => props.zIndex};
@@ -25,22 +25,22 @@ const Row = styled.div`
     background: ${(props) => (props.menuItem && color('backgrounds.active'))};
     color: ${(props) => (props.menuItem && color('texts.primary'))};
   }
-`
+`;
 
 Row.defaultProps = {
-  zIndex: 1,
-  width: '100%',
-  height: '50px',
-  background: 'inherit',
-  color: color('texts.secondary'),
-  shadowColor: 'rgb(93, 107, 140)',
-  }
+	zIndex: 1,
+	width: '100%',
+	height: '50px',
+	background: 'inherit',
+	color: color('texts.secondary'),
+	shadowColor: 'rgb(93, 107, 140)',
+};
 
 Row.propTypes = {
-  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  background: PropTypes.string,
-  shadowColor: PropTypes.string
+	width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+	height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+	background: PropTypes.string,
+	shadowColor: PropTypes.string
 };
 
 export default Row;

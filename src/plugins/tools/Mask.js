@@ -9,17 +9,18 @@ const Mask = styled.div`
   right: ${props => props.right || 0};
   opacity: ${props => props.opacity};
   background: ${props => props.mask};
+  z-index: 0;
 `;
 
 Mask.defaultProps = {
-    opacity: 0.7,
-    mask: 'white',
-  }
+	opacity: 0.7,
+	mask: 'white',
+};
   
-  Mask.propTypes = {
-    opacity: PropTypes.number,
-    mask: PropTypes.string,
-  }
+Mask.propTypes = {
+	opacity: PropTypes.number,
+	mask: PropTypes.string,
+};
   
   
-  export default Mask
+export default Mask;

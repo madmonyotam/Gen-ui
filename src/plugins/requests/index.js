@@ -1,4 +1,4 @@
-const axios = require("axios");
+import * as axios from 'axios';
 let port = 5588;
 
 // function setPort(p) {
@@ -8,10 +8,10 @@ let port = 5588;
 const rootUrl = `http://localhost:${port}/mocking_G`;
 
 function get(path, params) {
-  let from = `${rootUrl}${path}`;
-  let query = { params };
+	let from = `${rootUrl}${path}`;
+	let query = { params };
 
-  return axios.get(from, query);
+	return axios.get(from, query);
 }
 
 export { get };

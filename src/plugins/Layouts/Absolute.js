@@ -11,18 +11,18 @@ const Absolute = styled.div`
 `;
 
 Absolute.defaultProps = {
-  top: 0,
-  bottom: 0,
-  left: 0,
-  right: 0
-  }
+	top: 0,
+	bottom: 0,
+	left: 0,
+	right: 0
+};
   
-  Absolute.propTypes = {
-    top: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    bottom: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    left: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    right: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-  }
+Absolute.propTypes = {
+	top: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+	bottom: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+	left: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+	right: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+};
   
   
-  export default Absolute
+export default Absolute;
