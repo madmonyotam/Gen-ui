@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useBranch } from 'baobab-react/hooks';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import styled from 'styled-components';
 
+import * as libsActions from 'tree/actions/libs';
 import * as access from 'plugins/access';
 
 import MenuPanel from 'Views/MenuPanel';
@@ -11,6 +12,8 @@ import Mask from 'plugins/tools/Mask';
 
 import MainCanvas from 'plugins/canvases/MainCanvas';
 import Menu from 'plugins/menuModal/Menu';
+
+import Request from 'plugins/request';
 
 const InitMask = styled(Mask)`
   display: flex;
@@ -22,13 +25,15 @@ const InitMask = styled(Mask)`
 function Project() {
 	const { viewKey } = useBranch({ viewKey: ['viewKey'] });
 	const [loading, setLoading] = useState(true);
+	const { libs, dispatch } = useBranch({ libs: ['libs'] });
+	const stableDispatch = useCallback(dispatch, []);
 
-	// useEffect(() => {
-	//   Request.get('/getAllLibraries')
-	//     .then(res => {
-	//       stableDispatch(libsActions.setLibs, res.data);
-	//     })
-	// }, [stableDispatch]);
+	useEffect(() => {
+		Request.get('/getAllLibraries')
+			.then(res => {
+				stableDispatch(libsActions.setLibs, res.data);
+			});
+	}, [stableDispatch]);
 
 	useEffect(() => {
 		const t = setTimeout(() => {

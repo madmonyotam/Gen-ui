@@ -16,7 +16,7 @@ import firebase from 'firebase';
 import { setHeaders } from 'plugins/request';
 import * as access from 'plugins/access';
 
-import Main from 'Views/Main';
+import Dashboard from 'Views/Dashboard';
 import Login from 'Views/Login-rev';
 
 const primary = access.color('materialUI.primary');
@@ -53,7 +53,7 @@ function App({tree}) {
 		setIsLoggedIn(true);
 	};
 
-	const View = (token || isLoggedIn) ? Main : Login;
+	const View = (token || isLoggedIn) ? Dashboard : Login;
     
 	// function PrivateRoute({ children, ...rest }) {
 	//   return (
@@ -88,7 +88,7 @@ function App({tree}) {
             </Route>
 
             <PrivateRoute path="/protected">
-              <Main onLoggedIn={ handleLoggedIn } />
+              <Dashboard onLoggedIn={ handleLoggedIn } />
             </PrivateRoute>
           </Switch>
         </Router> */}

@@ -26,7 +26,7 @@ const MenuIcon = styled(IconButton)`
   transition: all 0.15s ease-in-out;
 `;
 
-const TopPanel = ({ user }) => {
+const TopPanel = ({ user, handleRouteBack }) => {
 
 	const [open, setOpen] = useState(false);
 	const anchorRef = useRef(null);
@@ -62,6 +62,8 @@ const TopPanel = ({ user }) => {
 				<Paper>
 					<ClickAwayListener onClickAway={handleClose}>
 						<MenuList dense={ true } autoFocusItem={open} id="menu-list-grow">
+							<MenuItem onClick={ handleRouteBack }>{ access.translate('PROJECTS') }</MenuItem>
+							<Divider style={{ margin: '5px 0'}} /> 
 							<MenuItem onClick={handleClose}>{ access.translate('Save As') }</MenuItem>
 							<MenuItem onClick={handleClose}>{ access.translate('New Project') }</MenuItem>
 							<MenuItem onClick={handleClose}>{ access.translate('Open Project') }</MenuItem>
@@ -78,11 +80,13 @@ const TopPanel = ({ user }) => {
 };
 
 TopPanel.propTypes = {
-	user: PropTypes.object
+	user: PropTypes.object,
+	handleRouteBack: PropTypes.func,
 };
 
 TopPanel.defaultProps = {
-	user: {}
+	user: {},
+	handleRouteBack: () => null
 };
 
 export default TopPanel;
