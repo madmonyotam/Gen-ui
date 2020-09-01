@@ -55,7 +55,7 @@ function BarButtons({ content, filename }) {
 }
 
 BarButtons.propTypes = {
-	content: PropTypes.object.isRequired,
+	content: PropTypes.any.isRequired,
 	filename: PropTypes.string
 };
 

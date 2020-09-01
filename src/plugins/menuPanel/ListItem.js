@@ -152,8 +152,8 @@ function ListItem({ label, handleRowClick, handleRemove, handleEdit, parent }) {
 }
 
 ListItem.propTypes = {
-	label: PropTypes.string.isRequired, 
-	parent: PropTypes.string.isRequired,
+	label: PropTypes.string, 
+	parent: PropTypes.string,
 	handleRowClick: PropTypes.func.isRequired, 
 	handleRemove: PropTypes.func.isRequired, 
 	handleEdit: PropTypes.func.isRequired,

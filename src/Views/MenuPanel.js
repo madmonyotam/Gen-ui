@@ -37,7 +37,11 @@ function LeftPanel({ viewKey }) {
 	const { items } = useBranch({ items: ['items'] });
 	const { focus } = useBranch({ focus: ['focus'] });
 	const { collapse } = useBranch({ collapse: ['collapse'] });
-	const libraryPack = getLibraryPack();
+	let libraryPack = {};
+
+	setTimeout(() => {
+		libraryPack = getLibraryPack();
+	}, 1000);
 
 	// const stableDispatch = useCallback(dispatch, []); 
 

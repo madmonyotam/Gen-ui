@@ -32,7 +32,7 @@ function SearchBar({ label, nested, onBack }) {
 
 SearchBar.propTypes = {
 	label: PropTypes.string, 
-	nested: PropTypes.bool,
+	nested: PropTypes.string,
 	onBack: PropTypes.func
 };
 

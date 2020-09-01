@@ -203,7 +203,7 @@ function MainCanvas() {
 	const renderStart = () => {
 		const margin = {
 			top: 0,
-			bottom: 0,
+			bottom: access.dim('topBar.height'),
 			left: 0,
 			right: 0
 		};

@@ -57,7 +57,7 @@ function FileDownloader({content, fileName, fileExtension, disabled, children, o
 }
 
 FileDownloader.propTypes = {
-	content: PropTypes.object.isRequired,
+	content: PropTypes.any.isRequired,
 	fileExtension: PropTypes.string.isRequired,
 	children: PropTypes.node.isRequired,
 	fileName: PropTypes.string,
