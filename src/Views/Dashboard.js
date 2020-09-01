@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from 'react';
-//import { useBranch } from 'baobab-react/hooks';
 import { LinearProgress, Paper, Typography } from '@material-ui/core';
 import styled from 'styled-components';
 
 import * as access from 'plugins/access';
-//import * as libsActions from 'tree/actions/libs';
 
-//import MenuPanel from 'Views/MenuPanel';
-//import SchemaPanel from 'Views/SchemaPanel';
 import Mask from 'plugins/tools/Mask';
-import Wrapper from 'plugins/tools/Wrapper';
-//import MainCanvas from 'plugins/canvases/MainCanvas';
-//import Menu from 'plugins/menuModal/Menu';
 import Project from 'Views/Project';
-import TopPanel from 'plugins/tools/TopPanel';
 
 import Request from 'plugins/request';
+
+import { useHistory } from 'react-router-dom';
 
 const InitMask = styled(Mask)`
     display: flex;
@@ -48,18 +42,14 @@ const ProjectPaper = styled(Paper)`
     }
 `;
 
-function Dashboard() {
-	//const { viewKey } = useBranch({ viewKey: ['viewKey'] });
-	//const { libs, dispatch } = useBranch({ libs: ['libs'] });
+function Dashboard({ user }) {
 	const [loading, setLoading] = useState(true);
 	const [projects, setProjects] = useState([]);
-	const [project, setProject] = useState(false);
-	const userName = localStorage.getItem('gen-user-name');
-	const email = localStorage.getItem('gen-user-email');
 	//const stableDispatch = useCallback(dispatch, []);
-
+	let history = useHistory();
+	
 	useEffect(() => { 
-		Request.get(`https://us-central1-mocking-gen-dev.cloudfunctions.net/projectRestAPI-projectRestAPI/project/users/${email}`)
+		Request.get(`https://us-central1-mocking-gen-dev.cloudfunctions.net/projectRestAPI-projectRestAPI/project/users/${user.email}`)
 			.then(({ data }) => { 
 				if (data.status.toLowerCase() === 'success') {
 					setProjects(data.projects);
@@ -75,31 +65,18 @@ function Dashboard() {
 			clearTimeout(t);
 		};
 	}, []);
- 
 
-	const renderProjects = (project) => {
-		return (
-			<ProjectPaper
-				key={project.id} 
-				onClick={ () => setProject(true) }
-				background={ access.color('backgrounds.primary') }
-				elevation={2}>
-				<Typography style={{ color: '#fff' }}>
-					{ project.name }
-				</Typography>
-			</ProjectPaper>
-		);
-	};
-
-	const renderContent = () => {
-		if (project) return <Project />;
-
-		return (
-			<Projects>
-				{ projects && projects.map(renderProjects) }
-			</Projects>
-		);
-	};
+	const renderProjects = (project) => (
+		<ProjectPaper
+			key={project.id} 
+			onClick={ () => history.push(`project/${ project.id }`) }
+			background={ access.color('backgrounds.primary') }
+			elevation={2}>
+			<Typography style={{ color: '#fff' }}>
+				{ project.name }
+			</Typography>
+		</ProjectPaper>       
+	);
 
 	if (loading) {
 		return (
@@ -113,10 +90,9 @@ function Dashboard() {
 	}
   
 	return (
-		<Wrapper>
-			<TopPanel user={{ userName, email }} handleRouteBack={ () => setProject(false) } />
-			{ renderContent() }
-		</Wrapper>
+		<Projects>
+			{ projects && projects.map(renderProjects) }
+		</Projects>
 	);
 }
 

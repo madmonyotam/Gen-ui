@@ -26,11 +26,14 @@ const MenuIcon = styled(IconButton)`
   transition: all 0.15s ease-in-out;
 `;
 
-const TopPanel = ({ user, handleRouteBack }) => {
+const TopPanel = () => {
 
 	const [open, setOpen] = useState(false);
 	const anchorRef = useRef(null);
-
+    
+	const userName = localStorage.getItem('gen-user-name');
+	const email = localStorage.getItem('gen-user-email');
+	
 	const handleClose = () => {
 		setOpen(false);
 	};
@@ -50,10 +53,10 @@ const TopPanel = ({ user, handleRouteBack }) => {
 			<Avatar alt={ 'avatar-picsum' } src={ 'https://picsum.photos/200' } />
 			<div style={{ margin: '0 10px' }}>
 				<Typography style={{ fontSize: 15, fontWeight: 600 }}>
-					{user.userName }
+					{ userName }
 				</Typography>
 				<Typography style={{ fontSize: 13, marginTop: -5, color: '#555'  }}>
-					{user.email }
+					{ email }
 				</Typography>
 			</div>
         
@@ -62,8 +65,6 @@ const TopPanel = ({ user, handleRouteBack }) => {
 				<Paper>
 					<ClickAwayListener onClickAway={handleClose}>
 						<MenuList dense={ true } autoFocusItem={open} id="menu-list-grow">
-							<MenuItem onClick={ handleRouteBack }>{ access.translate('PROJECTS') }</MenuItem>
-							<Divider style={{ margin: '5px 0'}} /> 
 							<MenuItem onClick={handleClose}>{ access.translate('Save As') }</MenuItem>
 							<MenuItem onClick={handleClose}>{ access.translate('New Project') }</MenuItem>
 							<MenuItem onClick={handleClose}>{ access.translate('Open Project') }</MenuItem>

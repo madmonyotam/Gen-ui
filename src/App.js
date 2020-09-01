@@ -1,23 +1,18 @@
 import React, { useState } from 'react';
 
-import {
-	BrowserRouter as Router,
-	Switch,
-	Route,
-	Link,
-	Redirect,
-	useHistory,
-	useLocation
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect, useParams } from 'react-router-dom';
 
 import {useRoot} from 'baobab-react/hooks';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import firebase from 'firebase';
 import { setHeaders } from 'plugins/request';
 import * as access from 'plugins/access';
+import TopPanel from 'plugins/tools/TopPanel';
 
-import Dashboard from 'Views/Dashboard';
-import Login from 'Views/Login-rev';
+//import Dashboard from 'Views/Dashboard';
+//import Login from 'Views/Login-rev';
+
+import routes from 'routes';
 
 const primary = access.color('materialUI.primary');
 const secondary = access.color('materialUI.secondary');
@@ -39,7 +34,9 @@ function App({tree}) {
 	const Root = useRoot(tree);
 	const token = localStorage.getItem('gen-token');
 	if (token) setHeaders({ Authorization: token });
-
+	//let history = useHistory();
+	//console.log(history);
+	//
 	const firebaseConfig = {
 		apiKey: access.core('keys.apiKey'),
 		projectId: access.core('keys.projectId')
@@ -53,45 +50,34 @@ function App({tree}) {
 		setIsLoggedIn(true);
 	};
 
-	const View = (token || isLoggedIn) ? Dashboard : Login;
+	const renderRoutes = (route, key) => (
+		<Route
+			key={ key }
+			path={ route.path }
+			render={ 
+				props => ( 
+					<route.component { ...props } 
+						user={{ email: localStorage.getItem('gen-user-email') }} 
+						routes={ route.routes } 
+						onLoggedIn={ handleLoggedIn } /> 
+				) 
+			}
+		/>
+	);
     
-	// function PrivateRoute({ children, ...rest }) {
-	//   return (
-	//     <Route
-	//       {...rest}
-	//       render={({ location }) =>
-	//         (token || isLoggedIn) ? (
-	//           children
-	//         ) : (
-	//             <Redirect
-	//               to={{
-	//                 pathname: "/login",
-	//                 state: { from: location }
-	//               }}
-	//             />
-	//           )
-	//       }
-	//     />
-	//   );
-	// }
-
-	// const path = (isLoggedIn || token) ? '/protected' : '/login'
+	const handleRedirect = () => (
+		(token || isLoggedIn) ? <Redirect exact from={ '/' } to={ '/dashboard' } /> : <Redirect from={ '/' } to={ '/login' } />
+	);
 
 	return (
 		<Root>
 			<ThemeProvider theme={theme}>
-				<View onLoggedIn={ handleLoggedIn }/>
-				{/* <Router path={ path }>
-            <Switch>
-              <Route path="/login">
-              <Login onLoggedIn={ handleLoggedIn }/> 
-            </Route>
 
-            <PrivateRoute path="/protected">
-              <Dashboard onLoggedIn={ handleLoggedIn } />
-            </PrivateRoute>
-          </Switch>
-        </Router> */}
+				{ (token || isLoggedIn) && <TopPanel /> }
+				<Router>
+					{ handleRedirect() }
+					{ routes.map(renderRoutes) }
+				</Router>
 			</ThemeProvider>
 		</Root>
 	);
