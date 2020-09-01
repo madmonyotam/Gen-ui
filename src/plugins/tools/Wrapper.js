@@ -7,7 +7,7 @@ const Wrapper = (props) => {
 				props.children
 			}
 		</Fragment>
-	)
+	);
 	
 };
-export default Wrapper
+export default Wrapper;

@@ -6,7 +6,7 @@ const SpaceBetween = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-`
+`;
 
 const SpaceAround = styled.div`   
   width: ${props => props.width || '50px'};
@@ -14,6 +14,6 @@ const SpaceAround = styled.div`
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-`
+`;
 
 export { SpaceBetween, SpaceAround };

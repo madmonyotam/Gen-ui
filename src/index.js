@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import 'index.css';
 import App from 'App';
 //import * as serviceWorker from './serviceWorker';
-import tree from "tree/tree";
+import tree from 'tree/tree';
 
 ReactDOM.render(<App tree={tree} />, document.getElementById('root'));
 

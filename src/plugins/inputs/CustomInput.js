@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import styled from 'styled-components';
-import { Paper, Divider, InputBase, Icon } from "@material-ui/core";
+import { Paper, Divider, InputBase, Icon } from '@material-ui/core';
 
 const Wrap = styled(Paper)`
     width: 100%;
@@ -30,41 +30,43 @@ const InputValue = styled(InputBase)`
 `;
 
 const CustomInput = (props) => {
-    const { item, onChange, depth, style, iconStyle } = props;
-    return (
-        <Wrap elevation={depth} style={style} >
-            <InputIcon style={ iconStyle }> { item.icon } </InputIcon>
-            <Divider orientation={'vertical'} />
-            <InputValue
-                name={ item.name }
-                onChange={ onChange }
-                type={ item.type }
-                placeholder={ item.name.toUpperCase() }
-            />
-        </Wrap>
-    )
-}
+	const { item, onChange, depth, style, iconStyle } = props;
+	return (
+		<Wrap elevation={depth} style={style} >
+			<InputIcon style={ iconStyle }> { item.icon } </InputIcon>
+			<Divider orientation={'vertical'} />
+			<InputValue
+				name={ item.name }
+				onChange={ onChange }
+				type={ item.type }
+				placeholder={ item.name.toUpperCase() }
+			/>
+		</Wrap>
+	);
+};
 
 CustomInput.defaultProps = {
-    depth: 3,
-    item: {
-        name: 'username',
-        type: 'text',
-        value: '',
-        renderType: 'input',
-        icon: 'face'
-    },
-    onChange: console.info,
-    iconStyle: {},
-    inputStyle: {}
-}
+	depth: 3,
+	item: {
+		name: 'username',
+		type: 'text',
+		value: '',
+		renderType: 'input',
+		icon: 'face'
+	},
+	onChange: console.info,
+	iconStyle: {},
+	inputStyle: {},
+	style: {}
+};
 
 CustomInput.propTypes = {
-    depth: PropTypes.number,
-    item: PropTypes.object,
-    onChange: PropTypes.func,
-    iconStyle: PropTypes.object,
-    inputStyle: PropTypes.object
-}
+	depth: PropTypes.number,
+	item: PropTypes.object,
+	onChange: PropTypes.func,
+	iconStyle: PropTypes.object,
+	inputStyle: PropTypes.object,
+	style: PropTypes.object,
+};
 
 export default CustomInput;  

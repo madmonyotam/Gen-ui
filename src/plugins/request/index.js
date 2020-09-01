@@ -22,21 +22,21 @@ class RequestPlugin {
 			transformResponse: (data) => {
 				let response = '';
 				try {
-					response = JSON.parse(data)
+					response = JSON.parse(data);
 				} catch (err) {
-					response = 'response error' + err
+					response = 'response error' + err;
 				}
 				return response;
 			}
-		}
+		};
 		
-		instance = axios.create(config)
+		instance = axios.create(config);
 		
 		return instance[method](url, data, config).then(response => {
 			const { status, data } = response;
 			if (status >= 300 || status < 200) throw data;
 			return response;
-		})
+		});
 	} 
 }
 
@@ -44,8 +44,8 @@ export const setHeaders = params => {
 	headers = {
 		...headers,
 		...params
-	}
-}
+	};
+};
 
 export const getHeaders = () => headers;
 
@@ -54,16 +54,16 @@ const register = async (email, password, name) => {
 	res.user.updateProfile({
 		displayName: name
 	});
-}
+};
 
 const login = async (email, password) => {
 	const res = await firebase.auth().signInWithEmailAndPassword(email, password);
 	localStorage.setItem('gen-token', res.user.xa);
-	localStorage.setItem('gen-user-name', res.user.displayName)
-	localStorage.setItem('gen-user-email', res.user.email)
-	setHeaders({ Authorization: res.user.xa })
+	localStorage.setItem('gen-user-name', res.user.displayName);
+	localStorage.setItem('gen-user-email', res.user.email);
+	setHeaders({ Authorization: res.user.xa });
 	return res;
-}
+};
 
 const get = (url, data) => {
 	const Request = new RequestPlugin('get', url, data);
@@ -81,4 +81,4 @@ export default {
 	register,
 	get,
 	post
-} 
+}; 
