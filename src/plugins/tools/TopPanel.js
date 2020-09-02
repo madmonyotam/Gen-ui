@@ -5,7 +5,7 @@ import * as access from 'plugins/access';
 import { Tooltip, Avatar, Divider, IconButton, Typography, Paper, ClickAwayListener, MenuList, MenuItem } from '@material-ui/core';
 import LinearScaleIcon from '@material-ui/icons/LinearScale';
 
-import Popper from '@material-ui/core/Popper';
+import Popper from '@material-ui/core/Popper'; 
 
 const Panel = styled.div`
   position: absolute;
@@ -27,17 +27,23 @@ const MenuIcon = styled(IconButton)`
 `;
 
 const TopPanel = () => {
-
+  
 	const [open, setOpen] = useState(false);
 	const anchorRef = useRef(null);
     
 	const userName = localStorage.getItem('gen-user-name');
 	const email = localStorage.getItem('gen-user-email');
-	
+
+
 	const handleClose = () => {
 		setOpen(false);
 	};
   
+	const handleLogout = () => {
+		localStorage.clear(); 
+		window.location.href = '/login';
+	};
+
 	return (
 		<Panel background={ access.color('backgrounds.secondary') }>
 			<Tooltip title={access.translate('Menu')}>
@@ -48,9 +54,10 @@ const TopPanel = () => {
 					<LinearScaleIcon />
 				</MenuIcon>
 			</Tooltip>
-			<Divider orientation={'vertical'} style={{ height: '60%', margin: '0 10px' }} /> 
+			<Divider orientation={'vertical'} style={{ height: '60%', margin: '0px 15px 0 5px' }} /> 
 
 			<Avatar alt={ 'avatar-picsum' } src={ 'https://picsum.photos/200' } />
+
 			<div style={{ margin: '0 10px' }}>
 				<Typography style={{ fontSize: 15, fontWeight: 600 }}>
 					{ userName }
@@ -70,7 +77,7 @@ const TopPanel = () => {
 							<MenuItem onClick={handleClose}>{ access.translate('Open Project') }</MenuItem>
 							<MenuItem onClick={handleClose}>{ access.translate('Remove Project') }</MenuItem>
 							<Divider style={{ margin: '5px 0'}} /> 
-							<MenuItem  onClick={handleClose}>{access.translate('Logout')}</MenuItem>
+							<MenuItem onClick={ handleLogout }>{access.translate('Logout')}</MenuItem>
 						</MenuList>
 					</ClickAwayListener>
 				</Paper>
@@ -81,13 +88,11 @@ const TopPanel = () => {
 };
 
 TopPanel.propTypes = {
-	user: PropTypes.object,
-	handleRouteBack: PropTypes.func,
+	user: PropTypes.object
 };
 
 TopPanel.defaultProps = {
-	user: {},
-	handleRouteBack: () => null
+	user: {}
 };
 
 export default TopPanel;

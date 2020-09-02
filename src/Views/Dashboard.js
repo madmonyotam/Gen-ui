@@ -1,15 +1,18 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+
 import { LinearProgress, Paper, Typography } from '@material-ui/core';
 import styled from 'styled-components';
 
 import * as access from 'plugins/access';
 
-import Mask from 'plugins/tools/Mask';
-import Project from 'Views/Project';
+import Mask from 'plugins/tools/Mask'; 
 
 import Request from 'plugins/request';
 
-import { Route, Switch, useLocation, useHistory, useParams } from 'react-router-dom';
+import { Switch, useHistory } from 'react-router-dom';
+
+import Routes from 'plugins/tools/Routes';
 
 const InitMask = styled(Mask)`
     display: flex;
@@ -43,37 +46,24 @@ const ProjectPaper = styled(Paper)`
 `;
 
 function Dashboard(props) {
-	const { routes, user } = props;
-
+	const { routes, user, projectID } = props; 
 	const [loading, setLoading] = useState(true);
 	const [projects, setProjects] = useState([]);
 	//const stableDispatch = useCallback(dispatch, []);
-	let history = useHistory();
-	const location = useLocation();
-	
-	const handleLocation = (location) => {
-		const split = location.pathname.split('project/');
-		const id = split[1];
-		if (id) return id;
-		return null;
-	};
-
-	const projectID = useMemo(() => handleLocation(location), [location]);
-	
+	let history = useHistory(); 	
 
 	useEffect(() => { 
 		Request.get(`https://us-central1-mocking-gen-dev.cloudfunctions.net/projectRestAPI-projectRestAPI/project/users/${user.email}`)
-			.then(({ data }) => { 
+			.then(({ data }) => {
 				if (data.status.toLowerCase() === 'success') {
 					setProjects(data.projects);
 				}
 			});
-	}, []); 
 
-	useEffect(() => {
 		const t = setTimeout(() => {
 			setLoading(false);
 		}, 1500);
+
 		return () => {
 			clearTimeout(t);
 		};
@@ -93,8 +83,8 @@ function Dashboard(props) {
 
 	if (loading) {
 		return (
-			<InitMask opacity={1} mask={access.color('backgrounds.secondary')}>
-				<img alt="logo" src={process.env.PUBLIC_URL + '/gen_logo.png'} />
+			<InitMask opacity={1} mask={ access.color('backgrounds.secondary') }>
+				<img alt="logo" src={ process.env.PUBLIC_URL + '/gen_logo.png' } />
 				<div style={{ width: 400 }}>
 					<LinearProgress value={50} color={'primary'} />
 				</div>
@@ -102,22 +92,31 @@ function Dashboard(props) {
 		);
 	} 
 	else if (projectID) {
-		return <Switch>
-			{
-				routes.map((route, i) => <Route
-					key={i}
-					path={route.path}
-					render={ props => <route.component {...props} routes={route.routes} /> }
-				/>
-				)
-			}
-		</Switch>;
+		return (
+			<Switch>
+				<Routes routes={ routes }/>
+			</Switch>
+		);
 	}
 	return (
 		<Projects>
+			Dashboard
 			{ projects && projects.map(renderProjects) }
 		</Projects>
 	);
 }
+
+
+Dashboard.propTypes = {
+	user: PropTypes.object,
+	routes: PropTypes.array,
+	projectID: PropTypes.string,
+};
+
+Dashboard.defaultProps = {
+	user: {},
+	routes: [],
+	projectID: null
+};
 
 export default Dashboard;

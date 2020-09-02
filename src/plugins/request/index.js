@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+// eslint-disable-next-line no-undef
 const axios = require('axios');
 
 let headers = {

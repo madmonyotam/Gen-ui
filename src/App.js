@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
-import { BrowserRouter as Router, Route, Redirect, Switch, useParams } from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Switch } from 'react-router-dom';
 
 import {useRoot} from 'baobab-react/hooks';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -9,7 +9,9 @@ import { setHeaders } from 'plugins/request';
 import * as access from 'plugins/access';
 import TopPanel from 'plugins/tools/TopPanel';
 
-import routes from 'routes';
+import Routes from 'plugins/tools/Routes';
+
+import routesConfig from 'routes-config';
 
 const primary = access.color('materialUI.primary');
 const secondary = access.color('materialUI.secondary');
@@ -25,6 +27,7 @@ const theme = createMuiTheme({
 	}
 });
 
+const location = window.location;
 
 function App({tree}) {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -46,32 +49,28 @@ function App({tree}) {
 		setIsLoggedIn(true);
 	};
         
-	const loggedIn = (token || isLoggedIn);
+	const loggedIn = (token || isLoggedIn); 
 
-	const renderRoutes = (route, key) => (
-		<Route
-			key={ key }
-			path={ route.path }
-			render={ 
-				props => {
-					return (
-						<route.component { ...props } 
-							user={{ email: localStorage.getItem('gen-user-email') }} 
-							routes={ route.routes } 
-							onLoggedIn={ handleLoggedIn } /> 
-					); 
-				}
-			}
-		/>
-	);
-    
-	const RedirectHandler = ({ location }) => {
+	const handleLocation = (location) => {
+		const split = location.pathname.split('project/');
+		const id = split[1];
+		if (id) return id;
+		return null;
+	};
+	
+	const projectID = useMemo(() => handleLocation(location), []); 
+
+	const RedirectHandler = (routeProps) => {
+		
+		const { location } = routeProps;
+		
+		let isProject = false;
+
+		if (location.pathname.includes('/project')) isProject = true;
+
 		if (loggedIn) {
-			if (location.pathname.includes('/project/')) {
-				return <Redirect to={ location.pathname }/>;
-			} else {
-				return <Redirect exact from={ '/' } to={ '/dashboard' } />; 
-			}
+			if (isProject && projectID) return <Redirect to={ location.pathname } />;
+			else return <Redirect exact to={ '/dashboard' } />; 
 		}
 
 		return <Redirect from={ '/' } to={ '/login' } />;
@@ -80,15 +79,25 @@ function App({tree}) {
 
 	return (
 		<Root>
-			<ThemeProvider theme={theme}>
-
-				{ loggedIn && <TopPanel /> }
+			<ThemeProvider theme={ theme }>
 
 				<Router>
+
+					{ loggedIn && <TopPanel projectID={ projectID } /> }
+
 					<Switch>
 						<RedirectHandler />  
 					</Switch>
-					{ routes.map(renderRoutes) }
+
+					<Routes 
+						routes={ routesConfig } 
+						childDependencies={{ 
+							onLoggedIn: handleLoggedIn, 
+							projectID: projectID,
+							user: { email: localStorage.getItem('gen-user-email') } 
+						}}
+					/>
+
 				</Router>
 			</ThemeProvider>
 		</Root>
