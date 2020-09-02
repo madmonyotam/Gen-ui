@@ -17,7 +17,7 @@ import DragMask from 'plugins/schemaPanel/DragMask';
 import OpenPanelCanvas from 'plugins/canvases/OpenPanelCanvas';
 
 const Placeholder = styled('div')`
-  flex:1
+  flex:1;
 `;
 
 const Srow = styled(Row)`
@@ -27,7 +27,7 @@ const Srow = styled(Row)`
 
 const TopBar = styled(Row)`
   justify-content: space-between;
-  border-right: 1px solid ${access.color('schemaPanel.border')}
+  border-right: 1px solid ${access.color('schemaPanel.border')};
 `;
 
 const InnerColumn = styled(Column)`
