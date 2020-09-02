@@ -58,7 +58,7 @@ function Project() {
 	return (
 		<Mask
 			opacity={1}
-			top={'60px'}
+			top={`${access.dim('topBar.height')}px`}
 			mask={access.color('backgrounds.secondary')}
 			style={{ display: 'flex' }}
 		>

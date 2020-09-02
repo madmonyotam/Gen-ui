@@ -1,5 +1,5 @@
-let libraryPack;
-let typesPack;
+let libraryPack = {};
+let typesPack = {};
 
 export const setLibraryPack = (pack) => {
 	libraryPack = pack;

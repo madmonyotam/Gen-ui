@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import Firebase from 'plugins/request';
 
 import styled from 'styled-components';
@@ -7,9 +8,6 @@ import { Button, Divider, LinearProgress } from '@material-ui/core';
 import * as access from 'plugins/access';
 
 import CustomInput from 'plugins/inputs/CustomInput';
-import Start from 'plugins/tools/Start';
-import { move } from 'plugins/canvases/utils/canvasActions';
-import { paintFrame } from 'plugins/canvases/paint/Frames';
 
 import { updateSchemasOnEngine } from 'tree/actions/engine';
 import { Column, Absolute } from 'plugins/Layouts';
@@ -90,172 +88,158 @@ const InsideWrapper = styled.div`
   display: flex;
   flex-direction: row;
   padding-top: 30%;
-`
+`;
 
 const Login = ({ onLoggedIn }) => {
-  const [rotate, setRotate] = useState(0);
-  const [register, setRegister] = useState(false);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+	const [rotate, setRotate] = useState(0);
+	const [register, setRegister] = useState(false);
+	const [name, setName] = useState('');
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [loading, setLoading] = useState(false);
 
-  const onCanvasReady = (canvas, width, height) => {
-    const frame = paintFrame(canvas, width, height);
-    move(canvas, frame, access.color('canvases.fg'));
-  };
-
-  const handleLogin = () => {
-    setLoading(true)
-    Firebase.login(email, password)
-      .then( (res) => {
+	const handleLogin = () => {
+		setLoading(true);
+		Firebase.login(email, password)
+			.then( (res) => {
         
-        setLoading(false)
-        updateSchemasOnEngine(onLoggedIn)
-      })
-      .catch( error => {
-        // const errorCode = error.code;
-        // const errorMessage = error.message;
+				setLoading(false);
+				updateSchemasOnEngine(onLoggedIn);
+			})
+			.catch( error => {
+				// const errorCode = error.code;
+				// const errorMessage = error.message;
         
-        setPassword('');
-        setLoading(false)
-        // console.log({errorCode, errorMessage});
-      });
-  };
+				setPassword('');
+				setLoading(false);
+				// console.log({errorCode, errorMessage});
+			});
+	};
 
-  const handleRegister = () => {
-    setLoading(true)
-    Firebase.register(email, password, name)
-      .then( res => {
-        setName('');
-        setPassword('');
-        setRegister(false);
-        setLoading(false)
-        // console.log(res)
-      })
-      .catch( error => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log({errorCode, errorMessage});
-        setLoading(false)
-        // TODO: handle error
-      });
-  };
+	const handleRegister = () => {
+		setLoading(true);
+		Firebase.register(email, password, name)
+			.then( res => {
+				setName('');
+				setPassword('');
+				setRegister(false);
+				setLoading(false);
+				// console.log(res)
+			})
+			.catch( error => {
+				const errorCode = error.code;
+				const errorMessage = error.message;
+				console.log({errorCode, errorMessage});
+				setLoading(false);
+				// TODO: handle error
+			});
+	};
 
-  const renderCanvas = () => {
-    const margin = {
-      top: 0,
-      bottom: 0,
-      left: 0,
-      right: 0,
-    };
-
-    return <Start canvasReady={onCanvasReady} margin={margin} />;
-  }; 
-
-  const renderLoginButtons = () => {
+	const renderLoginButtons = () => {
     
-    const logVariant = !register ? 'contained' : 'text';
-    const regVariant = register ? 'contained' : 'text';
+		const logVariant = !register ? 'contained' : 'text';
+		const regVariant = register ? 'contained' : 'text';
 
-    const onClick = e => setRegister(!register)
+		const onClick = () => setRegister(!register);
 
-    return (
-      <ButtonsCont>
-        <Button variant={ logVariant } 
-                color='secondary' 
-                disableElevation={ true }
-                style={{ minHeight: 40,color: '#ededed', minWidth: 100, marginBottom: 25 }}
-                onClick={ onClick }>
-          { access.translate('Login') }
-        </Button>
-        <Button variant={ regVariant } 
-                disableElevation={ true }
-                color='secondary' 
-                style={{ minHeight: 40,color: '#ededed', minWidth: 100 }}
-                onClick={ onClick }> 
-          { access.translate('Register') }
-        </Button>
-      </ButtonsCont>
-    );
-  };
+		return (
+			<ButtonsCont>
+				<Button variant={ logVariant } 
+					color='secondary' 
+					disableElevation={ true }
+					style={{ minHeight: 40,color: '#ededed', minWidth: 100, marginBottom: 25 }}
+					onClick={ onClick }>
+					{ access.translate('Login') }
+				</Button>
+				<Button variant={ regVariant } 
+					disableElevation={ true }
+					color='secondary' 
+					style={{ minHeight: 40,color: '#ededed', minWidth: 100 }}
+					onClick={ onClick }> 
+					{ access.translate('Register') }
+				</Button>
+			</ButtonsCont>
+		);
+	};
 
 
-  const inputs = [{
-    onChange: e => { setName(e.target.value) },
-    name: 'name',
-    icon: 'account_circle',
-    value: name,
-  },{
-    onChange: e => { setEmail(e.target.value) },
-    name: 'email',
-    type: 'email',
-    icon: 'email',
-    value: email
-  },{
-    onChange: e => { setPassword(e.target.value) },
-    name: 'password',
-    type: 'password',
-    icon: 'lock',
-    value: password
-  }]
+	const inputs = [{
+		onChange: e => { setName(e.target.value); },
+		name: 'name',
+		icon: 'account_circle',
+		value: name,
+	},{
+		onChange: e => { setEmail(e.target.value); },
+		name: 'email',
+		type: 'email',
+		icon: 'email',
+		value: email
+	},{
+		onChange: e => { setPassword(e.target.value); },
+		name: 'password',
+		type: 'password',
+		icon: 'lock',
+		value: password
+	}];
 
-  const render_inputs = inputs.filter( inp => register ? inp : inp.name !== 'name' )
-  const renderForm = () => {
-    return (
-        <InputsCont>
-          {
-            render_inputs.map(item => <CustomInput key={ item.name } style={{ marginBottom: 25 }} onChange={ item.onChange } item={ item }/>)
-          }
-        </InputsCont>
-    );
-  };
+	const render_inputs = inputs.filter( inp => register ? inp : inp.name !== 'name' );
+	const renderForm = () => {
+		return (
+			<InputsCont>
+				{
+					render_inputs.map(item => <CustomInput key={ item.name } style={{ marginBottom: 25 }} onChange={ item.onChange } item={ item }/>)
+				}
+			</InputsCont>
+		);
+	};
 
-  const label = register ? access.translate('Sign Up') : access.translate('Sign In'); 
-  const sign_func = register ? handleRegister : handleLogin;
+	const label = register ? access.translate('Sign Up') : access.translate('Sign In'); 
+	const sign_func = register ? handleRegister : handleLogin;
   
-  return (
-    <View background={ access.color('backgrounds.secondary') }>
-      
-      { renderCanvas() }
+	return (
+		<View background={ access.color('backgrounds.secondary') }>
 
-      <LogInColumn height={'auto'} background={access.color('backgrounds.primary')} radius={'10px'}>
-        <InsideWrapper>
+			<LogInColumn height={'auto'} background={access.color('backgrounds.primary')} radius={'10px'}>
+				<InsideWrapper>
 
-          <MainLogoWrap >
-            <MainLogo alt='main-logo' src={process.env.PUBLIC_URL + '/gen_logo.png'} />
-          </MainLogoWrap>
+					<MainLogoWrap >
+						<MainLogo alt='main-logo' src={process.env.PUBLIC_URL + '/gen_logo.png'} />
+					</MainLogoWrap>
 
-          {renderLoginButtons()}
-          {renderForm()}
+					{renderLoginButtons()}
+					{renderForm()}
 
-        </InsideWrapper> 
+				</InsideWrapper> 
 
-        {
-          loading ? <div style={{ marginBottom: 15 }}><LinearProgress /></div> : <Divider style={{ marginBottom: 15 }} />
-        }
+				{
+					loading ? <div style={{ marginBottom: 15 }}><LinearProgress /></div> : <Divider style={{ marginBottom: 15 }} />
+				}
 
-        <Button 
-          variant={'contained'} 
-          color='secondary'
-          style={{ maxWidth: '100px', alignSelf: 'flex-end' }}
-          onClick={ sign_func }>
+				<Button 
+					variant={'contained'} 
+					color='secondary'
+					style={{ maxWidth: '100px', alignSelf: 'flex-end' }}
+					onClick={ sign_func }>
 
-          { label }
+					{ label }
 
-        </Button>
-      </LogInColumn> 
+				</Button>
+			</LogInColumn> 
 
-      <Absolute left={'unset'} top={'unset'}>
-        <Logo
-          alt={'logo'}
-          src={process.env.PUBLIC_URL + '/gen_icon.png'}
-          onClick={() => { setRotate(rotate + 1) }}
-          rotate={rotate}
-        />
-      </Absolute>
-    </View>
-  );
-}
+			<Absolute left={'unset'} top={'unset'}>
+				<Logo
+					alt={'logo'}
+					src={process.env.PUBLIC_URL + '/gen_icon.png'}
+					onClick={() => { setRotate(rotate + 1); }}
+					rotate={rotate}
+				/>
+			</Absolute>
+		</View>
+	);
+};
+
+Login.propTypes = {
+	onLoggedIn: PropTypes.func.isRequired
+};
 
 export default Login;

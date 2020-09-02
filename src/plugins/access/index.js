@@ -63,8 +63,7 @@ const getIcon = (path, getType = false) => {
 };
 
 const getTimeing = (path) => {
-	let timing = get('timeings',path);
-	return timing;
+	return getNested('timeings',path);
 };
 
 export const translate = (value) => {

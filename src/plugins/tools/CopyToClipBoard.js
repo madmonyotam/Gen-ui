@@ -53,7 +53,7 @@ function CopyToClipBoard({content, disabled, children, onClick, ...rest}) {
 }
 
 CopyToClipBoard.propTypes = {
-	content: PropTypes.object.isRequired,
+	content: PropTypes.any.isRequired,
 	children: PropTypes.node.isRequired,
 	disabled: PropTypes.bool,
 	onClick: PropTypes.func
