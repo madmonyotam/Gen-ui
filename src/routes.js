@@ -15,14 +15,14 @@ export default [
 	{
 		path: '/dashboard',
 		component: Dashboard,
-		//routes: [
-
-		//]
+		routes: [
+			{
+				path: '/dashboard/project/:id',
+				component: Project
+			}
+		]
 	},
-	{
-		path: '/project/:id',
-		component: Project
-	}// {
+// {
 	//     path: "/dashboard",
 	//     component: Dashboard,
 	//     routes: [

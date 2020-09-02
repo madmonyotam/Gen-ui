@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { BrowserRouter as Router, Route, Redirect, useParams } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect, Switch, useParams } from 'react-router-dom';
 
 import {useRoot} from 'baobab-react/hooks';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -8,9 +8,6 @@ import firebase from 'firebase';
 import { setHeaders } from 'plugins/request';
 import * as access from 'plugins/access';
 import TopPanel from 'plugins/tools/TopPanel';
-
-//import Dashboard from 'Views/Dashboard';
-//import Login from 'Views/Login-rev';
 
 import routes from 'routes';
 
@@ -33,10 +30,9 @@ function App({tree}) {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const Root = useRoot(tree);
 	const token = localStorage.getItem('gen-token');
+	
 	if (token) setHeaders({ Authorization: token });
-	//let history = useHistory();
-	//console.log(history);
-	//
+	
 	const firebaseConfig = {
 		apiKey: access.core('keys.apiKey'),
 		projectId: access.core('keys.projectId')
@@ -49,33 +45,49 @@ function App({tree}) {
 	const handleLoggedIn = () => {
 		setIsLoggedIn(true);
 	};
+        
+	const loggedIn = (token || isLoggedIn);
 
 	const renderRoutes = (route, key) => (
 		<Route
 			key={ key }
 			path={ route.path }
 			render={ 
-				props => ( 
-					<route.component { ...props } 
-						user={{ email: localStorage.getItem('gen-user-email') }} 
-						routes={ route.routes } 
-						onLoggedIn={ handleLoggedIn } /> 
-				) 
+				props => {
+					return (
+						<route.component { ...props } 
+							user={{ email: localStorage.getItem('gen-user-email') }} 
+							routes={ route.routes } 
+							onLoggedIn={ handleLoggedIn } /> 
+					); 
+				}
 			}
 		/>
 	);
     
-	const handleRedirect = () => (
-		(token || isLoggedIn) ? <Redirect exact from={ '/' } to={ '/dashboard' } /> : <Redirect from={ '/' } to={ '/login' } />
-	);
+	const RedirectHandler = ({ location }) => {
+		if (loggedIn) {
+			if (location.pathname.includes('/project/')) {
+				return <Redirect to={ location.pathname }/>;
+			} else {
+				return <Redirect exact from={ '/' } to={ '/dashboard' } />; 
+			}
+		}
+
+		return <Redirect from={ '/' } to={ '/login' } />;
+	};
+
 
 	return (
 		<Root>
 			<ThemeProvider theme={theme}>
 
-				{ (token || isLoggedIn) && <TopPanel /> }
+				{ loggedIn && <TopPanel /> }
+
 				<Router>
-					{ handleRedirect() }
+					<Switch>
+						<RedirectHandler />  
+					</Switch>
 					{ routes.map(renderRoutes) }
 				</Router>
 			</ThemeProvider>

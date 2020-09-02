@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { LinearProgress, Paper, Typography } from '@material-ui/core';
 import styled from 'styled-components';
 
@@ -9,7 +9,7 @@ import Project from 'Views/Project';
 
 import Request from 'plugins/request';
 
-import { useHistory } from 'react-router-dom';
+import { Route, Switch, useLocation, useHistory, useParams } from 'react-router-dom';
 
 const InitMask = styled(Mask)`
     display: flex;
@@ -42,12 +42,25 @@ const ProjectPaper = styled(Paper)`
     }
 `;
 
-function Dashboard({ user }) {
+function Dashboard(props) {
+	const { routes, user } = props;
+
 	const [loading, setLoading] = useState(true);
 	const [projects, setProjects] = useState([]);
 	//const stableDispatch = useCallback(dispatch, []);
 	let history = useHistory();
+	const location = useLocation();
 	
+	const handleLocation = (location) => {
+		const split = location.pathname.split('project/');
+		const id = split[1];
+		if (id) return id;
+		return null;
+	};
+
+	const projectID = useMemo(() => handleLocation(location), [location]);
+	
+
 	useEffect(() => { 
 		Request.get(`https://us-central1-mocking-gen-dev.cloudfunctions.net/projectRestAPI-projectRestAPI/project/users/${user.email}`)
 			.then(({ data }) => { 
@@ -69,7 +82,7 @@ function Dashboard({ user }) {
 	const renderProjects = (project) => (
 		<ProjectPaper
 			key={project.id} 
-			onClick={ () => history.push(`project/${ project.id }`) }
+			onClick={ () => history.push(`dashboard/project/${ project.id }`) }
 			background={ access.color('backgrounds.primary') }
 			elevation={2}>
 			<Typography style={{ color: '#fff' }}>
@@ -87,8 +100,19 @@ function Dashboard({ user }) {
 				</div>
 			</InitMask>
 		);
+	} 
+	else if (projectID) {
+		return <Switch>
+			{
+				routes.map((route, i) => <Route
+					key={i}
+					path={route.path}
+					render={ props => <route.component {...props} routes={route.routes} /> }
+				/>
+				)
+			}
+		</Switch>;
 	}
-  
 	return (
 		<Projects>
 			{ projects && projects.map(renderProjects) }
