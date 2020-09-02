@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import * as access from 'plugins/access';
@@ -15,10 +15,16 @@ const Panel = styled.div`
   padding: 0 10px;
   display: flex;
   align-items: center;
-  // justify-content: space-between;
+  justify-content: space-between;
   background: ${ props => props.background };
   box-shadow: 0 2px 10px -5px  ${ access.color('backgrounds.primary') };
   z-index: 1;
+`;
+
+const Wrap = styled.div`
+	display: flex;
+	height: 100%;
+	align-items: center;
 `;
 
 const MenuIcon = styled(IconButton)`
@@ -26,8 +32,7 @@ const MenuIcon = styled(IconButton)`
   transition: all 0.15s ease-in-out;
 `;
 
-const TopPanel = () => {
-  
+const TopPanel = (props) => { 
 	const [open, setOpen] = useState(false);
 	const anchorRef = useRef(null);
     
@@ -46,28 +51,29 @@ const TopPanel = () => {
 
 	return (
 		<Panel background={ access.color('backgrounds.secondary') }>
-			<Tooltip title={access.translate('Menu')}>
-				<MenuIcon 
-					ref={anchorRef}
-					onClick={() => setOpen(!open)}
-					rotate={open ? '90deg' : '0deg'}>
-					<LinearScaleIcon />
-				</MenuIcon>
-			</Tooltip>
-			<Divider orientation={'vertical'} style={{ height: '60%', margin: '0px 15px 0 5px' }} /> 
+			<Wrap>
+				<Tooltip title={access.translate('Menu')}>
+					<MenuIcon 
+						ref={anchorRef}
+						onClick={() => setOpen(!open)}
+						rotate={open ? '90deg' : '0deg'}>
+						<LinearScaleIcon />
+					</MenuIcon>
+				</Tooltip>
+				<Divider orientation={'vertical'} style={{ height: '60%', margin: '0px 15px 0 5px' }} />  
+			</Wrap>
 
-			<Avatar alt={ 'avatar-picsum' } src={ 'https://picsum.photos/200' } />
-
-			<div style={{ margin: '0 10px' }}>
-				<Typography style={{ fontSize: 15, fontWeight: 600 }}>
-					{ userName }
-				</Typography>
-				<Typography style={{ fontSize: 13, marginTop: -5, color: '#555'  }}>
-					{ email }
-				</Typography>
+			<div style={{ display: 'flex', alignItems: 'center' }}>
+				<div style={{ margin: '0 10px', textAlign: 'right' }}>
+					<Typography style={{ fontSize: 15, fontWeight: 600 }}>
+						{ userName }
+					</Typography>
+					<Typography style={{ fontSize: 13, marginTop: -5, color: '#555'  }}>
+						{ email }
+					</Typography>
+				</div>
+				<Avatar alt={ 'avatar-picsum' } src={ 'https://picsum.photos/200' } />
 			</div>
-        
-
 			<Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
 				<Paper>
 					<ClickAwayListener onClickAway={handleClose}>

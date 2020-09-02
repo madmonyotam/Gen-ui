@@ -1,5 +1,5 @@
 import Dashboard from 'Views/Dashboard';
-import Login from 'Views/Login-rev';
+import Login from 'Views/Login';
 import Project from 'Views/Project'; 
 
 export default [

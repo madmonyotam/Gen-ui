@@ -2,17 +2,16 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { LinearProgress, Paper, Typography } from '@material-ui/core';
+import { Switch, useHistory } from 'react-router-dom';
+
 import styled from 'styled-components';
 
 import * as access from 'plugins/access';
-
 import Mask from 'plugins/tools/Mask'; 
-
 import Request from 'plugins/request';
-
-import { Switch, useHistory } from 'react-router-dom';
-
 import Routes from 'plugins/tools/Routes';
+
+import ProjectForm from 'plugins/forms/ProjectForm';
 
 const InitMask = styled(Mask)`
     display: flex;
@@ -36,12 +35,11 @@ const ProjectPaper = styled(Paper)`
     max-height: 90px;
     padding: 15px;
     background-color: ${ props => props.background } !important;
-    flex: 1;
+	width: calc(100% / 4);
 	cursor: pointer;
 	transition: all 0.15s ease-in-out;
     &:hover {
-		box-shadow: 0px 5px 1px -2px rgba(0,0,0,0.2),0px 6px 6px 0px rgba(0,0,0,0.14),0px 2px 6px 0px rgba(0,0,0,0.12);
-		background-color: #393c6f !important;
+		box-shadow: 0px 5px 1px -2px rgba(0,0,0,0.2),0px 6px 6px 4px rgba(0,0,0,0.14),0px 8px 6px 0px rgba(0,0,0,0.12); 
     }
 `;
 
@@ -100,8 +98,11 @@ function Dashboard(props) {
 	}
 	return (
 		<Projects>
-			Dashboard
-			{ projects && projects.map(renderProjects) }
+			{ 
+				(projects && projects.length) ? projects.map(renderProjects)
+					: <ProjectForm />
+			}
+			
 		</Projects>
 	);
 }
