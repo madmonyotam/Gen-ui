@@ -1,25 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { LinearProgress, Paper, Divider, Typography, Tooltip, Icon } from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
+import { Divider } from '@material-ui/core';
 
 import styled from 'styled-components';
 
-import * as access from 'plugins/access';
-import Mask from 'plugins/tools/Mask'; 
+import * as access from 'plugins/access';	
 import Request from 'plugins/request';
 import LoaderTimeout from 'plugins/tools/LoaderTimeout';
-// import Routes from 'plugins/tools/Routes';
 
-// import ProjectForm from 'plugins/forms/ProjectForm';
-
-const InitMask = styled(Mask)`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-`;
+import ProjectMiniForm from 'plugins/forms/ProjectMiniForm';
+import ProjectDetailsForm from 'plugins/forms/ProjectDetailsForm';
+import ProjectListItem from 'plugins/components/ProjectListItem';
 
 const Projects = styled.div`
     position: absolute;
@@ -31,19 +23,6 @@ const Projects = styled.div`
     padding: 15px 0 15px 15px;
 `;
 
-const ProjectPaper = styled(Paper)`
-    margin-right: 15px;
-    max-height: 90px;
-    padding: 15px;
-    background-color: ${ props => props.background } !important;
-	width: calc(100% / 4);
-	cursor: pointer;
-	transition: all 0.15s ease-in-out;
-    &:hover {
-		box-shadow: 0px 5px 1px -2px rgba(0,0,0,0.2),0px 6px 6px 4px rgba(0,0,0,0.14),0px 8px 6px 0px rgba(0,0,0,0.12); 
-    }
-`;
-
 const Details = styled.div`
 	display: flex;
 	justify-content: space-between;
@@ -53,74 +32,68 @@ const Details = styled.div`
 `;
 
 function Dashboard(props) {
-	const { routes, user, projectID } = props; 
+	const { user } = props; 
 	const [loading, setLoading] = useState(true);
 	const [projects, setProjects] = useState([]);
-	const [project, setProject] = useState(null);
-	//const stableDispatch = useCallback(dispatch, []);
+	const [selectedProject, setSelectedProject] = useState(null);
 
-	// let history = useHistory(); 	
-
-	useEffect(() => { 
+	const getProjects = () => {
 		Request.get(`https://us-central1-mocking-gen-dev.cloudfunctions.net/projectRestAPI-projectRestAPI/project/users/${user.email}`)
 			.then(({ data }) => {
 				if (data.status.toLowerCase() === 'success') {
 					setProjects(data.projects);
+					if (data.projects.length) {
+						setSelectedProject(data.projects[0]);
+					}
 					setLoading(false);
 				}
 			});
-	}, []);
+	};
 
-        
-	// const handleProject = (id) => {
-		
-	// history.push(`project/${ id }`); 
-	// };
+	useEffect(() => {
+		getProjects();
+	}, [user.email]);
 
-	// <ProjectPaper
-	// 	key={project.id} 
-	// 	onClick={ () => handleProject(project.id) }
-	// 	background={ access.color('backgrounds.primary') }
-	// 	elevation={2}>
-	{/* </ProjectPaper>        */}
-
-	const renderProjects = (project) => (
-		<Typography onClick={ () => setProject(project) } key={project.id} style={{ cursor: 'pointer', color: '#fff', padding: 10, background: access.color('backgrounds.primary') }}>
-			{ project.name }
-		</Typography>
-	); 
-
+	const handleProjectCreated = (res) => {
+		if (res.status.toLowerCase() === 'success') {
+			getProjects();
+		}
+	};
+	
+	const renderProjects = (project) => {
+		const isSelected = selectedProject && selectedProject.id == project.id;
+		return (
+			<ProjectListItem 
+				key={ project.id } 
+				selected={ isSelected } 
+				project={ project } 
+				onEnterProject={ () => console.log(project) }
+				onClick={ () => setSelectedProject(project) }/>
+		);
+	};
+ 
 	return (
 		<Projects>
 			<LoaderTimeout isLoading={loading} coverAll={true} pendingExtraTime={500}>
 
 				<div style={{ width: 250, display: 'flex', flexDirection: 'column' }} >
-					<Typography style={{ cursor: 'pointer', color: access.color('backgrounds.primary'), padding: '10px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-						{ access.translate('Projects') }
-						<Tooltip title={ access.translate('Add Project') }>
-							<Icon>create_new_folder</Icon>	
-						</Tooltip>
-					</Typography>
+					
+					<ProjectMiniForm onProjectCreated={ handleProjectCreated }/>
 
-					<Divider />
-					{ 
-						projects && projects.map(renderProjects)
-					}
-					{/* { 
-					(projects && projects.length) ? projects.map(renderProjects)
-					: <ProjectForm />
-				} */}
-				</div>
-				<Divider orientation={ 'vertical' } style={{ margin: '0 15px' }} />
-				<Details>
+					<Divider style={{ marginBottom: 15 }} />
 					<div>
-						<Typography>
-						Project Details
-						</Typography>
-						{
-							project && <pre>{ JSON.stringify(project, null, 4) }</pre>
+						{ 
+							projects && projects.map(renderProjects)
 						}
 					</div>
+					
+				</div>
+				<Divider orientation={ 'vertical' } style={{ margin: '0 15px' }} />
+
+				<Details>
+					
+					<ProjectDetailsForm project={ selectedProject }/>
+					
 					<div>
 						<button>{ access.translate('Enter') }</button>
 						<button>{ access.translate('Delete') }</button>
@@ -133,15 +106,11 @@ function Dashboard(props) {
 
 
 Dashboard.propTypes = {
-	user: PropTypes.object,
-	routes: PropTypes.array,
-	projectID: PropTypes.string,
+	user: PropTypes.object
 };
 
 Dashboard.defaultProps = {
-	user: {},
-	routes: [],
-	projectID: null
+	user: {}
 };
 
 export default Dashboard;

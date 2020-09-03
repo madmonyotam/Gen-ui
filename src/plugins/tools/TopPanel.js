@@ -17,7 +17,8 @@ const Panel = styled.div`
   align-items: center;
   justify-content: space-between;
   background: ${ props => props.background };
-  box-shadow: 0 2px 10px -5px  ${ access.color('backgrounds.primary') };
+  box-shadow: 0 2px 8px -4px  ${ access.color('backgrounds.primary') };
+  border-bottom: 1px solid ${ props => props.background };
   z-index: 1;
 `;
 
@@ -29,16 +30,15 @@ const Wrap = styled.div`
 
 const MenuIcon = styled(IconButton)`
   transform: rotate(${ props => props.rotate });
-  transition: all 0.15s ease-in-out;
+  transition: transform 0.15s ease-in-out;
 `;
 
-const TopPanel = (props) => { 
+const TopPanel = () => { 
 	const [open, setOpen] = useState(false);
 	const anchorRef = useRef(null);
     
 	const userName = localStorage.getItem('gen-user-name');
 	const email = localStorage.getItem('gen-user-email');
-
 
 	const handleClose = () => {
 		setOpen(false);
