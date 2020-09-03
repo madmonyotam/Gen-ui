@@ -92,7 +92,7 @@ function Dashboard(props) {
 
 	return (
 		<Projects>
-			<LoaderTimeout isLoading={loading} coverAll={true} pandingExtraTime={2000}>
+			<LoaderTimeout isLoading={loading} coverAll={true} pendingExtraTime={500}>
 
 				<div style={{ width: 250, display: 'flex', flexDirection: 'column' }} >
 					<Typography style={{ cursor: 'pointer', color: access.color('backgrounds.primary'), padding: '10px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>

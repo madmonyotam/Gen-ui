@@ -16,7 +16,6 @@ const appear = keyframes`
 
 const Wrapper = styled.div`
   position: relative;
-  height: 100%;
 `;
 
 const Loader = styled.div`
@@ -76,16 +75,14 @@ class LoaderTimeout extends Component {
 	}
   
 	renderLoader() {
-		const { isLoading, coverAll, pandingExtraTime, size } = this.props;
+		const { isLoading, coverAll, pendingExtraTime, size } = this.props;
 		const { showLoader } = this.state;
-    
-		console.log({showLoader});
 
 		if (!isLoading) {
 			if (showLoader) {
 				setTimeout(() => {
 					if (this.mounted) this.setState({ showLoader: false });
-				}, pandingExtraTime);
+				}, pendingExtraTime);
 			}
 		} 
     
@@ -106,23 +103,24 @@ class LoaderTimeout extends Component {
 		const { children } = this.props;
 
 		return (
-			<Wrapper>
+			<>
 				{ this.renderLoader() }
 				{ children }
-			</Wrapper>);
+			</>
+		);
 	}
 }
 
 LoaderTimeout.defaultProps = {
 	coverAll: false,
-	pandingExtraTime: 0,
+	pendingExtraTime: 0,
 	size: 50
 };
 
 LoaderTimeout.propTypes = {
 	isLoading: PropTypes.bool.isRequired,
 	children: PropTypes.node.isRequired,
-	pandingExtraTime: PropTypes.number,
+	pendingExtraTime: PropTypes.number,
 	coverAll: PropTypes.bool,
 	size: PropTypes.number,
 };
