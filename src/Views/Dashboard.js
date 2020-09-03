@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import * as access from 'plugins/access';
 import Mask from 'plugins/tools/Mask'; 
 import Request from 'plugins/request';
+import LoaderTimeout from 'plugins/tools/LoaderTimeout';
 // import Routes from 'plugins/tools/Routes';
 
 // import ProjectForm from 'plugins/forms/ProjectForm';
@@ -58,23 +59,16 @@ function Dashboard(props) {
 	const [project, setProject] = useState(null);
 	//const stableDispatch = useCallback(dispatch, []);
 
-	let history = useHistory(); 	
+	// let history = useHistory(); 	
 
 	useEffect(() => { 
 		Request.get(`https://us-central1-mocking-gen-dev.cloudfunctions.net/projectRestAPI-projectRestAPI/project/users/${user.email}`)
 			.then(({ data }) => {
 				if (data.status.toLowerCase() === 'success') {
 					setProjects(data.projects);
+					setLoading(false);
 				}
 			});
-
-		const t = setTimeout(() => {
-			setLoading(false);
-		}, 1500);
-
-		return () => {
-			clearTimeout(t);
-		};
 	}, []);
 
         
@@ -94,53 +88,45 @@ function Dashboard(props) {
 		<Typography onClick={ () => setProject(project) } key={project.id} style={{ cursor: 'pointer', color: '#fff', padding: 10, background: access.color('backgrounds.primary') }}>
 			{ project.name }
 		</Typography>
-	);
+	); 
 
-	if (loading) {
-		return (
-			<InitMask opacity={1} mask={ access.color('backgrounds.secondary') }>
-				<img alt="logo" src={ process.env.PUBLIC_URL + '/gen_logo.png' } />
-				<div style={{ width: 400 }}>
-					<LinearProgress value={50} color={'primary'} />
-				</div>
-			</InitMask>
-		);
-	}
-	
 	return (
 		<Projects>
-			<div style={{ width: 250, display: 'flex', flexDirection: 'column' }} >
-				<Typography style={{ cursor: 'pointer', color: access.color('backgrounds.primary'), padding: '10px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-					{ access.translate('Projects') }
-					<Tooltip title={ access.translate('Add Project') }>
-						<Icon>create_new_folder</Icon>	
-					</Tooltip>
-				</Typography>
+			<LoaderTimeout isLoading={loading} coverAll={true} pandingExtraTime={2000}>
 
-				<Divider />
-				{ 
-					projects && projects.map(renderProjects)
-				}
-				{/* { 
+				<div style={{ width: 250, display: 'flex', flexDirection: 'column' }} >
+					<Typography style={{ cursor: 'pointer', color: access.color('backgrounds.primary'), padding: '10px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+						{ access.translate('Projects') }
+						<Tooltip title={ access.translate('Add Project') }>
+							<Icon>create_new_folder</Icon>	
+						</Tooltip>
+					</Typography>
+
+					<Divider />
+					{ 
+						projects && projects.map(renderProjects)
+					}
+					{/* { 
 					(projects && projects.length) ? projects.map(renderProjects)
 					: <ProjectForm />
 				} */}
-			</div>
-			<Divider orientation={ 'vertical' } style={{ margin: '0 15px' }} />
-			<Details>
-				<div>
-					<Typography>
+				</div>
+				<Divider orientation={ 'vertical' } style={{ margin: '0 15px' }} />
+				<Details>
+					<div>
+						<Typography>
 						Project Details
-					</Typography>
-					{
-						project && <pre>{ JSON.stringify(project, null, 4) }</pre>
-					}
-				</div>
-				<div>
-					<button>{ access.translate('Enter') }</button>
-					<button>{ access.translate('Delete') }</button>
-				</div>
-			</Details>
+						</Typography>
+						{
+							project && <pre>{ JSON.stringify(project, null, 4) }</pre>
+						}
+					</div>
+					<div>
+						<button>{ access.translate('Enter') }</button>
+						<button>{ access.translate('Delete') }</button>
+					</div>
+				</Details>
+			</LoaderTimeout>
 		</Projects>
 	);
 }
