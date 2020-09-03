@@ -14,6 +14,7 @@ import Wrapper from 'plugins/tools/Wrapper';
 //import Menu from 'plugins/menuModal/Menu';
 import Project from 'Views/Project';
 import TopPanel from 'plugins/tools/TopPanel';
+import LoaderTimeout from 'plugins/tools/LoaderTimeout';
 
 import Request from 'plugins/request';
 
@@ -70,7 +71,7 @@ function Dashboard() {
 	useEffect(() => {
 		const t = setTimeout(() => {
 			setLoading(false);
-		}, 1500);
+		});
 		return () => {
 			clearTimeout(t);
 		};
@@ -100,22 +101,13 @@ function Dashboard() {
 			</Projects>
 		);
 	};
-
-	if (loading) {
-		return (
-			<InitMask opacity={1} mask={access.color('backgrounds.secondary')}>
-				<img alt="logo" src={process.env.PUBLIC_URL + '/gen_logo.png'} />
-				<div style={{ width: 400 }}>
-					<LinearProgress value={50} color={'primary'} />
-				</div>
-			</InitMask>
-		);
-	}
   
 	return (
 		<Wrapper>
-			<TopPanel user={{ userName, email }} handleRouteBack={ () => setProject(false) } />
-			{ renderContent() }
+			<LoaderTimeout isLoading={loading} coverAll={true} pandingExtraTime={2000}>
+				<TopPanel user={{ userName, email }} handleRouteBack={ () => setProject(false) } />
+				{ renderContent() }
+			</LoaderTimeout>
 		</Wrapper>
 	);
 }
