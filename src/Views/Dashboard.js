@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { LinearProgress, Paper, Typography } from '@material-ui/core';
-import { Switch, useHistory } from 'react-router-dom';
+import { LinearProgress, Paper, Divider, Typography, Tooltip, Icon } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 
 import styled from 'styled-components';
 
 import * as access from 'plugins/access';
 import Mask from 'plugins/tools/Mask'; 
 import Request from 'plugins/request';
-import Routes from 'plugins/tools/Routes';
+// import Routes from 'plugins/tools/Routes';
 
-import ProjectForm from 'plugins/forms/ProjectForm';
+// import ProjectForm from 'plugins/forms/ProjectForm';
 
 const InitMask = styled(Mask)`
     display: flex;
@@ -43,11 +43,19 @@ const ProjectPaper = styled(Paper)`
     }
 `;
 
+const Details = styled.div`
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	flex: 1;
+	flex-direction: column;
+`;
+
 function Dashboard(props) {
 	const { routes, user, projectID } = props; 
 	const [loading, setLoading] = useState(true);
 	const [projects, setProjects] = useState([]);
-
+	const [project, setProject] = useState(null);
 	//const stableDispatch = useCallback(dispatch, []);
 
 	let history = useHistory(); 	
@@ -70,20 +78,22 @@ function Dashboard(props) {
 	}, []);
 
         
-	const handleProject = (id) => {
-		history.push(`project/${ id }`); 
-	};
+	// const handleProject = (id) => {
+		
+	// history.push(`project/${ id }`); 
+	// };
+
+	// <ProjectPaper
+	// 	key={project.id} 
+	// 	onClick={ () => handleProject(project.id) }
+	// 	background={ access.color('backgrounds.primary') }
+	// 	elevation={2}>
+	{/* </ProjectPaper>        */}
 
 	const renderProjects = (project) => (
-		<ProjectPaper
-			key={project.id} 
-			onClick={ () => handleProject(project.id) }
-			background={ access.color('backgrounds.primary') }
-			elevation={2}>
-			<Typography style={{ color: '#fff' }}>
-				{ project.name }
-			</Typography>
-		</ProjectPaper>       
+		<Typography onClick={ () => setProject(project) } key={project.id} style={{ cursor: 'pointer', color: '#fff', padding: 10, background: access.color('backgrounds.primary') }}>
+			{ project.name }
+		</Typography>
 	);
 
 	if (loading) {
@@ -99,10 +109,38 @@ function Dashboard(props) {
 	
 	return (
 		<Projects>
-			{ 
-				(projects && projects.length) ? projects.map(renderProjects)
+			<div style={{ width: 250, display: 'flex', flexDirection: 'column' }} >
+				<Typography style={{ cursor: 'pointer', color: access.color('backgrounds.primary'), padding: '10px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+					{ access.translate('Projects') }
+					<Tooltip title={ access.translate('Add Project') }>
+						<Icon>create_new_folder</Icon>	
+					</Tooltip>
+				</Typography>
+
+				<Divider />
+				{ 
+					projects && projects.map(renderProjects)
+				}
+				{/* { 
+					(projects && projects.length) ? projects.map(renderProjects)
 					: <ProjectForm />
-			}
+				} */}
+			</div>
+			<Divider orientation={ 'vertical' } style={{ margin: '0 15px' }} />
+			<Details>
+				<div>
+					<Typography>
+						Project Details
+					</Typography>
+					{
+						project && <pre>{ JSON.stringify(project, null, 4) }</pre>
+					}
+				</div>
+				<div>
+					<button>{ access.translate('Enter') }</button>
+					<button>{ access.translate('Delete') }</button>
+				</div>
+			</Details>
 		</Projects>
 	);
 }
