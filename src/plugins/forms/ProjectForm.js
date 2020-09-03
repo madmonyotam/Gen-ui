@@ -1,5 +1,5 @@
 import React, { useState } from 'react'; 
-
+import PropTypes from 'prop-types';
 import { Icon, Typography, Paper, Divider } from '@material-ui/core';
 import styled from 'styled-components';
 import * as access from 'plugins/access'; 
@@ -28,7 +28,7 @@ const Header = styled.div`
 	color: ${ props => props.color };
 `; 
 
-const ProjectForm = () => {
+const ProjectForm = ({ onProjectCreated }) => {
 
 	const [projectName, setProjectName] = useState('');
 	const [showOk, setShowOk] = useState(false);
@@ -47,6 +47,7 @@ const ProjectForm = () => {
 			projectJson: {}
 		}).then((res) => {
 			console.log('res', res);
+			onProjectCreated();
 		});
 	};
 
@@ -78,5 +79,13 @@ const ProjectForm = () => {
 		</Wrapper>
 	);
 }; 
+
+ProjectForm.propTypes = {
+	onProjectCreated: PropTypes.func
+};
+
+ProjectForm.defaultProps = {
+	onProjectCreated: () => null
+};
 
 export default ProjectForm;

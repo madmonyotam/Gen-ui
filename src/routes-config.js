@@ -10,11 +10,9 @@ export default [
 	{
 		path: '/dashboard',
 		component: Dashboard,
-		routes: [
-			{
-				path: '/dashboard/project/:id',
-				component: Project
-			}
-		]
 	}, 
+	{
+		path: '/project/:id',
+		component: Project
+	}
 ];

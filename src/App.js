@@ -29,10 +29,20 @@ const theme = createMuiTheme({
 
 const location = window.location;
 
+
+const handleLocation = (location) => {
+	const split = location.pathname.split('project/');
+	const id = split[1];
+	if (id) return id;
+	return null;
+};
+
 function App({tree}) {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const Root = useRoot(tree);
+
 	const token = localStorage.getItem('gen-token');
+
 	
 	if (token) setHeaders({ Authorization: token });
 	
@@ -51,49 +61,23 @@ function App({tree}) {
         
 	const loggedIn = (token || isLoggedIn); 
 
-	const handleLocation = (location) => {
-		const split = location.pathname.split('project/');
-		const id = split[1];
-		if (id) return id;
-		return null;
-	};
-	
-	const projectID = useMemo(() => handleLocation(location), []); 
-
-	const RedirectHandler = (routeProps) => {
-		
-		const { location } = routeProps;
-		
-		let isProject = false;
-
-		if (location.pathname.includes('/project')) isProject = true;
-
-		if (loggedIn) {
-			if (isProject && projectID) return <Redirect to={ location.pathname } />;
-			else return <Redirect exact to={ '/dashboard' } />; 
-		}
-
-		return <Redirect from={ '/' } to={ '/login' } />;
-	};
-
-
 	return (
 		<Root>
 			<ThemeProvider theme={ theme }>
 
 				<Router>
 
-					{ loggedIn && <TopPanel projectID={ projectID } /> }
+					{ loggedIn && <TopPanel /> }
 
 					<Switch>
-						<RedirectHandler />  
+						<RedirectHandler loggedIn={ loggedIn } />  
 					</Switch>
 
 					<Routes 
 						routes={ routesConfig } 
 						childDependencies={{ 
 							onLoggedIn: handleLoggedIn, 
-							projectID: projectID,
+							projectID: handleLocation(location),
 							user: { email: localStorage.getItem('gen-user-email') } 
 						}}
 					/>
@@ -105,3 +89,25 @@ function App({tree}) {
 }
 
 export default App;
+
+
+function RedirectHandler(props) {
+	const { location, loggedIn } = props;
+	const projectID = handleLocation(location);
+
+	let isProject = false;
+
+	if (location.pathname.includes('/project')) isProject = true;
+
+	if (loggedIn) {
+		if (isProject && projectID) {
+			return <Redirect to={location.pathname} />;
+		}
+		else {
+			return <Redirect exact to={'/dashboard'} />;
+		}
+	}
+
+	return <Redirect from={'/'} to={'/login'} />;
+}
+

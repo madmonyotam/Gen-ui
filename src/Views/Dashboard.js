@@ -47,7 +47,9 @@ function Dashboard(props) {
 	const { routes, user, projectID } = props; 
 	const [loading, setLoading] = useState(true);
 	const [projects, setProjects] = useState([]);
+
 	//const stableDispatch = useCallback(dispatch, []);
+
 	let history = useHistory(); 	
 
 	useEffect(() => { 
@@ -67,10 +69,15 @@ function Dashboard(props) {
 		};
 	}, []);
 
+        
+	const handleProject = (id) => {
+		history.push(`project/${ id }`); 
+	};
+
 	const renderProjects = (project) => (
 		<ProjectPaper
 			key={project.id} 
-			onClick={ () => history.push(`dashboard/project/${ project.id }`) }
+			onClick={ () => handleProject(project.id) }
 			background={ access.color('backgrounds.primary') }
 			elevation={2}>
 			<Typography style={{ color: '#fff' }}>
@@ -88,21 +95,14 @@ function Dashboard(props) {
 				</div>
 			</InitMask>
 		);
-	} 
-	else if (projectID) {
-		return (
-			<Switch>
-				<Routes routes={ routes }/>
-			</Switch>
-		);
 	}
+	
 	return (
 		<Projects>
 			{ 
 				(projects && projects.length) ? projects.map(renderProjects)
 					: <ProjectForm />
 			}
-			
 		</Projects>
 	);
 }
