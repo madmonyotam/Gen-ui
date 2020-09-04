@@ -7,10 +7,28 @@ import * as access from 'plugins/access';
 import Request from 'plugins/request';
 
 
+const Wrapper = styled.div`
+	color: ${ access.color('backgrounds.primary') };
+	font-size: 15px; 
+	padding: 5px 0; 
+	display: flex; 
+	align-items: center; 
+	justify-content: space-between;
+	height: 30px;
+`;
+
+const Input = styled.input`
+	font-family: 'Roboto'; 
+	border: none; 
+	font-size: 15; 
+	outline: 0; 
+	width: 100%; 
+	height: 100%; 
+`;
+
 const ProjectsIcon = styled(Icon)`
 	cursor: pointer;
 	color: ${ props => props.color},
-	font-size: 13px; 
 `;
 
 const ProjectMiniForm = ({ onProjectCreated }) => {
@@ -44,44 +62,52 @@ const ProjectMiniForm = ({ onProjectCreated }) => {
 		});
 	};
 
+	const renderTitle = () => {
+		return (
+			<>
+				<Typography>
+					{access.translate('Projects')}
+				</Typography>
+				<Tooltip title={access.translate('Create New Project')}>
+					<ProjectsIcon fontSize={'small'} onClick={handleShowInput}>create_new_folder</ProjectsIcon>
+				</Tooltip>
+			</>
+
+		);
+	};
+
+	const renderInput = () => {
+		return (
+			<>
+				<Input
+					ref={inputRef}
+					onChange={handleNewProjectName}
+					value={projectName}
+					placeholder={'Project Name'}
+					autoFocus={true} />
+
+				<div style={{ display: 'flex' }}>
+					{
+						showConfirm &&
+						<Tooltip title={access.translate('Create')}>
+							<ProjectsIcon fontSize={ 'small' } onClick={handleCreateProject}>check</ProjectsIcon>
+						</Tooltip>
+					}
+					<Tooltip title={access.translate('Cancel')}>
+						<ProjectsIcon fontSize={ 'small' } onClick={() => setShowCreateInput(false)}>clear</ProjectsIcon>
+					</Tooltip>
+				</div>
+			</>
+		);
+	};
 	return ( 
-		<div style={{ color: access.color('backgrounds.primary'), fontSize: 15, padding: '10px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+		<Wrapper>
 
 			{
-				!showCreateInput ?
-					<>
-						<Typography>
-							{access.translate('Projects')}
-						</Typography>
-						<Tooltip title={access.translate('Create New Project')}>
-							<ProjectsIcon onClick={handleShowInput}>create_new_folder</ProjectsIcon>
-						</Tooltip>
-					</>
-					:
-					<>
-						<input
-							ref={inputRef}
-							onChange={handleNewProjectName}
-							value={projectName}
-							placeholder={'Project Name'}
-							style={{ fontFamily: 'Roboto', border: 'none', fontSize: 15, outline: 0, width: '100%', height: '100%' }}
-							autoFocus={true} />
-
-						<div style={{ display: 'flex' }}>
-							{
-								showConfirm &&
-								<Tooltip title={access.translate('Create')}>
-									<ProjectsIcon onClick={ handleCreateProject }>check</ProjectsIcon>
-								</Tooltip>
-							}
-							<Tooltip title={access.translate('Cancel')}>
-								<ProjectsIcon onClick={() => setShowCreateInput(false)}>clear</ProjectsIcon>
-							</Tooltip>
-						</div>
-					</>
+				!showCreateInput ? renderTitle() : renderInput()
 			}
 
-		</div>
+		</Wrapper>
 	);
 }; 
 

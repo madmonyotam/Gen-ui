@@ -7,7 +7,7 @@ import * as access from 'plugins/access';
 
 import moment from 'moment';
 
-const gradient = 'linear-gradient(-90deg, rgba(255,255,255,0.5) 15%, rgba(57,83,111,.75) 100%)';
+// const gradient = 'linear-gradient(-90deg, rgba(255,255,255,0.5) 15%, rgba(57,83,111,.75) 100%)';
 const boxShadow = '0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)';
 
 const ProjectCard = styled.div(props => ({
@@ -15,15 +15,14 @@ const ProjectCard = styled.div(props => ({
 	cursor: 'pointer',
 	color: `${ props.selected ? '#fefefe' : '#666'  } !important`,
 	textShadow: `${ props.selected ? '1px 1px 2px #333' : 'none' } !important`,
-	boxShadow: props.selected ? 'none' : boxShadow,
+	boxShadow: !props.selected ? 'none' : boxShadow,
 	padding: '5px 10px',
 	marginBottom: '10px',
-	borderRadius: 6,
-
+	borderRadius: 4,
 	display: 'flex',
 	flexDirection: 'column',
-	background: `${props.selected ? 'rgba(57,83,111, 1)' : 'transparent' } !important`,
-	transition: 'all 0.25s ease-in-out',
+	background: `${props.selected ? access.color('backgrounds.active') : access.color('backgrounds.code') } !important`,
+	transition: 'all 0.15s ease-in-out',
 }));
 	
 const ReturnIcon = styled.div`

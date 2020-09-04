@@ -5,7 +5,6 @@ import { Divider } from '@material-ui/core';
 
 import styled from 'styled-components';
 
-import * as access from 'plugins/access';	
 import Request from 'plugins/request';
 import LoaderTimeout from 'plugins/tools/LoaderTimeout';
 
@@ -13,22 +12,14 @@ import ProjectMiniForm from 'plugins/forms/ProjectMiniForm';
 import ProjectDetailsForm from 'plugins/forms/ProjectDetailsForm';
 import ProjectListItem from 'plugins/components/ProjectListItem';
 
-const Projects = styled.div`
+const Wrap = styled.div`
     position: absolute;
     display: flex;
     top: 60px;
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 15px 0 15px 15px;
-`;
-
-const Details = styled.div`
-	display: flex;
-	justify-content: space-between;
-	width: 100%;
-	flex: 1;
-	flex-direction: column;
+    padding: 15px;
 `;
 
 function Dashboard(props) {
@@ -59,9 +50,10 @@ function Dashboard(props) {
 			getProjects();
 		}
 	};
+
 	
 	const renderProjects = (project) => {
-		const isSelected = selectedProject && selectedProject.id == project.id;
+		const isSelected = selectedProject && selectedProject.id === project.id;
 		return (
 			<ProjectListItem 
 				key={ project.id } 
@@ -73,7 +65,7 @@ function Dashboard(props) {
 	};
  
 	return (
-		<Projects>
+		<Wrap>
 			<LoaderTimeout isLoading={loading} coverAll={true} pendingExtraTime={500}>
 
 				<div style={{ width: 250, display: 'flex', flexDirection: 'column' }} >
@@ -88,19 +80,15 @@ function Dashboard(props) {
 					</div>
 					
 				</div>
+
 				<Divider orientation={ 'vertical' } style={{ margin: '0 15px' }} />
 
-				<Details>
-					
-					<ProjectDetailsForm project={ selectedProject }/>
-					
-					<div>
-						<button>{ access.translate('Enter') }</button>
-						<button>{ access.translate('Delete') }</button>
-					</div>
-				</Details>
+				<div style={{ flex: 1}}>
+					<ProjectDetailsForm project={ selectedProject } />
+				</div>
+
 			</LoaderTimeout>
-		</Projects>
+		</Wrap>
 	);
 }
 
