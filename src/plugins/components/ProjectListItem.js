@@ -65,7 +65,7 @@ const ProjectListItem = ({ project, selected, onClick, onEnterProject }) => {
 			</div>
 			<div>
 				<InnerDetail selected={ selected } >
-					{moment(project.createdTime).format('ll | HH:MM')}
+					{moment(project.createdTime).format('ll | HH:mm')}
 				</InnerDetail>
 				<InnerDetail selected={selected} >
 					{project.createdBy}

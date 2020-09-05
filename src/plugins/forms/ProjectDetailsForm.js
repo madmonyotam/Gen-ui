@@ -17,16 +17,18 @@ const Header = styled(Typography)`
 
 
 const ProjectDetailsForm = ({ project }) => {
+
+	console.log({project});
 	
 	const setProject = project => ( !project ? [] : [
 		{
-			value: moment(project.createdTime).format('ll | HH:MM:ss'),
+			value: moment(project.createdTime).format('ll | HH:mm:ss'),
 			label: 'Created at',
 			editable: false,
 			order: 2
 		},
 		{
-			value: moment(project.updateTime).format('ll | HH:MM:ss'),
+			value: moment(project.updatedTime).format('ll | HH:mm:ss'),
 			label: 'Updated at',
 			editable: false,
 			order: 3
