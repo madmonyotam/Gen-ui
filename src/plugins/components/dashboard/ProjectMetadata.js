@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'; 
+import React, { useMemo } from 'react'; 
 import PropTypes from 'prop-types';
 import { Typography, Divider, Button, Icon } from '@material-ui/core';
 import styled from 'styled-components';
