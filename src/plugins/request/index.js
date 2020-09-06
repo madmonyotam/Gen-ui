@@ -77,9 +77,15 @@ const post = (url, data) => {
 	return Request;
 };
 
+const remove = (url, data) => {
+	const Request = new RequestPlugin('delete', url, data);
+	return Request;
+};
+
 export default {
 	login,
 	register,
 	get,
-	post
+	post,
+	remove
 }; 

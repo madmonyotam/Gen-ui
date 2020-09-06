@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import * as access from 'plugins/access';
 import { Tooltip, Avatar, Divider, IconButton, Typography, Paper, ClickAwayListener, MenuList, MenuItem } from '@material-ui/core';
 import LinearScaleIcon from '@material-ui/icons/LinearScale';
-
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Popper from '@material-ui/core/Popper'; 
 
 const Panel = styled.div`
@@ -55,12 +55,20 @@ const TopPanel = () => {
 				<Tooltip title={access.translate('Menu')}>
 					<MenuIcon 
 						ref={anchorRef}
+						size={ 'small' }
 						onClick={() => setOpen(!open)}
 						rotate={open ? '90deg' : '0deg'}>
-						<LinearScaleIcon />
+						<LinearScaleIcon fontSize={ 'small' }/>
 					</MenuIcon>
 				</Tooltip>
-				<Divider orientation={'vertical'} style={{ height: '60%', margin: '0px 15px 0 5px' }} />  
+				<Divider orientation={'vertical'} style={{ height: '60%', margin: '0px 15px' }} />  
+				<Tooltip title={access.translate('Back')}>
+					<IconButton 
+						size={'small'}
+						onClick={ () => window.history.back() }>
+						<ArrowBackIcon fontSize={ 'small' }/>
+					</IconButton>
+				</Tooltip>
 			</Wrap>
 
 			<div style={{ display: 'flex', alignItems: 'center' }}>
@@ -78,11 +86,11 @@ const TopPanel = () => {
 				<Paper>
 					<ClickAwayListener onClickAway={handleClose}>
 						<MenuList dense={ true } autoFocusItem={open} id="menu-list-grow">
-							<MenuItem onClick={handleClose}>{ access.translate('Save As') }</MenuItem>
+							{/* <MenuItem onClick={handleClose}>{ access.translate('Save As') }</MenuItem>
 							<MenuItem onClick={handleClose}>{ access.translate('New Project') }</MenuItem>
 							<MenuItem onClick={handleClose}>{ access.translate('Open Project') }</MenuItem>
 							<MenuItem onClick={handleClose}>{ access.translate('Remove Project') }</MenuItem>
-							<Divider style={{ margin: '5px 0'}} /> 
+							<Divider style={{ margin: '5px 0'}} />  */}
 							<MenuItem onClick={ handleLogout }>{access.translate('Logout')}</MenuItem>
 						</MenuList>
 					</ClickAwayListener>

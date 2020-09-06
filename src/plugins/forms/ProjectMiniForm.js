@@ -1,11 +1,12 @@
-import React, { useState, useRef } from 'react'; 
+import React, { useState, useMemo, useEffect, useRef } from 'react'; 
 import PropTypes from 'prop-types';
-import { Icon, Typography, Tooltip } from '@material-ui/core';
+import { Icon, Typography, Tooltip, ClickAwayListener } from '@material-ui/core';
 import styled from 'styled-components';
 import * as access from 'plugins/access'; 
 
 import Request from 'plugins/request';
 
+const PROJECTS_API = 'https://us-central1-mocking-gen-dev.cloudfunctions.net/projectRestAPI-projectRestAPI/project/';
 
 const Wrapper = styled.div`
 	color: ${ access.color('backgrounds.primary') };
@@ -15,6 +16,8 @@ const Wrapper = styled.div`
 	align-items: center; 
 	justify-content: space-between;
 	height: 30px;
+	min-height: 30px;
+	max-height: 30px;
 `;
 
 const Input = styled.input`
@@ -31,17 +34,37 @@ const ProjectsIcon = styled(Icon)`
 	color: ${ props => props.color},
 `;
 
-const ProjectMiniForm = ({ onProjectCreated }) => {
+const ProjectMiniForm = ({ onProjectCreated, existingProjects }) => {
 
 	const [projectName, setProjectName] = useState('');
 	const [showCreateInput, setShowCreateInput] = useState(false);
 	const [showConfirm, setShowConfirm] = useState(false);
 	const inputRef = useRef();
 
+	
+	const existingNames = useMemo(() => existingProjects, [existingProjects]);
+
+	const handleEscKey = e => {
+		if (e.keyCode === 27) handleClearForm();
+	};
+	
+	const handleEnterKey = e => {
+		if (e.keyCode == 13) handleCreateProject();
+	};
+
+	useEffect(() => {
+		document.addEventListener('keydown', handleEscKey, false);
+		return () => {
+			document.removeEventListener('keydown', handleEscKey, false);
+		};
+	}, []);
+
 	const handleNewProjectName = e => {
-		setProjectName(e.target.value);
-		if (e.target.value && e.target.value.length) {
-			setShowConfirm(true);
+		const newName = e.target.value;
+		setProjectName(newName);
+		if (newName && newName.length) {
+			if (existingNames.includes(newName)) setShowConfirm(false);
+			else setShowConfirm(true);
 		} else setShowConfirm(false);
 	};
 
@@ -49,18 +72,25 @@ const ProjectMiniForm = ({ onProjectCreated }) => {
 		setShowCreateInput(true);
 		if (showCreateInput) inputRef.current.focus();
 	};
+
+	const handleClearForm = () => {
+		setProjectName('');
+		setShowCreateInput(false);
+		setShowConfirm(false);
+	};
 	
 	const handleCreateProject = () => {
-		Request.post('https://us-central1-mocking-gen-dev.cloudfunctions.net/projectRestAPI-projectRestAPI/project/', {
+		if (!projectName || !showConfirm) return;
+
+		Request.post(PROJECTS_API, {
 			name: projectName,
 			createdBy: localStorage.getItem('gen-user-email'),
 			projectJson: {}
 		}).then(({ data }) => {
 			if (onProjectCreated) onProjectCreated(data);
-			setProjectName('');
-			setShowCreateInput(false);
+			handleClearForm();
 		});
-	};
+	}; 
 
 	const renderTitle = () => {
 		return (
@@ -78,45 +108,46 @@ const ProjectMiniForm = ({ onProjectCreated }) => {
 
 	const renderInput = () => {
 		return (
-			<>
-				<Input
-					ref={inputRef}
-					onChange={handleNewProjectName}
-					value={projectName}
-					placeholder={'Project Name'}
-					autoFocus={true} />
+			<ClickAwayListener onClickAway={ handleClearForm } >
+				<div style={{ display: 'flex', alignItems: 'center', width: '100%' }} >
+					<Input
+						ref={inputRef} 
+						onChange={handleNewProjectName}
+						onKeyUp={ handleEnterKey }
+						value={projectName}
+						placeholder={'Project Name'}
+						autoFocus={true} />
 
-				<div style={{ display: 'flex' }}>
-					{
-						showConfirm &&
-						<Tooltip title={access.translate('Create')}>
-							<ProjectsIcon fontSize={ 'small' } onClick={handleCreateProject}>check</ProjectsIcon>
-						</Tooltip>
-					}
-					<Tooltip title={access.translate('Cancel')}>
-						<ProjectsIcon fontSize={ 'small' } onClick={() => setShowCreateInput(false)}>clear</ProjectsIcon>
-					</Tooltip>
+					<div style={{ display: 'flex' }}>
+						{
+							showConfirm && (
+								<Tooltip title={access.translate('Create')}>
+									<ProjectsIcon fontSize={'small'} onClick={handleCreateProject}>check</ProjectsIcon>
+								</Tooltip>
+							)
+						
+						} 
+					</div>
 				</div>
-			</>
+
+			</ClickAwayListener>
 		);
 	};
 	return ( 
 		<Wrapper>
-
-			{
-				!showCreateInput ? renderTitle() : renderInput()
-			}
-
+			{ !showCreateInput ? renderTitle() : renderInput() }
 		</Wrapper>
 	);
 }; 
 
 ProjectMiniForm.propTypes = {
-	onProjectCreated: PropTypes.func
+	onProjectCreated: PropTypes.func,
+	existingProjects: PropTypes.array,
 };
 
 ProjectMiniForm.defaultProps = {
-	onProjectCreated: () => null
+	onProjectCreated: () => null,
+	existingProjects: []
 };
 
 export default ProjectMiniForm;

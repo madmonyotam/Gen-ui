@@ -16,27 +16,32 @@ const ProjectCard = styled.div(props => ({
 	color: `${ props.selected ? '#fefefe' : '#666'  } !important`,
 	textShadow: `${ props.selected ? '1px 1px 2px #333' : 'none' } !important`,
 	boxShadow: !props.selected ? 'none' : boxShadow,
+	border: props.selected ? '1px solid rgba(255,255,255,0)' : '1px solid rgba(57,83,111, 0.14)',
 	padding: '5px 10px',
 	marginBottom: '10px',
 	borderRadius: 4,
+	height: 65,
 	display: 'flex',
 	flexDirection: 'column',
 	background: `${props.selected ? access.color('backgrounds.active') : access.color('backgrounds.code') } !important`,
 	transition: 'all 0.15s ease-in-out',
 }));
 	
-const ReturnIcon = styled.div`
+const SideIcons = styled.div`
 	position: absolute;
-	right: 10px;
-	color: #666;
-	text-shadow: none !important;
+	right: 10px; 
 	top: 50%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	text-shadow: none !important;
 	transition: all 0.2s ease-in-out;
-	transform: translate3d(-50%, -50%, 0);
+	transform: scale(0.75) translate3d(0, -50%, 0);
 	opacity: 0;
 
 	${ ProjectCard }:hover & {
-		transform: translate3d(0, -50%, 0);
+		transform: scale(1) translate3d(0, -50%, 0);
 		opacity:1;
 	}
 `;
@@ -46,12 +51,25 @@ const InnerDetail = styled(Typography)`
 	font-size: 13px !important;
 `;
 
-const ProjectListItem = ({ project, selected, onClick, onEnterProject }) => {
-
+const ProjectListItem = props => {
+	const { 
+		project, 
+		selected, 
+		onClick, 
+		onEnterProject, 
+		onProjectDelete 
+	} = props;
+	
 	const handleEnterProject = e => {
 		e.preventDefault();
 		e.stopPropagation();
 		if (onEnterProject) onEnterProject();
+	};
+
+	const handleDeleteProject = e => {
+		e.preventDefault();
+		e.stopPropagation();
+		if (onProjectDelete) onProjectDelete(project.id);
 	};
 
 	return (
@@ -72,13 +90,18 @@ const ProjectListItem = ({ project, selected, onClick, onEnterProject }) => {
 				</InnerDetail>
 			</div>
 
-			<ReturnIcon onClick={ handleEnterProject }>
+			<SideIcons >
 				<Tooltip title={ access.translate('Enter') } >
-					<IconButton size={ 'small' }>
-						<Icon> keyboard_return </Icon>
+					<IconButton size={ 'small' } onClick={ handleEnterProject }>
+						<Icon fontSize={ 'small' } style={{ color: selected ?'#fefefe': '#666' }}> keyboard_return </Icon>
 					</IconButton>
 				</Tooltip>
-			</ReturnIcon>
+				<Tooltip title={ access.translate('Delete') } >
+					<IconButton size={'small'} onClick={ handleDeleteProject }>
+						<Icon fontSize={ 'small' } style={{ color: selected ?'#fefefe': '#666' }}> delete_outline </Icon>
+					</IconButton>
+				</Tooltip>
+			</SideIcons>
 		</ProjectCard>
 	); 
 };
@@ -88,6 +111,7 @@ ProjectListItem.propTypes = {
 	selected: PropTypes.bool,
 	onClick: PropTypes.func,
 	onEnterProject: PropTypes.func,
+	onProjectDelete: PropTypes.func,
 };
 
 ProjectListItem.defaultProps = {
@@ -95,6 +119,7 @@ ProjectListItem.defaultProps = {
 	selected: false,
 	onClick: () => null,
 	onEnterProject: () => null,
+	onProjectDelete: () => null,
 };
 
 export default ProjectListItem;

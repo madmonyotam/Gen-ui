@@ -16,9 +16,9 @@ const Header = styled(Typography)`
 `;
 
 
-const ProjectDetailsForm = ({ project }) => {
+const ProjectDetailsForm = ({ project, onProjectDelete }) => {
 
-	console.log({project});
+	// console.log({project});
 	
 	const setProject = project => ( !project ? [] : [
 		{
@@ -59,7 +59,9 @@ const ProjectDetailsForm = ({ project }) => {
 			<div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: 'calc(100% - 40px)' }}>
 				<div style={{ flex: 1 }}>
 					{
-						details && <pre>{JSON.stringify(details, null, 4)}</pre>
+						details && details.map((det, i)=>{
+							return <code key={i}> <strong><pre>{JSON.stringify(det.label, null, 4)}</pre></strong> <pre>{JSON.stringify(det.value, null, 4)}</pre></code>;
+						})
 					}
 				</div>
 				<Divider style={{ marginBottom: '15px' }} />
@@ -75,6 +77,7 @@ const ProjectDetailsForm = ({ project }) => {
 					<Button
 						variant={'contained'}
 						size={'small'}
+						onClick={ () => onProjectDelete(project.id) }
 						endIcon={<Icon fontSize={'small'}>delete_outline</Icon>} >
 						{access.translate('Delete')}
 					</Button>
@@ -93,11 +96,13 @@ const ProjectDetailsForm = ({ project }) => {
 }; 
 
 ProjectDetailsForm.propTypes = {
-	project: PropTypes.object
+	project: PropTypes.object,
+	onProjectDelete: PropTypes.func,
 };
 
 ProjectDetailsForm.defaultProps = {
-	project: {}
+	project: {},
+	onProjectDelete: () => null
 };
 
 export default ProjectDetailsForm;
