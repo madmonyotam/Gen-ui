@@ -49,7 +49,7 @@ const ProjectMiniForm = ({ onProjectCreated, existingProjects }) => {
 	};
 	
 	const handleEnterKey = e => {
-		if (e.keyCode == 13) handleCreateProject();
+		if (e.keyCode === 13) handleCreateProject();
 	};
 
 	useEffect(() => {
