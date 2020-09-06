@@ -44,51 +44,25 @@ const ProjectMetadata = ({ project, onProjectDelete }) => {
 			label: 'Owner',
 			editable: false,
 			order: 1
-		}
+		} 
 	]);
 
 	const details = useMemo(() => setProject(project), [project]);
 	
 	return ( 
-		<div style={{ height: '100%' }}>
+		<div style={{ flex: 1 }}>
 			<Header>
 				{ access.translate('Metadata') }
 				<Icon fontSize={ 'small' }>analytics</Icon>
 			</Header>
 			<Divider />
 			<div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: 'calc(100% - 40px)' }}>
-				<div style={{ flex: 1 }}>
+				<div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
 					{
 						details && details.map((det, i)=>{
-							return <code key={i}> <strong><pre>{JSON.stringify(det.label, null, 4)}</pre></strong> <pre>{JSON.stringify(det.value, null, 4)}</pre></code>;
+							return <code key={i} style={{ display: 'flex', flexDirection: 'column', order: det.order }}> <strong><pre>{JSON.stringify(det.label, null, 4)}</pre></strong> <pre>{JSON.stringify(det.value, null, 4)}</pre></code>;
 						})
 					}
-				</div>
-				<Divider style={{ marginBottom: '15px' }} />
-				<div style={{ height: 35, display: 'flex', alignItems: 'center' }}>
-					<Button
-						variant={'contained'}
-						color={'primary'}
-						size={'small'}
-						style={{ marginRight: 15 }}
-						endIcon={<Icon fontSize={'small'}>keyboard_return</Icon>} >
-						{access.translate('Enter')}
-					</Button>
-					<Button
-						variant={'contained'}
-						size={'small'}
-						onClick={ () => onProjectDelete(project.id) }
-						endIcon={<Icon fontSize={'small'}>delete_outline</Icon>} >
-						{access.translate('Delete')}
-					</Button>
-					<Button
-						variant={'contained'}
-						size={'small'}
-						style={{ position: 'absolute', right: 15, bottom: 15 }}
-						color={'secondary'}
-						endIcon={<Icon fontSize={'small'}>save</Icon>} >
-						{access.translate('save')}
-					</Button>
 				</div>
 			</div>
 		</div>

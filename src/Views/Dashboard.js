@@ -12,6 +12,7 @@ import LoaderTimeout from 'plugins/tools/LoaderTimeout';
 import ProjectCreateInput from 'plugins/components/dashboard/ProjectCreateInput';
 import ProjectMetadata from 'plugins/components/dashboard/ProjectMetadata';
 import ProjectListItem from 'plugins/components/dashboard/ProjectListItem';
+import ProjectsActionButtons from 'plugins/components/dashboard/ProjectsActionButtons';
 
 const Wrap = styled.div`
     position: absolute;
@@ -30,6 +31,17 @@ const ProjectsWrapper = styled.div`
     overflow: auto;
 	width: 100%;
 `;
+
+const ProjectsCard = styled(Card)`
+	${ props => props.style || `
+		
+		width: 235px; 
+		margin: 0 15px 0 0; 
+		padding: 0 15px 10px 15px; 
+		display: flex; 
+		flex-direction: column;
+`
+}`;
 
 const EmptyForm = styled.div`
 	flex: 1;
@@ -123,8 +135,7 @@ function Dashboard(props) {
 		const existingProjects = getExistingProjectNames(data);
 		return (
 			<div style={{ display: 'flex', flex: 1, padding: 15 }}>
-				<Card style={{ width: 235, marginRight: 15,  padding: '0 15px 10px 15px', display: 'flex', flexDirection: 'column' }} >
-
+				<ProjectsCard>
 					<ProjectCreateInput
 						onProjectCreated={ handleProjectCreated }
 						existingProjects={ existingProjects } />
@@ -135,12 +146,23 @@ function Dashboard(props) {
 						{ data.map(renderProjects) }
 					</ProjectsWrapper>
 
-				</Card>
+				</ProjectsCard>
 
-				{/* <Divider orientation={'vertical'} style={{ margin: '0px 15px 0 5px' }} /> */}
-
-				<div style={{ flex: 1 }}>
-					<ProjectMetadata project={selectedProject} onProjectDelete={handleRemoveProject} />
+				<div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flex: 1 }}>
+					<div style={{ height: '100%', paddingBottom: 15,  display: 'flex', flexDirection: 'row' }}>
+						<div style={{ height: '100%', flex: .75, marginRight: '15px' }}>
+							<ProjectMetadata project={selectedProject} />
+						</div>
+						<div style={{ display: 'flex', flexDirection: 'column', flex: 1.25 }}>
+							<ProjectsCard style={{ width: 'auto', margin: 0, padding: '0 15px', flex: 1 }}>
+								<ProjectMetadata project={selectedProject} />
+							</ProjectsCard>
+							<ProjectsCard style={{ width: 'auto', margin: '15px 0 0 0', padding: '0 15px', flex: 1 }}>
+								<ProjectMetadata project={selectedProject} />
+							</ProjectsCard>
+						</div>
+					</div>
+					<ProjectsActionButtons project={selectedProject} onProjectDelete={handleRemoveProject}  />
 				</div>
 			</div>
 		);
