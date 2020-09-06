@@ -16,7 +16,7 @@ const Header = styled(Typography)`
 `;
 
 
-const ProjectDetailsForm = ({ project, onProjectDelete }) => {
+const ProjectMetadata = ({ project, onProjectDelete }) => {
 
 	// console.log({project});
 	
@@ -95,14 +95,14 @@ const ProjectDetailsForm = ({ project, onProjectDelete }) => {
 	);
 }; 
 
-ProjectDetailsForm.propTypes = {
+ProjectMetadata.propTypes = {
 	project: PropTypes.object,
 	onProjectDelete: PropTypes.func,
 };
 
-ProjectDetailsForm.defaultProps = {
+ProjectMetadata.defaultProps = {
 	project: {},
 	onProjectDelete: () => null
 };
 
-export default ProjectDetailsForm;
+export default ProjectMetadata;

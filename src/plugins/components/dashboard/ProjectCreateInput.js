@@ -25,6 +25,7 @@ const Input = styled.input`
 	border: none; 
 	font-size: 15; 
 	outline: 0; 
+	background: transparent;
 	width: 100%; 
 	height: 100%; 
 `;
@@ -34,7 +35,30 @@ const ProjectsIcon = styled(Icon)`
 	color: ${ props => props.color},
 `;
 
-const ProjectMiniForm = ({ onProjectCreated, existingProjects }) => {
+const Badge = styled.span`
+    height: 20px;
+    display: flex;
+    padding: 0 6px;
+    z-index: 1;
+    position: absolute;
+    flex-wrap: wrap;
+    font-size: 0.75rem;
+    min-width: 20px;
+    box-sizing: border-box;
+    align-items: center;
+    font-family: 'Roboto';
+    font-weight: 500;
+    line-height: 1;
+    align-content: center;
+    border-radius: 10px;
+    flex-direction: row;
+	justify-content: center;
+	right: -30px;
+	background: ${ access.color('backgrounds.hover') };
+	color: ${ access.color('colors.white') };
+`;
+
+const ProjectCreateInput = ({ useInput, onProjectCreated, existingProjects }) => {
 
 	const [projectName, setProjectName] = useState('');
 	const [showCreateInput, setShowCreateInput] = useState(false);
@@ -52,6 +76,10 @@ const ProjectMiniForm = ({ onProjectCreated, existingProjects }) => {
 		if (e.keyCode === 13) handleCreateProject();
 	};
 
+	useEffect(() => {
+		if (useInput) setShowCreateInput(true);
+	}, [useInput]);
+	
 	useEffect(() => {
 		document.addEventListener('keydown', handleEscKey, false);
 		return () => {
@@ -74,6 +102,7 @@ const ProjectMiniForm = ({ onProjectCreated, existingProjects }) => {
 	};
 
 	const handleClearForm = () => {
+		if (useInput) return;
 		setProjectName('');
 		setShowCreateInput(false);
 		setShowConfirm(false);
@@ -81,9 +110,10 @@ const ProjectMiniForm = ({ onProjectCreated, existingProjects }) => {
 	
 	const handleCreateProject = () => {
 		if (!projectName || !showConfirm) return;
-
+		const valid = projectName;
+		setProjectName('Creating...');	
 		Request.post(PROJECTS_API, {
-			name: projectName,
+			name: valid,
 			createdBy: localStorage.getItem('gen-user-email'),
 			projectJson: {}
 		}).then(({ data }) => {
@@ -95,8 +125,9 @@ const ProjectMiniForm = ({ onProjectCreated, existingProjects }) => {
 	const renderTitle = () => {
 		return (
 			<>
-				<Typography>
+				<Typography style={{ display: 'flex', alignItems: 'center' , position: 'relative' }}>
 					{access.translate('Projects')}
+					<Badge>{ existingNames.length }</Badge>
 				</Typography>
 				<Tooltip title={access.translate('Create New Project')}>
 					<ProjectsIcon fontSize={'small'} onClick={handleShowInput}>create_new_folder</ProjectsIcon>
@@ -140,14 +171,16 @@ const ProjectMiniForm = ({ onProjectCreated, existingProjects }) => {
 	);
 }; 
 
-ProjectMiniForm.propTypes = {
+ProjectCreateInput.propTypes = {
 	onProjectCreated: PropTypes.func,
 	existingProjects: PropTypes.array,
+	useInput: PropTypes.bool,
 };
 
-ProjectMiniForm.defaultProps = {
+ProjectCreateInput.defaultProps = {
 	onProjectCreated: () => null,
-	existingProjects: []
+	existingProjects: [],
+	useInput: false
 };
 
-export default ProjectMiniForm;
+export default ProjectCreateInput;

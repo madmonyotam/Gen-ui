@@ -11,6 +11,7 @@ export default {
 		blueLight01: '#bfd6ef',
 		grey01: '#808080',
 		grey02: '#e8e8e8',
+		greyLight01: '#f6f6f6'
 	},
 	materialUI: {
 		primary: 'colors.blue01',
@@ -22,6 +23,7 @@ export default {
 		active: 'colors.blue02',
 		hover: 'colors.blue03',
 		code: 'colors.grey02',
+		light: 'colors.greyLight01'
 	},
 	texts: {
 		primary: 'colors.white',
