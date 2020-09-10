@@ -1,18 +1,19 @@
-import React, { useMemo, useCallback, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 
+import { Card } from '@material-ui/core';
 import { Chart } from 'react-charts';
 
 import WidgetHeader from 'plugins/tools/WidgetHeader';
 
 const moment = extendMoment(Moment); 
+
 const GRAPH_AXES = [
 	{ primary: true, type: 'ordinal', position: 'bottom' },
 	{ type: 'linear', position: 'left', stacked: true },
 ];
-
 
 
 const ProjectGraph = (props) => {
@@ -39,25 +40,25 @@ const ProjectGraph = (props) => {
 		});
 
 		return data; 
-	}, []); 
+	}, [project.users]); 
 
 	const axes = useMemo(() => GRAPH_AXES, []);
 
 	if (!project) return null;
 
 	const onIconClick = () => {
-		if (type == 'area') setType('line');
+		if (type === 'area') setType('line');
 		else setType('area');
 	};
 
 	return (
-		<div style={{ width: '100%', height: '100%' }}>
+		<Card style={{ position: 'relative', width: 'auto', flex: 1.25, padding: '0 15px 15px' }}>
 			<WidgetHeader title={'Updated By Time'} icon={'insert_chart_outlined'} onIconClick={ onIconClick }/>
 
 			<div style={{ width: '100%', height: 'calc(100% - 45px)' }} >
 				<Chart data={ data } axes={ axes } series={{ type }} tooltip primaryCursor/>
 			</div>
-		</div>
+		</Card>
 	);
 };
 

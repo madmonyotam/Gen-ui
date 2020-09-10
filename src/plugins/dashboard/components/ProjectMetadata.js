@@ -4,7 +4,8 @@ import moment from 'moment';
 
 import WidgetHeader from 'plugins/tools/WidgetHeader'; 
 
-const ProjectMetadata = ({ project }) => {
+const ProjectMetadata = props => {
+	const { project, style } = props;
 
 	const setProject = project => ( !project ? [] : [
 		{
@@ -36,7 +37,7 @@ const ProjectMetadata = ({ project }) => {
 	const details = useMemo(() => setProject(project), [project]);
 
 	return ( 
-		<div style={{ width: '100%', height: '100%' }}>
+		<div style={{ width: '100%', height: 250, ...style }}>
 			<WidgetHeader title={ 'Metadata' } icon={ 'analytics' }/>
 			
 			<div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100% - 40px)', overflowY: 'auto' }} >

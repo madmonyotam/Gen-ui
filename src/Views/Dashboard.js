@@ -10,12 +10,12 @@ import * as access from 'plugins/access';
 import Request from 'plugins/request';
 import LoaderTimeout from 'plugins/tools/LoaderTimeout';
 
-import ProjectCreateInput from 'plugins/components/dashboard/ProjectCreateInput';
-import ProjectMetadata from 'plugins/components/dashboard/ProjectMetadata';
-import ProjectListItem from 'plugins/components/dashboard/ProjectListItem';
-import ProjectsActionButtons from 'plugins/components/dashboard/ProjectsActionButtons';
-import ProjectGraph from 'plugins/components/dashboard/ProjectGraph';
-import ProjectCanvas from 'plugins/components/dashboard/ProjectCanvas';
+import ProjectCreateInput from 'plugins/dashboard/components/ProjectCreateInput';
+import ProjectMetadata from 'plugins/dashboard/components/ProjectMetadata';
+import ProjectsPanel from 'plugins/dashboard/components/ProjectsPanel';
+import ProjectsActionButtons from 'plugins/dashboard/components/ProjectsActionButtons';
+import ProjectGraph from 'plugins/dashboard/components/ProjectGraph';
+import ProjectCanvas from 'plugins/dashboard/components/ProjectCanvas';
 
 const Wrap = styled.div`
     position: absolute;
@@ -26,22 +26,7 @@ const Wrap = styled.div`
     right: 0;
 	padding: 0;
 	background: ${ access.color('backgrounds.light') } 
-`;
-
-const ProjectsWrapper = styled.div`
-	height: 100%;
-    padding-right: 15px;
-    overflow: auto;
-	width: 100%;
-`;
-
-const ProjectsPanel = styled(Card)`
-	width: 235px; 
-	margin: 0 15px 0 0; 
-	padding: 0 15px 10px 15px; 
-	display: flex; 
-	flex-direction: column;
-}`;
+`; 
 
 const EmptyForm = styled.div`
 	flex: 1;
@@ -50,6 +35,15 @@ const EmptyForm = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+`;
+
+const Content = styled.div`
+	display: flex; 
+	flex-direction: column; 
+	justify-content: space-between; 
+	flex: 1;
+	padding: 15px 25px;
+	background: ${ access.color('backgrounds.content') };
 `;
 
 const TypeTitle = styled(Typography)`
@@ -88,6 +82,7 @@ function Dashboard(props) {
 			.then(({ data }) => {
 				if (data.status.toLowerCase() === 'success') {
 					handleDefaultSelectProject(data.projects);
+					// handleDefaultSelectProject([]);
 					setLoading(false);
 				}
 			});
@@ -114,57 +109,38 @@ function Dashboard(props) {
 			getProjects();
 		}
 	};
-	
-	const renderProjects = project => {
-		const isSelected = selectedProject && selectedProject.id === project.id;
-		return (
-			<ProjectListItem 
-				key={ project.id } 
-				selected={ isSelected } 
-				project={ project } 
-				onEnterProject={ () => console.log(project) }
-				onProjectDelete={ handleRemoveProject }
-				onClick={ () => setSelectedProject(project) }/>
-		);
-	};
-	
-	const getExistingProjectNames = projects => {
-		return projects.map(proj => proj.name);
-	};
 
 	const renderContent = data => {
-		const existingProjects = getExistingProjectNames(data);
 		return (
-			<div style={{ display: 'flex', flex: 1, padding: 15 }}>
-				<ProjectsPanel>
-					<ProjectCreateInput
-						onProjectCreated={ handleProjectCreated }
-						existingProjects={ existingProjects } />
+			<div style={{ display: 'flex', flex: 1 }}>
+				{/* 
+					TODO: 
+					Add useReducer or recoil js as state manager for projects!
+				*/}
+				
+				<ProjectsPanel 
+					projects={ data }
+					selectedProject={ selectedProject }
+					onEnterProject={  console.debug }
+					onDeleteProject={ handleRemoveProject }
+					onSelectProject={ setSelectedProject }
+					onProjectCreated={ handleProjectCreated }  />
+					
 
-					<Divider style={{ marginBottom: 15 }} />
+				<Content className={ 'dashboard-content' }>
+					<div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+						
+						<ProjectMetadata project={selectedProject} style={{ marginBottom: 15 }} />
 
-					<ProjectsWrapper>
-						{ data.map(renderProjects) }
-					</ProjectsWrapper>
+						<div style={{ display: 'flex', flexDirection: 'row', height: 'calc(100% - 250px)' }}>
+							
+							<ProjectCanvas />
 
-				</ProjectsPanel>
-
-				<div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flex: 1 }}>
-					<div style={{ height: '100%', paddingBottom: 15,  display: 'flex', flexDirection: 'row' }}>
-						<div style={{ height: '100%', flex: .75, marginRight: '15px' }}>
-							<ProjectMetadata project={selectedProject} />
-						</div>
-						<div style={{ display: 'flex', flexDirection: 'column', flex: 1.25 }}>
-							<Card style={{ width: 'auto', margin: 0, padding: '0 15px', flex: 1.25, position: 'relative' }}>
-								<ProjectCanvas viewKey={ viewKey }/>
-							</Card>
-							<Card style={{ width: 'auto', marginTop: 15, padding: '0 15px', flex: .75 }}>
-								<ProjectGraph project={{ ...selectedProject, users: ['shiran@email.com', 'ziv@email.com', 'yotam@email.com'] }} />
-							</Card>
+							<ProjectGraph project={{ ...selectedProject, users: ['shiran@email.com', 'ziv@email.com', 'yotam@email.com'] }} />
 						</div>
 					</div>
-					<ProjectsActionButtons project={selectedProject} onProjectDelete={handleRemoveProject}  />
-				</div>
+					{/* <ProjectsActionButtons project={selectedProject} onProjectDelete={handleRemoveProject}  /> */}
+				</Content>
 			</div>
 		);
 	};

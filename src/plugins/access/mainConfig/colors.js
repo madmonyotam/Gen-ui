@@ -9,6 +9,8 @@ export default {
 		blue05: '#21354a',
 		blue06: '#293d52',
 		blueLight01: '#bfd6ef',
+		blueLight02: '#e0e7ee',
+		blueLight03: '#bac4ce',
 		grey01: '#808080',
 		grey02: '#e8e8e8',
 		greyLight01: '#f6f6f6'
@@ -20,6 +22,7 @@ export default {
 	backgrounds: {
 		primary: 'colors.blue01',
 		secondary: 'colors.blueLight01',
+		content: 'colors.blueLight02',
 		active: 'colors.blue02',
 		hover: 'colors.blue03',
 		code: 'colors.grey02',

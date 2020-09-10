@@ -7,25 +7,21 @@ import * as access from 'plugins/access';
 
 import moment from 'moment';
 
-// const gradient = 'linear-gradient(-90deg, rgba(255,255,255,0.5) 15%, rgba(57,83,111,.75) 100%)';
-const boxShadow = '0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)';
-
-const ProjectCard = styled.div(props => ({
-	position: 'relative',
-	cursor: 'pointer',
-	color: `${ props.selected ? '#fefefe' : '#666'  } !important`,
-	textShadow: `${ props.selected ? '1px 1px 2px #333' : 'none' } !important`,
-	boxShadow: !props.selected ? 'none' : boxShadow,
-	border: props.selected ? '1px solid rgba(255,255,255,0)' : '1px solid rgba(57,83,111, 0.14)',
-	padding: '5px 10px',
-	marginBottom: '10px',
-	borderRadius: 4,
-	height: 65,
-	display: 'flex',
-	flexDirection: 'column',
-	background: `${props.selected ? access.color('backgrounds.active') : access.color('backgrounds.code') } !important`,
-	transition: 'all 0.15s ease-in-out',
-}));
+const ProjectCard = styled.div`
+	position: relative;
+	cursor: pointer;
+	box-shadow: ${ props => props.selected ? '0px 0px 12px -5px rgba(0, 0, 0, 0.2)' : 'none' };
+	text-shadow: ${ props => props.selected ? '-.5px -.5px 1px #fefefe' : 'none' };
+	border:  1px solid rgba(186,196,206, ${ props => props.selected ? '0.25' : '0.15' });
+	padding: 5px 10px;
+	margin-bottom: 10px;
+	border-radius: 2px;
+	height: 65px;
+	display: flex;
+	flex-direction: column;
+	background: ${ props => props.selected ? access.color('colors.blueLight03') : access.color('backgrounds.code') } ;
+	transition: all 0.15s ease-in-out;
+`;
 	
 const SideIcons = styled.div`
 	position: absolute;
@@ -37,7 +33,8 @@ const SideIcons = styled.div`
 	justify-content: space-evenly;
 	text-shadow: none !important;
 	transition: all 0.2s ease-in-out;
-	transform: scale(0.75) translate3d(0, -50%, 0);
+	transform: scale(0.95) translate3d(25%, -50%, 0);
+	transform-origin: center right;
 	opacity: 0;
 
 	${ ProjectCard }:hover & {
@@ -47,8 +44,9 @@ const SideIcons = styled.div`
 `;
 
 const InnerDetail = styled(Typography)`
-	padding-left: ${ props => props.selected ? 30 : 25 }px;
+	padding-left: 25px;
 	font-size: 13px !important;
+	color: #444;
 `;
 
 const ProjectListItem = props => {
@@ -57,27 +55,27 @@ const ProjectListItem = props => {
 		selected, 
 		onClick, 
 		onEnterProject, 
-		onProjectDelete 
+		onDeleteProject 
 	} = props;
 	
 	const handleEnterProject = e => {
 		e.preventDefault();
 		e.stopPropagation();
-		if (onEnterProject) onEnterProject();
+		if (onEnterProject) onEnterProject(project.id);
 	};
 
 	const handleDeleteProject = e => {
-		e.preventDefault();
+		// e.preventDefault();
 		e.stopPropagation();
-		if (onProjectDelete) onProjectDelete(project.id);
+		if (onDeleteProject) onDeleteProject(project.id);
 	};
 
 	return (
 		<ProjectCard onClick={ onClick } selected={ selected } >
 			
 			<div style={{ display: 'flex', alignItems: 'center' }} >
-				<Icon fontSize={ selected ? 'default' : 'small' } >{selected ? 'bubble_chart' : 'scatter_plot'}</Icon>
-				<Typography style={{ marginLeft: 5, fontSize: 15, color: selected ? '#fff':'#333' }} >
+				<Icon fontSize={ 'small' } >{ selected ? 'bubble_chart' : 'scatter_plot' }</Icon>
+				<Typography style={{ marginLeft: 5, fontSize: 15, color: '#333' }} >
 					{project.name}
 				</Typography>
 			</div>
@@ -93,12 +91,12 @@ const ProjectListItem = props => {
 			<SideIcons >
 				<Tooltip title={ access.translate('Enter') } >
 					<IconButton size={ 'small' } onClick={ handleEnterProject }>
-						<Icon fontSize={ 'small' } style={{ color: selected ?'#fefefe': '#666' }}> keyboard_return </Icon>
+						<Icon fontSize={ 'small' } style={{ color: '#333' }}> keyboard_return </Icon>
 					</IconButton>
 				</Tooltip>
 				<Tooltip title={ access.translate('Delete') } >
 					<IconButton size={'small'} onClick={ handleDeleteProject }>
-						<Icon fontSize={ 'small' } style={{ color: selected ?'#fefefe': '#666' }}> delete_outline </Icon>
+						<Icon fontSize={ 'small' } style={{ color: '#333' }}> delete_outline </Icon>
 					</IconButton>
 				</Tooltip>
 			</SideIcons>
@@ -111,7 +109,7 @@ ProjectListItem.propTypes = {
 	selected: PropTypes.bool,
 	onClick: PropTypes.func,
 	onEnterProject: PropTypes.func,
-	onProjectDelete: PropTypes.func,
+	onDeleteProject: PropTypes.func,
 };
 
 ProjectListItem.defaultProps = {
@@ -119,7 +117,7 @@ ProjectListItem.defaultProps = {
 	selected: false,
 	onClick: () => null,
 	onEnterProject: () => null,
-	onProjectDelete: () => null,
+	onDeleteProject: () => null,
 };
 
 export default ProjectListItem;
