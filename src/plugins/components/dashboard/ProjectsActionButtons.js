@@ -27,13 +27,13 @@ const ProjectsActionButtons = (props) => {
 						{access.translate('Delete')}
 					</Button>
 				</div>
-				<Button
+				{/* <Button
 					variant={'contained'}
 					size={'small'}
 					color={'secondary'}
 					endIcon={<Icon fontSize={'small'}>save</Icon>} >
 					{access.translate('save')}
-				</Button>
+				</Button> */}
 			</div>
 		</div>
 
