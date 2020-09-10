@@ -1,12 +1,12 @@
-import React, { useMemo } from 'react'; 
-import PropTypes from 'prop-types'; 
+import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 
-import WidgetHeader from 'plugins/tools/WidgetHeader'; 
+import WidgetHeader from 'plugins/tools/WidgetHeader';
 
-const ProjectMetadata = ({ project }) => {
+const ProjectGraph = ({ project }) => {
 
-	const setProject = project => ( !project ? [] : [
+	const setProject = project => (!project ? [] : [
 		{
 			value: moment(project.createdTime).format('ll | HH:mm:ss'),
 			label: 'Created at',
@@ -30,32 +30,32 @@ const ProjectMetadata = ({ project }) => {
 			label: 'Owner',
 			editable: false,
 			order: 1
-		} 
+		}
 	]);
 
-	const details = useMemo(() => setProject(project), [project]);
+	const details = useMemo(() => setProject(project), [project]); 
 
-	return ( 
+	return (
 		<div style={{ width: '100%', height: '100%' }}>
-			<WidgetHeader title={ 'Metadata' } icon={ 'analytics' }/>
-			
-			<div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100% - 40px)', overflowY: 'auto' }} >
+			<WidgetHeader title={'Updated By Time'} icon={'insert_chart_outlined'} />
+
+			<div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100% - 45px)', overflowY: 'auto' }} >
 				{
-					details && details.map((det, i)=>{
+					details && details.map((det, i) => {
 						return <code key={i} style={{ display: 'flex', flexDirection: 'column', order: det.order }}> <strong><pre>{JSON.stringify(det.label, null, 4)}</pre></strong> <pre>{JSON.stringify(det.value, null, 4)}</pre></code>;
 					})
 				}
 			</div>
 		</div>
 	);
-}; 
+};
 
-ProjectMetadata.propTypes = {
+ProjectGraph.propTypes = {
 	project: PropTypes.object
 };
 
-ProjectMetadata.defaultProps = {
+ProjectGraph.defaultProps = {
 	project: {}
 };
 
-export default ProjectMetadata;
+export default ProjectGraph;

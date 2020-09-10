@@ -1,8 +1,11 @@
-import React, { Fragment } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types'; 
+
 import { Divider, Button, Icon } from '@material-ui/core';
 import * as access from 'plugins/access'; 
 
-const ProjectsActionButtons = ({ project, onProjectDelete , style}) => {
+const ProjectsActionButtons = (props) => {
+	const { project, onProjectDelete, style } = props;
 	return (
 		<div style={{ ...style }}>
 			<Divider style={{ marginBottom: '15px' }} />
@@ -35,6 +38,17 @@ const ProjectsActionButtons = ({ project, onProjectDelete , style}) => {
 		</div>
 
 	);
+};
+ProjectsActionButtons.propTypes = {
+	project: PropTypes.object,
+	style: PropTypes.object,
+	onProjectDelete: PropTypes.func,
+};
+
+ProjectsActionButtons.defaultProps = {
+	project: {},
+	style: {},
+	onProjectDelete: () => null
 };
 
 export default ProjectsActionButtons;

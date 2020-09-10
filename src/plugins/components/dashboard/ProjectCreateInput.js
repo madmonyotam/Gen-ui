@@ -84,7 +84,8 @@ const ProjectCreateInput = ({ useInput, onProjectCreated, existingProjects }) =>
 		document.addEventListener('keydown', handleEscKey, false);
 		return () => {
 			document.removeEventListener('keydown', handleEscKey, false);
-		};
+		}; 
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const handleNewProjectName = e => {

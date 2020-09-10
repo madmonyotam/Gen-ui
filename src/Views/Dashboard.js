@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useBranch } from 'baobab-react/hooks';
 
 import { Divider, Paper, Typography, Card, Icon } from '@material-ui/core';
 
@@ -13,6 +14,8 @@ import ProjectCreateInput from 'plugins/components/dashboard/ProjectCreateInput'
 import ProjectMetadata from 'plugins/components/dashboard/ProjectMetadata';
 import ProjectListItem from 'plugins/components/dashboard/ProjectListItem';
 import ProjectsActionButtons from 'plugins/components/dashboard/ProjectsActionButtons';
+import ProjectGraph from 'plugins/components/dashboard/ProjectGraph';
+import ProjectCanvas from 'plugins/components/dashboard/ProjectCanvas';
 
 const Wrap = styled.div`
     position: absolute;
@@ -63,6 +66,7 @@ const TypeTitle = styled(Typography)`
 
 function Dashboard(props) {
 	const { user } = props; 
+	const { viewKey } = useBranch({ viewKey: ['viewKey'] });
 	const [loading, setLoading] = useState(true);
 	const [projects, setProjects] = useState([]);
 	const [selectedProject, setSelectedProject] = useState(null);
@@ -104,6 +108,7 @@ function Dashboard(props) {
 
 	useEffect(() => {
 		getProjects();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [user.email]);
 
 	const handleProjectCreated = (res) => {
@@ -112,7 +117,6 @@ function Dashboard(props) {
 			getProjects();
 		}
 	};
-
 	
 	const renderProjects = project => {
 		const isSelected = selectedProject && selectedProject.id === project.id;
@@ -154,11 +158,11 @@ function Dashboard(props) {
 							<ProjectMetadata project={selectedProject} />
 						</div>
 						<div style={{ display: 'flex', flexDirection: 'column', flex: 1.25 }}>
-							<ProjectsCard style={{ width: 'auto', margin: 0, padding: '0 15px', flex: 1 }}>
-								<ProjectMetadata project={selectedProject} />
+							<ProjectsCard style={{ width: 'auto', margin: 0, padding: '0 15px', flex: 1.25, position: 'relative' }}>
+								<ProjectCanvas viewKey={ viewKey }/>
 							</ProjectsCard>
-							<ProjectsCard style={{ width: 'auto', margin: '15px 0 0 0', padding: '0 15px', flex: 1 }}>
-								<ProjectMetadata project={selectedProject} />
+							<ProjectsCard style={{ width: 'auto', marginTop: 15, padding: '0 15px', flex: .75 }}>
+								<ProjectGraph project={selectedProject} />
 							</ProjectsCard>
 						</div>
 					</div>
@@ -169,12 +173,12 @@ function Dashboard(props) {
 	};
 
 	const renderSimpleForm = loading => {
-		if (loading) return null;
+		if (loading) return <div />;
 		return (
 			<EmptyForm>
 				<TypeTitle>
 					{ access.translate('Create Your First Project!') }
-					<Icon>bubble_chart</Icon>
+					<Icon color={'secondary'}>bubble_chart</Icon>
 				</TypeTitle>
 				<Paper style={{ width: 250, height: 40, padding: '0 15px' }} >
 					<ProjectCreateInput useInput={ true } onProjectCreated={ handleProjectCreated } />

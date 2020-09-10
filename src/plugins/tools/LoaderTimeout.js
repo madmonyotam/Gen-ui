@@ -12,11 +12,7 @@ const appear = keyframes`
   to {
     opacity: 1;
   }
-`;
-
-const Wrapper = styled.div`
-  position: relative;
-`;
+`; 
 
 const Loader = styled.div`
   position: ${({ coverAll }) => coverAll ? 'fixed' : 'absolute'};

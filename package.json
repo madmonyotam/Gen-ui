@@ -19,6 +19,7 @@
     "node-uuid": "^1.4.8",
     "react": "^16.10.2",
     "react-ace": "^8.0.0",
+    "react-charts": "^2.0.0-beta.7",
     "react-dom": "^16.10.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.3.0",
