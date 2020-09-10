@@ -16,8 +16,6 @@ import Inspector from 'plugins/menuPanel/inspector/Inspector';
 import * as libsActions from 'tree/actions/libs';
 import * as catsActions from 'tree/actions/cats';
 import * as itemsActions from 'tree/actions/items';
-
-import { getLibraryPack } from 'plugins/canvases/utils/packUtils';
 // import { get } from "plugins/requests";
 import Request from 'plugins/request';
 
@@ -37,11 +35,6 @@ function LeftPanel({ viewKey }) {
 	const { items } = useBranch({ items: ['items'] });
 	const { focus } = useBranch({ focus: ['focus'] });
 	const { collapse } = useBranch({ collapse: ['collapse'] });
-	let libraryPack = {};
-
-	setTimeout(() => {
-		libraryPack = getLibraryPack();
-	}, 1000);
 
 	// const stableDispatch = useCallback(dispatch, []); 
 
@@ -75,12 +68,10 @@ function LeftPanel({ viewKey }) {
 
 		const handleClickOnLib = label => {
 			dispatch(libsActions.getCategoriesFromLibrary, label);
-			libraryPack.onLibrarySelected(label);
 		};
 
 		const handleClickOnCat = label => {
 			dispatch(catsActions.getItemsFromCategory, label);
-			libraryPack.onCategorySelected(focus.lib, label);
 			dispatch(catsActions.setKey, { newKey: 'showSchema', schemaName: label });
 		};
 
@@ -90,32 +81,26 @@ function LeftPanel({ viewKey }) {
 
 		const handleRemoveLib = label => {
 			dispatch(libsActions.removeLib, label);
-			libraryPack.onRemoveLibrary(label);
 		};
 
 		const handleRemoveCat = label => {
 			dispatch(catsActions.removeCategory, label);
-			libraryPack.onRemoveCategory(focus.lib, label);
 		};
 
 		const handleRemoveItem = label => {
 			dispatch(itemsActions.removeItem, label);
-			libraryPack.onRemoveItem(focus.lib, focus.cat, label);
 		};
 
 		const handleEditLib = (oldName, newName) => {
 			dispatch(libsActions.editLib, { oldName, newName });
-			libraryPack.onEditLibrary(oldName, newName);
 		};
 
 		const handleEditCat = (oldName, newName) => {
 			dispatch(catsActions.editCategory, { oldName, newName });
-			libraryPack.onEditCategory(focus.lib, oldName, newName);
 		};
 
 		const handleEditItem = (oldName, newName) => {
 			dispatch(itemsActions.editItem, { oldName, newName });
-			libraryPack.onEditItem(focus.lib, focus.cat, oldName, newName);
 		};
 
 		switch (getListOf()) {
@@ -172,18 +157,15 @@ function LeftPanel({ viewKey }) {
 		const handleAddLib = value => {
 			value = value.trim();
 			dispatch(libsActions.addLib, value);
-			libraryPack.onAddLibrary(value);
 		};
 
 		const handleAddCat = value => {
 			value = value.trim();
 			dispatch(catsActions.addCategory, value);
-			libraryPack.onAddCategory(focus.lib, value);
 		};
 
 		const handleAddItem = value => {
 			value = value.trim();
-			libraryPack.onAddItem(focus.lib,focus.cat, value);
 			dispatch(itemsActions.addItem, value);
 		};
 
@@ -221,10 +203,8 @@ function LeftPanel({ viewKey }) {
 			dispatch(itemsActions.setItemToFocus, null);
 		} else if (cat) {
 			dispatch(catsActions.setCatToFocus, null);
-			libraryPack.onBack(lib);
 		} else if (lib) {
 			dispatch(libsActions.setLibToFocus, null);
-			libraryPack.onBack();
 		}
 	};
 
