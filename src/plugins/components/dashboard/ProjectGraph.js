@@ -1,50 +1,61 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import Moment from 'moment';
+import { extendMoment } from 'moment-range';
+
+import { Chart } from 'react-charts';
 
 import WidgetHeader from 'plugins/tools/WidgetHeader';
 
-const ProjectGraph = ({ project }) => {
+const moment = extendMoment(Moment); 
+const GRAPH_AXES = [
+	{ primary: true, type: 'ordinal', position: 'bottom' },
+	{ type: 'linear', position: 'left', stacked: true },
+];
 
-	const setProject = project => (!project ? [] : [
-		{
-			value: moment(project.createdTime).format('ll | HH:mm:ss'),
-			label: 'Created at',
-			editable: false,
-			order: 2
-		},
-		{
-			value: moment(project.updatedTime).format('ll | HH:mm:ss'),
-			label: 'Updated at',
-			editable: false,
-			order: 3
-		},
-		{
-			value: project.name,
-			label: 'Title',
-			editable: true,
-			order: 0
-		},
-		{
-			value: project.createdBy,
-			label: 'Owner',
-			editable: false,
-			order: 1
-		}
-	]);
 
-	const details = useMemo(() => setProject(project), [project]); 
+
+const ProjectGraph = (props) => {
+	const { project } = props;
+
+	const [type, setType] = useState('area');
+
+	const data = useMemo( () => {
+		const fromDate = moment().subtract(7, 'days');
+		const toDate = moment();
+
+		const range = moment.range(fromDate, toDate);
+
+		const dates = Array.from(range.by('days', { excludeEnd: true })); 
+		const data = project.users.map(user => {
+			const gData = [];
+			dates.forEach(date => {
+				gData.push({ primary: date.format('ll @ HH:mm'), secondary: Math.floor(Math.random() * 100 + 10) });
+			});
+			return {
+				label: user,
+				data: gData
+			};
+		});
+
+		return data; 
+	}, []); 
+
+	const axes = useMemo(() => GRAPH_AXES, []);
+
+	if (!project) return null;
+
+	const onIconClick = () => {
+		if (type == 'area') setType('line');
+		else setType('area');
+	};
 
 	return (
 		<div style={{ width: '100%', height: '100%' }}>
-			<WidgetHeader title={'Updated By Time'} icon={'insert_chart_outlined'} />
+			<WidgetHeader title={'Updated By Time'} icon={'insert_chart_outlined'} onIconClick={ onIconClick }/>
 
-			<div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100% - 45px)', overflowY: 'auto' }} >
-				{
-					details && details.map((det, i) => {
-						return <code key={i} style={{ display: 'flex', flexDirection: 'column', order: det.order }}> <strong><pre>{JSON.stringify(det.label, null, 4)}</pre></strong> <pre>{JSON.stringify(det.value, null, 4)}</pre></code>;
-					})
-				}
+			<div style={{ width: '100%', height: 'calc(100% - 45px)' }} >
+				<Chart data={ data } axes={ axes } series={{ type }} tooltip primaryCursor/>
 			</div>
 		</div>
 	);
@@ -55,7 +66,7 @@ ProjectGraph.propTypes = {
 };
 
 ProjectGraph.defaultProps = {
-	project: {}
+	project: { }
 };
 
 export default ProjectGraph;

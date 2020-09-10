@@ -17,12 +17,12 @@ const Header = styled(Typography)`
 `;
 
 const WidgetHeader = (props) => {
-	const { title, icon, showDivider } = props;
+	const { title, icon, showDivider, onIconClick } = props;
 	return (
 		<>
 			<Header>
 				{access.translate(title)}
-				<Icon fontSize={'small'}>{icon}</Icon>
+				<Icon fontSize={'small'} onClick={ onIconClick } >{icon}</Icon>
 			</Header>
 			{ showDivider && <Divider /> }
 		</>
@@ -33,12 +33,14 @@ WidgetHeader.propTypes = {
 	title: PropTypes.string.isRequired,
 	icon: PropTypes.string.isRequired,
 	showDivider: PropTypes.bool,
+	onIconClick: PropTypes.func,
 };
 
 WidgetHeader.defaultProps = {
 	title: 'Widget Header',
 	icon: 'check',
-	showDivider: true
+	showDivider: true,
+	onIconClick: () => null
 };
 
 export default WidgetHeader;

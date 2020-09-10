@@ -162,7 +162,7 @@ function Dashboard(props) {
 								<ProjectCanvas viewKey={ viewKey }/>
 							</ProjectsCard>
 							<ProjectsCard style={{ width: 'auto', marginTop: 15, padding: '0 15px', flex: .75 }}>
-								<ProjectGraph project={selectedProject} />
+								<ProjectGraph project={{ ...selectedProject, users: ['shiran@email.com', 'ziv@email.com', 'yotam@email.com'] }} />
 							</ProjectsCard>
 						</div>
 					</div>
