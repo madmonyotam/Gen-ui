@@ -35,15 +35,12 @@ const ProjectsWrapper = styled.div`
 	width: 100%;
 `;
 
-const ProjectsCard = styled(Card)`
-	${ props => props.style || `
-		
-		width: 235px; 
-		margin: 0 15px 0 0; 
-		padding: 0 15px 10px 15px; 
-		display: flex; 
-		flex-direction: column;
-`
+const ProjectsPanel = styled(Card)`
+	width: 235px; 
+	margin: 0 15px 0 0; 
+	padding: 0 15px 10px 15px; 
+	display: flex; 
+	flex-direction: column;
 }`;
 
 const EmptyForm = styled.div`
@@ -139,7 +136,7 @@ function Dashboard(props) {
 		const existingProjects = getExistingProjectNames(data);
 		return (
 			<div style={{ display: 'flex', flex: 1, padding: 15 }}>
-				<ProjectsCard>
+				<ProjectsPanel>
 					<ProjectCreateInput
 						onProjectCreated={ handleProjectCreated }
 						existingProjects={ existingProjects } />
@@ -150,7 +147,7 @@ function Dashboard(props) {
 						{ data.map(renderProjects) }
 					</ProjectsWrapper>
 
-				</ProjectsCard>
+				</ProjectsPanel>
 
 				<div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flex: 1 }}>
 					<div style={{ height: '100%', paddingBottom: 15,  display: 'flex', flexDirection: 'row' }}>
@@ -158,12 +155,12 @@ function Dashboard(props) {
 							<ProjectMetadata project={selectedProject} />
 						</div>
 						<div style={{ display: 'flex', flexDirection: 'column', flex: 1.25 }}>
-							<ProjectsCard style={{ width: 'auto', margin: 0, padding: '0 15px', flex: 1.25, position: 'relative' }}>
+							<Card style={{ width: 'auto', margin: 0, padding: '0 15px', flex: 1.25, position: 'relative' }}>
 								<ProjectCanvas viewKey={ viewKey }/>
-							</ProjectsCard>
-							<ProjectsCard style={{ width: 'auto', marginTop: 15, padding: '0 15px', flex: .75 }}>
+							</Card>
+							<Card style={{ width: 'auto', marginTop: 15, padding: '0 15px', flex: .75 }}>
 								<ProjectGraph project={{ ...selectedProject, users: ['shiran@email.com', 'ziv@email.com', 'yotam@email.com'] }} />
-							</ProjectsCard>
+							</Card>
 						</div>
 					</div>
 					<ProjectsActionButtons project={selectedProject} onProjectDelete={handleRemoveProject}  />
