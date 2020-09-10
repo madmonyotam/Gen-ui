@@ -106,11 +106,11 @@ const TopPanel = () => {
 				<Paper style={{ marginTop: 10 }} >
 					<ClickAwayListener onClickAway={handleClose}>
 						<MenuList dense={ true } autoFocusItem={open} id="menu-list-grow">
-							<MenuItem onClick={handleClose}>{ access.translate('Save As') }</MenuItem>
+							{/* <MenuItem onClick={handleClose}>{ access.translate('Save As') }</MenuItem>
 							<MenuItem onClick={handleClose}>{ access.translate('New Project') }</MenuItem>
 							<MenuItem onClick={handleClose}>{ access.translate('Open Project') }</MenuItem>
 							<MenuItem onClick={handleClose}>{ access.translate('Remove Project') }</MenuItem>
-							<Divider style={{ margin: '5px 0'}} /> 
+							<Divider style={{ margin: '5px 0'}} />  */}
 							<MenuItem onClick={ handleLogout }>{access.translate('Logout')}</MenuItem>
 						</MenuList>
 					</ClickAwayListener>

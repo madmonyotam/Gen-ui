@@ -17,10 +17,7 @@ import * as libsActions from 'tree/actions/libs';
 import * as catsActions from 'tree/actions/cats';
 import * as itemsActions from 'tree/actions/items';
 // import { get } from "plugins/requests";
-import Request from 'plugins/request';
-
-//import useFetch from 'plugins/request/useFetch'
-
+import Request from 'plugins/request'; 
 
 const CollapseColumn = styled(Column)`
   min-width: 50px;
@@ -34,20 +31,7 @@ function LeftPanel({ viewKey }) {
 	const { cats } = useBranch({ cats: ['cats'] });
 	const { items } = useBranch({ items: ['items'] });
 	const { focus } = useBranch({ focus: ['focus'] });
-	const { collapse } = useBranch({ collapse: ['collapse'] });
-
-	// const stableDispatch = useCallback(dispatch, []); 
-
-	// const [res, setFetch] = useFetch();
-	// console.log(res)
-	//const [res, onChange] = useFetch('/getAllLibraries');
-
-	// useEffect(() => {
-	//   Request.get('/getAllLibraries')
-	//         .then(res => { 
-	//           stableDispatch(libsActions.setLibs, res.data);
-	//         })
-	// }, [stableDispatch]);
+	const { collapse } = useBranch({ collapse: ['collapse'] }); 
 
 	const RenderList = () => {
 
