@@ -31,7 +31,7 @@ export default {
 	texts: {
 		primary: 'colors.white',
 		secondary: 'colors.blue01',
-		placeholder: 'colors.grey01',
+		placeholder: 'colors.grey01'
 	},
 	searchBar: {
 		bg: 'backgrounds.primary',

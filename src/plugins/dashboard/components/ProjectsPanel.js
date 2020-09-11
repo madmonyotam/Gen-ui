@@ -2,18 +2,11 @@ import React from 'react';
 import { Divider } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
+import * as access from 'plugins/access';
 import styled from 'styled-components';
 
 import ProjectCreateInput from 'plugins/dashboard/components/ProjectCreateInput';
 import ProjectListItem from 'plugins/dashboard/components/ProjectListItem';
-
-
-const ProjectsWrapper = styled.div`
-	height: 100%;
-    padding-right: 15px;
-    overflow: auto;
-	width: 100%;
-`;
 
 const Panel = styled.div`
 	width: 235px; 
@@ -21,8 +14,16 @@ const Panel = styled.div`
 	display: flex; 
 	flex-direction: column;
 	box-shadow:  10px 0px 10px -20px rgba(0,0,0,0.75);
+	background: ${ access.color('backgrounds.light') } 
 	z-index: 1;
 }`;
+
+const ProjectsWrapper = styled.div`
+	height: 100%;
+    padding-right: 15px;
+    overflow: auto;
+	width: 100%;
+`;
 
 const ProjectsPanel = props => {
 	const { 

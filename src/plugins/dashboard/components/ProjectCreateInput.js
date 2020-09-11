@@ -23,7 +23,7 @@ const Wrapper = styled.div`
 const Input = styled.input`
 	font-family: 'Roboto'; 
 	border: none; 
-	font-size: 15; 
+	font-size: 15px; 
 	outline: 0; 
 	background: transparent;
 	width: 100%; 

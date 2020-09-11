@@ -10,8 +10,9 @@ import moment from 'moment';
 const ProjectCard = styled.div`
 	position: relative;
 	cursor: pointer;
+	color: #333;
 	box-shadow: ${ props => props.selected ? '0px 0px 12px -5px rgba(0, 0, 0, 0.2)' : 'none' };
-	text-shadow: ${ props => props.selected ? '-.5px -.5px 1px #fefefe' : 'none' };
+	text-shadow: ${ props => props.selected ? '-.5px -.5px 1px #fefefe' : '.5px .5px 1px #fefefe' };
 	border:  1px solid rgba(186,196,206, ${ props => props.selected ? '0.25' : '0.15' });
 	padding: 5px 10px;
 	margin-bottom: 10px;
@@ -46,7 +47,7 @@ const SideIcons = styled.div`
 const InnerDetail = styled(Typography)`
 	padding-left: 25px;
 	font-size: 13px !important;
-	color: #444;
+	color: ${ props => props.selected ? '#212' : '#444' };
 `;
 
 const ProjectListItem = props => {

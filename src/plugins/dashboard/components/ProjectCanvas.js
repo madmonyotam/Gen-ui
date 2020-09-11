@@ -2,7 +2,7 @@ import React, { useEffect, useCallback } from 'react';
 import MainCanvas from 'plugins/canvases/MainCanvas';
 import { useBranch } from 'baobab-react/hooks';
 
-import { Card } from '@material-ui/core';
+import styled from 'styled-components';
 
 import * as libsActions from 'tree/actions/libs';
 import * as access from 'plugins/access';
@@ -10,6 +10,14 @@ import Mask from 'plugins/tools/Mask';
 import WidgetHeader from 'plugins/tools/WidgetHeader';
 
 import Request from 'plugins/request';
+
+const Canvas = styled.div`
+	position: relative;
+	width: auto;
+	flex: 1;
+	overflow: hidden;
+	border-radius: 2px;
+`;
 
 const ProjectCanvas = () => {
 
@@ -27,7 +35,7 @@ const ProjectCanvas = () => {
 	const top = access.dim('widgetHeader.height');
     
 	return (
-		<Card style={{ position: 'relative', width: 'auto', flex: .75, marginRight: 15, padding: '0 15px 15px' }}>
+		<Canvas >
 			<WidgetHeader title={'Pack View'} icon={'bubble_chart'} showDivider={ false }/>
 			<Mask
 				opacity={1}
@@ -37,7 +45,7 @@ const ProjectCanvas = () => {
 			>
 				<MainCanvas key={viewKey} />
 			</Mask>
-		</Card>
+		</Canvas>
 	);
 };
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useBranch } from 'baobab-react/hooks';
 
-import { Divider, Paper, Typography, Card, Icon } from '@material-ui/core';
+import { Paper, Typography, Icon } from '@material-ui/core';
 
 import styled from 'styled-components';
 
@@ -13,19 +13,21 @@ import LoaderTimeout from 'plugins/tools/LoaderTimeout';
 import ProjectCreateInput from 'plugins/dashboard/components/ProjectCreateInput';
 import ProjectMetadata from 'plugins/dashboard/components/ProjectMetadata';
 import ProjectsPanel from 'plugins/dashboard/components/ProjectsPanel';
-import ProjectsActionButtons from 'plugins/dashboard/components/ProjectsActionButtons';
+// import ProjectsActionButtons from 'plugins/dashboard/components/ProjectsActionButtons';
 import ProjectGraph from 'plugins/dashboard/components/ProjectGraph';
 import ProjectCanvas from 'plugins/dashboard/components/ProjectCanvas';
 
 const Wrap = styled.div`
     position: absolute;
-    display: flex;
+	display: flex;
     top: 60px;
     bottom: 0;
     left: 0;
     right: 0;
 	padding: 0;
-	background: ${ access.color('backgrounds.light') } 
+	// background: ${ access.color('backgrounds.light') } 
+	background: ${ access.color('backgrounds.content') };
+
 `; 
 
 const EmptyForm = styled.div`
@@ -128,16 +130,14 @@ function Dashboard(props) {
 					
 
 				<Content className={ 'dashboard-content' }>
-					<div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+					<div style={{ height: '100%', display: 'flex', flexDirection: 'row' }}>
 						
-						<ProjectMetadata project={selectedProject} style={{ marginBottom: 15 }} />
+						<ProjectMetadata project={selectedProject} style={{ marginRight: 25 }} />
+						<ProjectCanvas />
 
-						<div style={{ display: 'flex', flexDirection: 'row', height: 'calc(100% - 250px)' }}>
-							
-							<ProjectCanvas />
-
-							<ProjectGraph project={{ ...selectedProject, users: ['shiran@email.com', 'ziv@email.com', 'yotam@email.com'] }} />
-						</div>
+					</div>
+					<div style={{ display: 'flex', flexDirection: 'row', marginTop: 15, height: 'calc(100% - 250px)' }}>
+						<ProjectGraph project={{ ...selectedProject, users: ['shiran@email.com', 'ziv@email.com', 'yotam@email.com'] }} />
 					</div>
 					{/* <ProjectsActionButtons project={selectedProject} onProjectDelete={handleRemoveProject}  /> */}
 				</Content>
