@@ -14,6 +14,7 @@ const Header = styled(Typography)`
 	align-items: center; 
 	justify-content: space-between;
 	height: 30px;
+	font-family: Cabin !important;
 `;
 
 const WidgetHeader = (props) => {
