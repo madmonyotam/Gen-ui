@@ -4,7 +4,6 @@ import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 
 import { Card } from '@material-ui/core';
-import { Chart } from 'react-charts';
 
 import WidgetHeader from 'plugins/tools/WidgetHeader';
 
@@ -56,7 +55,6 @@ const ProjectGraph = (props) => {
 			<WidgetHeader title={'Updated By Time'} icon={'insert_chart_outlined'} onIconClick={ onIconClick }/>
 
 			<div style={{ width: '100%', height: 'calc(100% - 45px)' }} >
-				<Chart data={ data } axes={ axes } series={{ type }} tooltip primaryCursor/>
 			</div>
 		</Card>
 	);

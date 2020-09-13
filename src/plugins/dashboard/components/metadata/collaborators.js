@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Tooltip } from '@material-ui/core';
 
@@ -8,7 +8,7 @@ import DataBox from  './data-box';
 import UserListItem from './user-list-item';
 
 const List = styled.div`
-	max-height: 210px;
+	height: ${ props => props.height }px;
 	overflow-y: auto;
 	padding: 5px 0 0;
 `;
@@ -16,7 +16,8 @@ const List = styled.div`
 
 const CollaboratorsList = props => {
 	const { users } = props; 
-
+	const [listHeight, setListHeight] = useState(150);
+	const listRef = useRef(null);
 	const renderUsers = user => (
 		<UserListItem user={ user } key={ user.id }/>
 	);
@@ -27,9 +28,16 @@ const CollaboratorsList = props => {
 		</Tooltip>
 	); 
 
+	useEffect(() => {
+		if (listRef && listRef.current) {
+			const listHeight = listRef.current.parentElement.offsetHeight - 40;
+			setListHeight(listHeight);
+		}
+	}, [listRef]);
+
 	return (
 		<DataBox icon={'people'} title={'collaborators'} buttons={ <RightButtons /> }>
-			<List>
+			<List ref={listRef}  height={listHeight }>
 				{ 
 					users && users.map(renderUsers) 
 				}
