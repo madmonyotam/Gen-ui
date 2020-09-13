@@ -16,7 +16,7 @@ const ProjectCard = styled.div`
 	border:  1px solid rgba(186,196,206, ${ props => props.selected ? '0.25' : '0.15' });
 	padding: 5px 10px;
 	margin-bottom: 10px;
-	border-radius: 2px;
+	border-radius: 4px;
 	height: 65px;
 	display: flex;
 	flex-direction: column;

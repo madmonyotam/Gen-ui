@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Icon, Typography, Tooltip, ClickAwayListener } from '@material-ui/core';
 import styled from 'styled-components';
 import * as access from 'plugins/access'; 
+import Badge from 'plugins/tools/Badge';
 
 import Request from 'plugins/request';
 
@@ -33,29 +34,6 @@ const Input = styled.input`
 const ProjectsIcon = styled(Icon)`
 	cursor: pointer;
 	color: ${ props => props.color},
-`;
-
-const Badge = styled.span`
-    height: 20px;
-    display: flex;
-    padding: 0 6px;
-    z-index: 1;
-    position: absolute;
-    flex-wrap: wrap;
-    font-size: 0.75rem;
-    min-width: 20px;
-    box-sizing: border-box;
-    align-items: center;
-    font-family: 'Roboto';
-    font-weight: 500;
-    line-height: 1;
-    align-content: center;
-    border-radius: 10px;
-    flex-direction: row;
-	justify-content: center;
-	right: -30px;
-	background: ${ access.color('backgrounds.hover') };
-	color: ${ access.color('colors.white') };
 `;
 
 const ProjectCreateInput = ({ useInput, onProjectCreated, existingProjects }) => {
