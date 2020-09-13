@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Redirect, Switch } from 'react-router-dom';
 
 import {useRoot} from 'baobab-react/hooks';
+import { RecoilRoot } from 'recoil';
+
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import firebase from 'firebase';
 import { setHeaders } from 'plugins/request';
@@ -64,25 +66,26 @@ function App({tree}) {
 	return (
 		<Root>
 			<ThemeProvider theme={ theme }>
+				<RecoilRoot>
+					<Router>
 
-				<Router>
+						{ loggedIn && <TopPanel /> }
 
-					{ loggedIn && <TopPanel /> }
+						<Switch>
+							<RedirectHandler loggedIn={ loggedIn } />  
+						</Switch>
 
-					<Switch>
-						<RedirectHandler loggedIn={ loggedIn } />  
-					</Switch>
+						<Routes 
+							routes={ routesConfig } 
+							childDependencies={{ 
+								onLoggedIn: handleLoggedIn, 
+								projectID: handleLocation(location),
+								user: { email: localStorage.getItem('gen-user-email') } 
+							}}
+						/>
 
-					<Routes 
-						routes={ routesConfig } 
-						childDependencies={{ 
-							onLoggedIn: handleLoggedIn, 
-							projectID: handleLocation(location),
-							user: { email: localStorage.getItem('gen-user-email') } 
-						}}
-					/>
-
-				</Router>
+					</Router>
+				</RecoilRoot>
 			</ThemeProvider>
 		</Root>
 	);
