@@ -16,7 +16,7 @@ const Container = styled.div`
 	width: auto;
 	flex: 1;
 	overflow: hidden;
-	border-radius: 2px;
+	border-radius: 4px;
 `;
 
 const ProjectCanvas = () => {
