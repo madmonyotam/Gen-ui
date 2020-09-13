@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import * as access from 'plugins/access';
 import styled from 'styled-components';
 import { Icon } from '@material-ui/core';
+import Badge from 'plugins/tools/Badge';
 
 const Box = styled.div`
 	position: relative;
@@ -19,7 +20,7 @@ const Box = styled.div`
 	// background: ${access.color('backgrounds.light')};
 	box-shadow: '0px 0px 12px -5px rgba(0, 0, 0, 0.3)';
 	border:  1px solid rgba(186,196,206, .75);
-	border-radius: 2px;
+	border-radius: 4px;
 	flex: ${props => props.container ? 1 : .25};
 `;
 
@@ -50,7 +51,8 @@ const DataBox = props => {
 		container, 
 		push, 
 		style, 
-		buttons 
+		buttons,
+		badge
 	} = props;
     
 	const Title = () => (
@@ -59,6 +61,7 @@ const DataBox = props => {
 			<StyledTitle>
 				{access.translate(title)}
 			</StyledTitle>
+			{ badge && <Badge size={ 'small' } >{ badge } </Badge> }
 		</>
 	);
 
@@ -92,6 +95,10 @@ DataBox.propTypes = {
 	children: PropTypes.oneOfType([
 		PropTypes.object,
 		PropTypes.array,
+	]),
+	badge: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.number,
 	]),
 	style: PropTypes.object,
 	container: PropTypes.bool,

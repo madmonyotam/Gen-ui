@@ -36,7 +36,7 @@ const CollaboratorsList = props => {
 	}, [listRef]);
 
 	return (
-		<DataBox icon={'people'} title={'collaborators'} buttons={ <RightButtons /> }>
+		<DataBox icon={'people'} title={'collaborators'} buttons={ <RightButtons /> } badge={ users.length } >
 			<List ref={listRef}  height={listHeight }>
 				{ 
 					users && users.map(renderUsers) 
