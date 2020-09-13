@@ -39,7 +39,7 @@ const TitleTypo = styled(Typo)`
 	}
 `;
 const ProjectTitle = props => {
-	const { projectTitle, label } = props;
+	const { projectTitle } = props;
 	const inputRef = useRef();
 	const [isEdit, setIsEdit] = useState(false);
 
@@ -72,14 +72,11 @@ const ProjectTitle = props => {
 };
 
 ProjectTitle.propTypes = {
-	projectTitle: PropTypes.string,
-	label: PropTypes.string,
-
+	projectTitle: PropTypes.string
 };
 
 ProjectTitle.defaultProps = {
-	projectTitle: '',
-	label: ''
+	projectTitle: ''
 };
 
 export default ProjectTitle;
