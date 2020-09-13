@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import * as access from 'plugins/access';
 import { Divider, Tooltip, Avatar, IconButton, Typography, Paper, ClickAwayListener, MenuList, MenuItem } from '@material-ui/core';
 import LinearScaleIcon from '@material-ui/icons/LinearScale';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+// import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Popper from '@material-ui/core/Popper'; 
 
 import ProjectsActionButtons from 'plugins/dashboard/components/ProjectsActionButtons';
@@ -68,7 +68,7 @@ const TopPanel = () => {
 	return (
 		<Panel background={ access.color('backgrounds.secondary') }>
 			<LeftWrap>
-				<Avatar alt={ 'avatar-picsum' } src={ 'https://picsum.photos/200' } />
+				<Avatar variant={ 'rounded' } alt={ 'avatar-picsum' } src={ 'https://picsum.photos/200' } />
 				<div style={{ margin: '0 10px', textAlign: 'left' }}>
 					<Typography style={{ fontSize: 15, fontWeight: 600 }}>
 						{ userName }

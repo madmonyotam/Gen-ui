@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useBranch } from 'baobab-react/hooks';
+// import { useBranch } from 'baobab-react/hooks';
 
 import { Paper, Typography, Icon } from '@material-ui/core';
 
 import styled from 'styled-components';
 
+import * as engine from 'gen-engine';
 import * as access from 'plugins/access';
+// import moment from 'moment';
+// import { v4 } from 'node-uuid';
+
 import Request from 'plugins/request';
 import LoaderTimeout from 'plugins/tools/LoaderTimeout';
 
 import ProjectCreateInput from 'plugins/dashboard/components/ProjectCreateInput';
-import ProjectMetadata from 'plugins/dashboard/components/ProjectMetadata';
+import ProjectMetadata from 'plugins/dashboard/components/metadata/';
 import ProjectsPanel from 'plugins/dashboard/components/ProjectsPanel';
 // import ProjectsActionButtons from 'plugins/dashboard/components/ProjectsActionButtons';
 import ProjectGraph from 'plugins/dashboard/components/ProjectGraph';
@@ -59,21 +63,57 @@ const TypeTitle = styled(Typography)`
 
 function Dashboard(props) {
 	const { user } = props; 
-	const { viewKey } = useBranch({ viewKey: ['viewKey'] });
 	const [loading, setLoading] = useState(true);
 	const [projects, setProjects] = useState([]);
 	const [selectedProject, setSelectedProject] = useState(null);
 
+
+	const generateUsers = () => {
+		const schema = {
+			firstName: { type: 'firstName' },
+			lastName: { type: 'lastName' },
+			userName: { type: 'userName' },
+			avatar: { type: 'avatar' },
+			lastUpdate: {
+				type: 'recentDate', 
+				value: {
+					days: 25
+				} 
+			},
+			email: { type: 'email' },
+			id: { type: 'id' }
+		};
+		
+		let users = engine.generate(schema, 13);
+		users = users.map( (user, i) => {
+			if (i === 0) user.ownership = 'owner';
+			if (i === 1) user.ownership = 'member';
+			if (i === 2) user.ownership = 'guest';
+			return user;
+		});
+		return users;
+	};
+	const handleSelectProject = (list) => {
+		const users = generateUsers();
+		let item = list;
+		if (Array.isArray(list) && list.length) {
+			list[0].users = users;
+			item = list[0];
+		} else if (typeof list === 'object') {
+			item.users = users;
+		}
+		setSelectedProject(item);
+	};
 	const handleDefaultSelectProject = (list) => {
 		setProjects(list);
-		
-		if (!list.length) setSelectedProject(null);
+	
+		if (!list.length) handleSelectProject(null);
 		else {
-			if (!selectedProject) setSelectedProject(list[0]);
+			if (!selectedProject) handleSelectProject(list[0]);
 			else {
 				const found = list.find(proj => proj.id === selectedProject.id);
-				if (found) setSelectedProject(found);
-				else setSelectedProject(list[0]);
+				if (found) handleSelectProject(found);
+				else handleSelectProject(list[0]);
 			}
 		}
 		
@@ -84,7 +124,6 @@ function Dashboard(props) {
 			.then(({ data }) => {
 				if (data.status.toLowerCase() === 'success') {
 					handleDefaultSelectProject(data.projects);
-					// handleDefaultSelectProject([]);
 					setLoading(false);
 				}
 			});
@@ -125,18 +164,18 @@ function Dashboard(props) {
 					selectedProject={ selectedProject }
 					onEnterProject={  console.debug }
 					onDeleteProject={ handleRemoveProject }
-					onSelectProject={ setSelectedProject }
+					onSelectProject={ handleSelectProject }
 					onProjectCreated={ handleProjectCreated }  />
 					
 
 				<Content className={ 'dashboard-content' }>
 					<div style={{ height: '100%', display: 'flex', flexDirection: 'row' }}>
 						
-						<ProjectMetadata project={selectedProject} style={{ marginRight: 25 }} />
+						<ProjectMetadata project={selectedProject} style={{ marginRight: 20 }} />
 						<ProjectCanvas />
 
 					</div>
-					<div style={{ display: 'flex', flexDirection: 'row', marginTop: 15, height: 'calc(100% - 250px)' }}>
+					<div style={{ display: 'flex', flexDirection: 'row', marginTop: 20, height: 'calc(100% - 250px)' }}>
 						<ProjectGraph project={{ ...selectedProject, users: ['shiran@email.com', 'ziv@email.com', 'yotam@email.com'] }} />
 					</div>
 					{/* <ProjectsActionButtons project={selectedProject} onProjectDelete={handleRemoveProject}  /> */}

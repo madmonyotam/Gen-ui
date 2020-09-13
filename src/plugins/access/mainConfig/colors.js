@@ -19,6 +19,16 @@ export default {
 		primary: 'colors.blue01',
 		secondary: 'colors.blue02',
 	},
+	backLevelColors: {
+		owner: 'colors.blue05',
+		member: 'colors.blueLight01',
+		guest: 'colors.blueLight02'
+	},
+	frontLevelColors: {
+		owner: 'colors.blueLight02',
+		member: 'colors.blue02',
+		guest: 'colors.blue05'
+	},
 	backgrounds: {
 		primary: 'colors.blue01',
 		secondary: 'colors.blueLight01',
@@ -31,7 +41,8 @@ export default {
 	texts: {
 		primary: 'colors.white',
 		secondary: 'colors.blue01',
-		placeholder: 'colors.grey01'
+		placeholder: 'colors.grey01',
+		title: '#6C829B'
 	},
 	searchBar: {
 		bg: 'backgrounds.primary',

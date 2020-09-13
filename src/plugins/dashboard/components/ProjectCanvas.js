@@ -11,7 +11,7 @@ import WidgetHeader from 'plugins/tools/WidgetHeader';
 
 import Request from 'plugins/request';
 
-const Canvas = styled.div`
+const Container = styled.div`
 	position: relative;
 	width: auto;
 	flex: 1;
@@ -35,7 +35,7 @@ const ProjectCanvas = () => {
 	const top = access.dim('widgetHeader.height');
     
 	return (
-		<Canvas >
+		<Container >
 			<WidgetHeader title={'Pack View'} icon={'bubble_chart'} showDivider={ false }/>
 			<Mask
 				opacity={1}
@@ -45,7 +45,7 @@ const ProjectCanvas = () => {
 			>
 				<MainCanvas key={viewKey} />
 			</Mask>
-		</Canvas>
+		</Container>
 	);
 };
 
