@@ -23,15 +23,13 @@ import ProjectCanvas from 'plugins/dashboard/components/ProjectCanvas';
 
 const Wrap = styled.div`
     position: absolute;
-	display: flex;
+		display: flex;
     top: 60px;
     bottom: 0;
     left: 0;
     right: 0;
-	padding: 0;
-	// background: ${ access.color('backgrounds.light') } 
-	background: ${ access.color('backgrounds.content') };
-
+		padding: 0;
+		background: ${ access.color('backgrounds.content') };
 `; 
 
 const EmptyForm = styled.div`
@@ -46,7 +44,6 @@ const EmptyForm = styled.div`
 const Content = styled.div`
 	display: flex; 
 	flex-direction: column; 
-	justify-content: space-between; 
 	flex: 1;
 	padding: 15px 25px;
 	background: ${ access.color('backgrounds.content') };
@@ -169,13 +166,13 @@ function Dashboard(props) {
 					
 
 				<Content className={ 'dashboard-content' }>
-					<div style={{ height: '100%', display: 'flex', flexDirection: 'row' }}>
+					<div style={{ display: 'flex', flexDirection: 'row', height: '50%' }}>
 						
 						<ProjectMetadata project={selectedProject} style={{ marginRight: 20 }} />
 						<ProjectCanvas />
 
 					</div>
-					<div style={{ display: 'flex', flexDirection: 'row', marginTop: 20, height: 'calc(100% - 250px)' }}>
+					<div style={{ display: 'flex', flexDirection: 'row', marginTop: 20, flex: 1}}>
 						<ProjectGraph project={{ ...selectedProject, users: ['shiran@email.com', 'ziv@email.com', 'yotam@email.com'] }} />
 					</div>
 					{/* <ProjectsActionButtons project={selectedProject} onProjectDelete={handleRemoveProject}  /> */}

@@ -41,7 +41,7 @@ const ProjectCanvas = () => {
 				opacity={1}
 				top={`${top}px`}
 				mask={access.color('backgrounds.secondary')}
-				style={{ display: 'flex' }}
+			
 			>
 				<MainCanvas key={viewKey} />
 			</Mask>
