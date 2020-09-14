@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { BrowserRouter as Router, Redirect, Switch } from 'react-router-dom';
+import { useRoot } from 'baobab-react/hooks';
 
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import firebase from 'firebase';
@@ -36,8 +37,10 @@ const handleLocation = (location) => {
 	return null;
 };
 
-function App() {
+function App({ tree }) {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [appReady, setAppReady] = useState(false);
+	const Root = useRoot(tree);
 
 	const token = localStorage.getItem('gen-token');
 	
@@ -57,32 +60,40 @@ function App() {
 	};
         
 	const loggedIn = (token || isLoggedIn); 
-
+	useEffect(() => {
+		setAppReady(true);
+		return () => setAppReady(false);
+	}, []);
 	return (
-		<ThemeProvider theme={ theme }>
-			<Router>
+		<Root>
+			<ThemeProvider theme={ theme }>
+				<Router>
 
-				{ loggedIn && <TopPanel /> }
+					{ loggedIn && <TopPanel /> }
 				
 
-				<Switch>
-					<RedirectHandler loggedIn={ loggedIn } />  
-				</Switch>
+					<Switch>
+						{
+							appReady && <RedirectHandler loggedIn={loggedIn} />  
+						}
+					</Switch>
+					{
+						appReady &&
+						<React.Suspense fallback={ <div>Loading...</div> }>
 
-				<React.Suspense fallback={<h3>Loading Details...</h3>}>
-
-					<Routes 
-						routes={ routesConfig } 
-						childDependencies={{ 
-							onLoggedIn: handleLoggedIn, 
-							projectID: handleLocation(location),
-							user: { email: localStorage.getItem('gen-user-email') } 
-						}}
-					/>
-				</React.Suspense>
-
-			</Router>
-		</ThemeProvider>
+							<Routes 
+								routes={ routesConfig } 
+								childDependencies={{ 
+									onLoggedIn: handleLoggedIn, 
+									projectID: handleLocation(location),
+									user: { email: localStorage.getItem('gen-user-email') } 
+								}}
+							/>
+						</React.Suspense>
+					}
+				</Router>
+			</ThemeProvider>
+		</Root>
 	);
 }
 

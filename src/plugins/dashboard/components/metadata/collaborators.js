@@ -1,6 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect } from 'react'; 
 import { Icon, Tooltip } from '@material-ui/core';
+
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { projectUsersList, projectState } from 'plugins/dashboard/tree/atoms';
+import { getProjectUsers } from 'plugins/dashboard/actions';
 
 import * as access from 'plugins/access';
 import styled from 'styled-components';
@@ -12,8 +15,19 @@ const List = styled.div`
 	padding: 5px 0 0;
 `;
 
-const CollaboratorsList = props => {
-	const { users } = props; 
+const CollaboratorsList = () => {
+
+	const [users, setUsers] = useRecoilState(projectUsersList);
+	const project = useRecoilValue(projectState);
+	// const { users } = props; 
+	const fetchUsers = async () => {
+		const data = await getProjectUsers();
+		setUsers(data);
+	};
+
+	useEffect(() => {
+		fetchUsers();
+	}, [project]);
 
 	const renderUsers = user => (
 		<UserListItem user={ user } key={ user.id }/>
@@ -36,15 +50,6 @@ const CollaboratorsList = props => {
 	);
 };
 
-CollaboratorsList.propTypes = {
-	users: PropTypes.array,
-	label: PropTypes.string,
-    
-};
 
-CollaboratorsList.defaultProps = {
-	users: [],
-	label: ''
-};
 
 export default CollaboratorsList;

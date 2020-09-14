@@ -70,7 +70,7 @@ const ProjectCreateInput = ({ useInput, onProjectCreated, existingProjects }) =>
 		const newName = e.target.value;
 		setProjectName(newName);
 		if (newName && newName.length) {
-			if (existingNames.includes(newName)) setShowConfirm(false);
+			if (existingNames.includes(newName.toLowerCase())) setShowConfirm(false);
 			else setShowConfirm(true);
 		} else setShowConfirm(false);
 	};

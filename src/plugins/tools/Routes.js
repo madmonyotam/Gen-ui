@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom';
 
@@ -20,7 +20,8 @@ const Routes = ({ routes, dependencies, childDependencies }) => {
 		/>
 	);
 
-	return routes.map(renderRoutes); 
+	const returnedRoutes = useMemo(() => routes, [routes]);
+	return returnedRoutes.map(renderRoutes); 
 };
 
 Routes.propTypes = {
@@ -34,5 +35,4 @@ Routes.defaultProps = {
 	dependencies: {},
 	childDependencies: {}
 };
-
 export default Routes;

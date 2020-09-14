@@ -15,7 +15,7 @@ const Typo = styled(Typography)`
 	height: 100%; 
 	display: flex; 
 	align-items: center; 
-	font-size: 14px !important;
+	font-size: .85rem !important;
 	padding-left: 30px;
 `; 
 

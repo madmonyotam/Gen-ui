@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Divider } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { projectState, projectListState } from 'plugins/dashboard/tree/atoms';
-import { projectList } from 'plugins/dashboard/tree/selectors';
+import { projectState } from 'plugins/dashboard/tree/atoms';  
+import { projectList } from 'plugins/dashboard/tree/selectors';  
 
 import * as access from 'plugins/access';
 import styled from 'styled-components';
@@ -31,22 +31,17 @@ const ProjectsWrapper = styled.div`
 
 const ProjectsPanel = props => {
 	const { 
-		// projects, 
-		// selectedProject,
 		onEnterProject,
 		onDeleteProject,
-		// onSelectProject,
 		onProjectCreated,
 	} = props;
 
 
 	const [selectedProject, setSelectedProject] = useRecoilState(projectState);
-	// const [projectsItems, setProjectsItems] = useRecoilState(projectListState);
+	
 	const projects = useRecoilValue(projectList);
 
-	const getExistingProjectNames = data => {
-		return data.map(proj => proj.name);
-	};
+	const existingProjects = projects.map(proj => proj.name.toLowerCase());
     
 	const renderProjects = project => {
 		const isSelected = selectedProject && selectedProject.id === project.id;
@@ -57,11 +52,9 @@ const ProjectsPanel = props => {
 				project={project}
 				onEnterProject={ onEnterProject }
 				onDeleteProject={ onDeleteProject } 
-				onClick={() => setSelectedProject(project)} />
+				onClick={ () => setSelectedProject(project) } />
 		);
-	};
-
-	const existingProjects = getExistingProjectNames(projects);
+	}; 
 
 	return (
 		<Panel>

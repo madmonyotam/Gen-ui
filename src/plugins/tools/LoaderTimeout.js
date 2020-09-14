@@ -115,7 +115,7 @@ LoaderTimeout.defaultProps = {
 
 LoaderTimeout.propTypes = {
 	isLoading: PropTypes.bool.isRequired,
-	children: PropTypes.node.isRequired,
+	children: PropTypes.node,//.isRequired,
 	pendingExtraTime: PropTypes.number,
 	coverAll: PropTypes.bool,
 	size: PropTypes.number,
