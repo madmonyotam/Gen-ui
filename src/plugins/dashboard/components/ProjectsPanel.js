@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Divider } from '@material-ui/core';
 import PropTypes from 'prop-types';
+
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { projectState, projectListState } from 'plugins/dashboard/tree/atoms';
+import { projectList } from 'plugins/dashboard/tree/selectors';
 
 import * as access from 'plugins/access';
 import styled from 'styled-components';
@@ -27,13 +31,18 @@ const ProjectsWrapper = styled.div`
 
 const ProjectsPanel = props => {
 	const { 
-		projects, 
-		selectedProject,
+		// projects, 
+		// selectedProject,
 		onEnterProject,
 		onDeleteProject,
-		onSelectProject,
+		// onSelectProject,
 		onProjectCreated,
 	} = props;
+
+
+	const [selectedProject, setSelectedProject] = useRecoilState(projectState);
+	// const [projectsItems, setProjectsItems] = useRecoilState(projectListState);
+	const projects = useRecoilValue(projectList);
 
 	const getExistingProjectNames = data => {
 		return data.map(proj => proj.name);
@@ -48,7 +57,7 @@ const ProjectsPanel = props => {
 				project={project}
 				onEnterProject={ onEnterProject }
 				onDeleteProject={ onDeleteProject } 
-				onClick={() => onSelectProject(project)} />
+				onClick={() => setSelectedProject(project)} />
 		);
 	};
 
@@ -63,7 +72,7 @@ const ProjectsPanel = props => {
 			<Divider style={{ marginBottom: 15 }} />
 
 			<ProjectsWrapper>
-				{ projects.map(renderProjects) }
+				{ projects && projects.map(renderProjects) }
 			</ProjectsWrapper>
 
 		</Panel>

@@ -25,10 +25,10 @@ const ProjectDates = props => {
 	return (
 		<Container>
 			<DataBox push icon={ 'event' } title={ 'Created' }>
-				<Typo>{ moment(created).format('LL | HH:mm:ss') }</Typo>
+				<Typo>{ moment(created).format('ll | HH:mm:ss') }</Typo>
 			</DataBox>
 			<DataBox icon={ 'schedule' } title={ 'Updated' }>
-				<Typo>{ moment(updated).format('LL | HH:mm:ss') }</Typo>
+				<Typo>{ moment(updated).format('ll | HH:mm:ss') }</Typo>
 			</DataBox> 
 		</Container> 
 	);

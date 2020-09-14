@@ -17,11 +17,13 @@ const Box = styled.div`
 	margin-bottom: 0px;
 	min-height: 40px;
 	background: #fefefe;
-	// background: ${access.color('backgrounds.light')};
-	box-shadow: '0px 0px 12px -5px rgba(0, 0, 0, 0.3)';
 	border:  1px solid rgba(186,196,206, .75);
 	border-radius: 4px;
 	flex: ${props => props.container ? 1 : .25};
+	transition: all 0.10s ease;
+	:hover {
+		box-shadow: 0px 0px 13px -7px rgb(186,196,206);
+	}
 `;
 
 const Header = styled.div`
@@ -54,14 +56,14 @@ const DataBox = props => {
 		buttons,
 		badge
 	} = props;
-    
+	
 	const Title = () => (
 		<>
 			<Icon fontSize={'small'}>{icon}</Icon>
 			<StyledTitle>
 				{access.translate(title)}
 			</StyledTitle>
-			{ badge && <Badge size={ 'small' } >{ badge } </Badge> }
+			{ (badge && (badge.length || badge > 0) ) ? <Badge size={ 'small' } >{ badge } </Badge> : null }
 		</>
 	);
 
@@ -114,6 +116,7 @@ DataBox.defaultProps = {
 	container: true,
 	push: false,
 	style: {},
+	badge: 0,
 	icon: 'schedule',
 	title: 'data box',
 	buttons: null

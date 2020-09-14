@@ -1,4 +1,4 @@
-import Dashboard from 'Views/Dashboard';
+import Dashboard from 'plugins/dashboard';
 import Login from 'Views/Login';
 import Project from 'Views/Project'; 
 

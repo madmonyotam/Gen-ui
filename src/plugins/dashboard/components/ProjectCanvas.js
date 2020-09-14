@@ -21,30 +21,30 @@ const Container = styled.div`
 
 const ProjectCanvas = () => {
 
-	const { viewKey } = useBranch({ viewKey: ['viewKey'] });
-	const { libs, dispatch } = useBranch({ libs: ['libs'] });
-	const stableDispatch = useCallback(dispatch, []);
+	// const { viewKey } = useBranch({ viewKey: ['viewKey'] });
+	// const { libs, dispatch } = useBranch({ libs: ['libs'] });
+	// const stableDispatch = useCallback(dispatch, []);
     
-	useEffect(() => {
-		Request.get('/getAllLibraries')
-			.then(res => {
-				stableDispatch(libsActions.setLibs, res.data);
-			});
-	}, [stableDispatch]);
+	// useEffect(() => {
+	// 	Request.get('/getAllLibraries')
+	// 		.then(res => {
+	// 			stableDispatch(libsActions.setLibs, res.data);
+	// 		});
+	// }, [stableDispatch]);
     
 	const top = access.dim('widgetHeader.height');
     
 	return (
 		<Container >
 			<WidgetHeader title={'Pack View'} icon={'bubble_chart'} showDivider={ false }/>
-			<Mask
+			{/* <Mask
 				opacity={1}
 				top={`${top}px`}
 				mask={access.color('backgrounds.secondary')}
 				style={{ display: 'flex' }}
 			>
 				<MainCanvas key={viewKey} />
-			</Mask>
+			</Mask> */}
 		</Container>
 	);
 };
