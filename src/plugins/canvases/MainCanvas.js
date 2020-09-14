@@ -47,7 +47,7 @@ function MainCanvas() {
 	};
 
 	return (
-		<div style={{ width: '100%', userSelect: 'none' }}>
+		<div style={{ height: '100%', width: '100%', userSelect: 'none' }}>
 			{renderStart()}
 		</div>
 	);

@@ -14,9 +14,11 @@ export default class Start extends Component {
 	}
 
 	componentDidMount() {
-		this.measure();
-		const canvas = this.createCanvas();
-		this.do(canvas);
+		setTimeout(() => {			
+			this.measure();
+			const canvas = this.createCanvas();
+			this.do(canvas);
+		}, 100);
 	}
 
 	do(canvas) {
