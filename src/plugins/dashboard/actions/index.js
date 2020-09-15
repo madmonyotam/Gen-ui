@@ -3,7 +3,7 @@ import { useSetRecoilState } from 'recoil';
 import Request from 'plugins/request';
 
 import * as gengine from 'gen-engine';
-import { projectUsersState, projectListState } from 'plugins/dashboard/tree/atoms';
+import { projectListState } from '../tree/atoms';
 
 
 export const useFetchProjects = email => {
@@ -37,11 +37,7 @@ export const handleRemoveProject = (id, email) => {
 		});
 }; 
 
-export const useFetchProjectUsers = projectId => { 
-
-	const [loading, setLoading] = useState(true);
-	const setProjectUsers = useSetRecoilState(projectUsersState);
-
+export const getProjectUsers = projectId => { 
 	const random = Math.floor(Math.random() * 25 + 3);
 
 	const schema = {
@@ -64,8 +60,6 @@ export const useFetchProjectUsers = projectId => {
 	users[0].ownership = 'owner';
 	users[1].ownership = 'member';
 	users[2].ownership = 'guest'; 
-		
-	setProjectUsers(users);
-	setLoading(false);
-	return loading;
+	
+	return users;
 };
