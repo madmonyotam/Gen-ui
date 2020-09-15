@@ -30,8 +30,7 @@ const ProjectPanel = props => {
 
 	const projectList = useRecoilValue(projectListState);
 
-	// const existingProjects = projectList.map(proj => proj.name.toLowerCase());
-	const existingProjects = useRecoilValue(existingProjectNames);
+	const existingProjects = projectList.map(proj => proj.name.toLowerCase());
 
 	const renderProjects = project => {
 		const isSelected = selectedProject && selectedProject.id === project.id;
