@@ -1,10 +1,14 @@
 import React from 'react';
+import { useRecoilState } from 'recoil';
 import PropTypes from 'prop-types';
 import { Typography, Tooltip, Icon, IconButton } from '@material-ui/core';
 import styled from 'styled-components';
 
-import * as access from 'plugins/access';
 
+import { projectListState } from 'plugins/dashboard/tree/atoms';
+
+import * as access from 'plugins/access';
+import Request from 'plugins/request';
 import moment from 'moment';
 
 const ProjectCard = styled.div`
@@ -51,12 +55,14 @@ const InnerDetail = styled(Typography)`
 `;
 
 const ProjectListItem = props => {
+
+	const [ projectList, setProjectList ] = useRecoilState(projectListState);
+
 	const { 
 		project, 
 		selected, 
 		onClick, 
 		onEnterProject, 
-		onDeleteProject 
 	} = props;
 	
 	const handleEnterProject = e => {
@@ -66,9 +72,17 @@ const ProjectListItem = props => {
 	};
 
 	const handleDeleteProject = e => {
-		// e.preventDefault();
 		e.stopPropagation();
-		if (onDeleteProject) onDeleteProject(project.id);
+		
+		const email = localStorage.getItem('gen-user-email');
+
+		Request.remove(`https://us-central1-mocking-gen-dev.cloudfunctions.net/projectRestAPI-projectRestAPI/project/${project.id}/${email}`)
+			.then(({ data }) => {
+				if (data.status.toLowerCase() === 'success') {
+					const list = projectList.filter(p => p.id !== project.id);
+					setProjectList(list);
+				}
+			});
 	};
 
 	return (

@@ -1,5 +1,8 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { useRecoilValue } from 'recoil';
+import { projectListState } from 'plugins/dashboard/tree/atoms';
+
 import styled from 'styled-components';
 import * as access from 'plugins/access';
 import { Divider, Tooltip, Avatar, IconButton, Typography, Paper, ClickAwayListener, MenuList, MenuItem } from '@material-ui/core';
@@ -26,7 +29,7 @@ const LeftWrap = styled.div`
 	align-items: center;
 	width: 235px;
 	padding: 0 15px;
-	background: ${ access.color('backgrounds.light') };
+	background: ${ props => props.background } !important;
 	box-shadow:  10px 0px 10px -20px rgba(0,0,0,0.75);
 `;
 
@@ -72,6 +75,7 @@ const MenuIcon = styled(IconButton)`
 const TopPanel = () => { 
 	const [open, setOpen] = useState(false);
 	const anchorRef = useRef(null);
+	const existsProjects = useRecoilValue(projectListState);
     
 	const userName = localStorage.getItem('gen-user-name');
 	const email = localStorage.getItem('gen-user-email');
@@ -98,15 +102,21 @@ const TopPanel = () => {
 
 	return (
 		<Panel background={ access.color('backgrounds.secondary') }>
-			<LeftWrap>
+			<LeftWrap background={existsProjects.length ? access.color('backgrounds.light') : access.color('backgrounds.content')  } >
 				<Avatar variant={ 'rounded' } alt={ 'avatar-picsum' } src={ 'https://picsum.photos/200' } />
 				<UserTitle /> 
 			</LeftWrap>
 
 			<RightWrap>
-				<ActionButtons />
+
+				{ 
+					existsProjects.length > 0 && 
+					<>
+						<ActionButtons />
+						<Divider orientation={'vertical'} style={{ height: '35%', margin: '0 15px 0 20px' }} />
+					</>
+				}
 				
-				<Divider orientation={'vertical'} style={{ height: '35%', margin: '0 15px 0 20px' }} />
 
 				<Tooltip title={access.translate('Menu')}>
 					<MenuIcon

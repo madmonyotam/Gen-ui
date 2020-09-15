@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { projectState, projectListState } from 'plugins/dashboard/tree/atoms';
-import { existingProjectNames } from 'plugins/dashboard/tree/selectors';
  
 import styled from 'styled-components';
 import Panel from 'plugins/tools/Panel';
@@ -21,7 +20,6 @@ const ProjectsWrapper = styled.div`
 const ProjectPanel = props => {
 	const {
 		onEnterProject,
-		onDeleteProject,
 		onProjectCreated,
 	} = props;
 
@@ -40,7 +38,6 @@ const ProjectPanel = props => {
 				selected={isSelected}
 				project={project}
 				onEnterProject={onEnterProject}
-				onDeleteProject={onDeleteProject}
 				onClick={() => setSelectedProject(project)} />
 		);
 	};

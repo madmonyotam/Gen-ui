@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import Request from 'plugins/request';
 
 import * as gengine from 'gen-engine';
@@ -28,14 +28,20 @@ export const useFetchProjects = email => {
 	return loading;
 };
 
-export const handleRemoveProject = (id, email) => {
-	Request.remove(`https://us-central1-mocking-gen-dev.cloudfunctions.net/projectRestAPI-projectRestAPI/project/${id}/${email}`)
-		.then(({ data }) => {
-			if (data.status.toLowerCase() === 'success') {
-				// getProjects();
-			}
-		});
-}; 
+// export const useRemoveProject = (id, email) => {
+	
+// 	const [ projectList, setProjectList ] = useRecoilState(projectListState);
+// 	const [state, setState] = 
+// 	Request.remove(`https://us-central1-mocking-gen-dev.cloudfunctions.net/projectRestAPI-projectRestAPI/project/${id}/${email}`)
+// 		.then(({ data }) => {
+// 			if (data.status.toLowerCase() === 'success') {
+// 				const list = projectList.filter( p => p.id !== id );
+// 				setProjectList(list);
+// 			}
+// 		});
+
+// 	return setProjectList;
+// }; 
 
 export const getProjectUsers = projectId => { 
 	const random = Math.floor(Math.random() * 25 + 3);
