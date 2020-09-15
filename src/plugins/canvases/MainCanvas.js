@@ -3,6 +3,7 @@ import React from 'react';
 import Start from 'plugins/tools/Start';
 import * as access from 'plugins/access';
 import { get } from 'plugins/requests';
+import useResizeWindow from 'plugins/hooks/useResizeWindow';
 
 import { move } from 'plugins/canvases/utils/canvasActions';
 
@@ -15,6 +16,9 @@ import {
 } from 'plugins/canvases/paint/Frames';
 
 function MainCanvas() {
+	const size = useResizeWindow();
+	const key = `${size.width}-${size.height}`;
+
 	const getAllLibs = (canvas, width, height) => {
 		get('/getAll').then(res => {
 			const {data, projectName } = res.data;
@@ -47,7 +51,7 @@ function MainCanvas() {
 	};
 
 	return (
-		<div style={{ height: '100%', width: '100%', userSelect: 'none' }}>
+		<div key={ key } style={{ height: '100%', width: '100%', userSelect: 'none' }}>
 			{renderStart()}
 		</div>
 	);
