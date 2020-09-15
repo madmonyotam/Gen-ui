@@ -45,7 +45,7 @@ export default class Start extends Component {
 
 	measure() {
 		const cont = document.getElementById(this.id);
-		const Bounding = cont.getBoundingClientRect();
+		const Bounding = cont ?  cont.getBoundingClientRect() : {};
 
 		this.width = Bounding.width;
 		this.height = Bounding.height;
