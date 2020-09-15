@@ -1,28 +1,22 @@
 import { selector, selectorFamily } from 'recoil'; 
 import { getProjects, getProjectUsers } from '../actions';
-import { listState } from './atoms';
+// import { listState } from './atoms';
 
-export const projectList = selector({
+export const projectList = selectorFamily({
 	key: 'projectList',
-	get: async () => {
-		const email = localStorage.getItem('gen-user-email');
+	get: email => async () => {
 		const response = await getProjects(email);
 		return response;
-	} 
-}); 
+	},
+	// set: ({ set }, newList) => {
+	// 	set(listState, )
+	// }
+});  
 
-export const existingNames = selector({
-	key: 'existingNames',
-	get: ({ get }) => {
-		const list = get(listState);
-		const existingProjects = list.map(proj => proj.name.toLowerCase());
-		return existingProjects;
+/*
+export const projectUsersList = selectorFamily({
+	key: 'projectUsersList',
+	get: projectId => async () => {
+
 	}
-});
-
-// export const projectUsersList = selector({
-// 	key: 'projectUsersList',
-// 	get: ({ get }) => {
-
-// 	}
-// });
+});*/

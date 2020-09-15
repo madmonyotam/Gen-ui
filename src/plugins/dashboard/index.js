@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import * as engine from 'gen-engine';
 import styled from 'styled-components';
 
 import { Paper, Typography, Icon } from '@material-ui/core';
 
 /* Recoil Tree */
-import { projectState, listState } from './tree/atoms';
+import { projectState, projectListState } from './tree/atoms';
 import { projectList } from './tree/selectors';
-// import { getProjects } from './actions';
 
 /* Plugins */
 import * as access from 'plugins/access';
 import Request from 'plugins/request';
-import LoaderTimeout from 'plugins/tools/LoaderTimeout';
 
 /* Components */
 import ProjectCreateInput from 'plugins/dashboard/components/ProjectCreateInput';
@@ -60,13 +57,17 @@ const TypeTitle = styled(Typography)`
 	color: ${access.color('colors.blue06')};
 `;
 
-function Dashboard(props) {
-	const { user } = props;
+function Dashboard() {
+
+	const email = localStorage.getItem('gen-user-email');
 
 	const [loading, setLoading] = useState(true);
-	const projects = useRecoilValue(projectList);
-	const setList = useSetRecoilState(listState);
+	
+	/* using selector */
+	const projects = useRecoilValue(projectList(email));
 
+	/* using atoms */
+	const setList = useSetRecoilState(projectListState);
 	const [selectedProject, setSelectedProject] = useRecoilState(projectState);
  
 	const handleDefaultSelectProject = (list) => {
@@ -81,18 +82,9 @@ function Dashboard(props) {
 			}
 		}
 	};
+ 
 
-	const handleRemoveProject = id => {
-		setLoading(true);
-		Request.remove(`https://us-central1-mocking-gen-dev.cloudfunctions.net/projectRestAPI-projectRestAPI/project/${id}/${user.email}`)
-			.then(({ data }) => {
-				if (data.status.toLowerCase() === 'success') {
-					// getProjects();
-				}
-			});
-	}; 
-
-	useEffect(() => {
+	useEffect(() => { 
 		setList(projects);
 		handleDefaultSelectProject(projects);
 	}, [projects]);
@@ -107,15 +99,8 @@ function Dashboard(props) {
 	const renderContent = () => {
 		return (
 			<div style={{ display: 'flex', flex: 1 }}> 
-				<ProjectsPanel
-					//projects={data}
-					// selectedProject={selectedProject}
-					// onEnterProject={console.debug}
-					// onDeleteProject={handleRemoveProject}
-					// onSelectProject={handleSelectProject}
-					// onProjectCreated={handleProjectCreated} 
-				/>
 
+				<ProjectsPanel />
 
 				<Content className={'dashboard-content'}>
 					<div style={{ display: 'flex', flexDirection: 'row', height: '50%' }}>
@@ -126,10 +111,11 @@ function Dashboard(props) {
 					</div>
 					<div style={{ display: 'flex', flexDirection: 'row', marginTop: 20, flex: 1 }}>
 						<ProjectGraph />
-					</div>
-					{/* <ProjectsActionButtons project={selectedProject} onProjectDelete={handleRemoveProject}  /> */}
+					</div> 
 				</Content>
-			</div>
+
+			</div> 
+
 		);
 	};
 
@@ -137,16 +123,19 @@ function Dashboard(props) {
 		if (loading) return <div />;
 		return (
 			<EmptyForm>
+				
 				<TypeTitle>
 					{access.translate('Create Your First Project!')}
 					<Icon color={'secondary'}>bubble_chart</Icon>
 				</TypeTitle>
+
 				<Paper style={{ width: 250, height: 40, padding: '0 15px' }} >
 					<ProjectCreateInput useInput={true} onProjectCreated={handleProjectCreated} />
 				</Paper>
+
 			</EmptyForm>
 		);
-	};  
+	};   
 
 	return (
 		<Wrap>

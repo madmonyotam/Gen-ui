@@ -3,8 +3,7 @@ import { Divider } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { projectState } from 'plugins/dashboard/tree/atoms';  
-import { projectList } from 'plugins/dashboard/tree/selectors';  
+import { projectState, projectListState } from 'plugins/dashboard/tree/atoms';
 
 import * as access from 'plugins/access';
 import styled from 'styled-components';
@@ -39,9 +38,9 @@ const ProjectsPanel = props => {
 
 	const [selectedProject, setSelectedProject] = useRecoilState(projectState);
 	
-	const projects = useRecoilValue(projectList);
+	const projectList = useRecoilValue(projectListState);
 
-	const existingProjects = projects.map(proj => proj.name.toLowerCase());
+	const existingProjects = projectList.map(proj => proj.name.toLowerCase());
     
 	const renderProjects = project => {
 		const isSelected = selectedProject && selectedProject.id === project.id;
@@ -65,7 +64,7 @@ const ProjectsPanel = props => {
 			<Divider style={{ marginBottom: 15 }} />
 
 			<ProjectsWrapper>
-				{ projects && projects.map(renderProjects) }
+				{ projectList.map(renderProjects) }
 			</ProjectsWrapper>
 
 		</Panel>

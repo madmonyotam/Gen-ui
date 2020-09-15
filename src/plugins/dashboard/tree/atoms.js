@@ -5,12 +5,12 @@ export const projectState = atom({
 	default: {}
 });
 
-export const listState = atom({
-	key: 'listState',
+export const projectListState = atom({
+	key: 'projectList',
 	default: []
 });
 
-export const projectUsersList = atom({
-	key: 'projectUsersList',
+export const projectUsersState = atom({
+	key: 'projectUsersState',
 	default: []
 });

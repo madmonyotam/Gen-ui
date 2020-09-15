@@ -33,9 +33,9 @@ const SideIcons = styled.div`
 	flex-direction: column;
 	justify-content: space-evenly;
 	text-shadow: none !important;
-	transition: all 0.2s ease-in-out;
+	transition: all 0.05s linear;
 	transform: scale(0.95) translate3d(25%, -50%, 0);
-	transform-origin: center right;
+	transform-origin: center center;
 	opacity: 0;
 
 	${ ProjectCard }:hover & {

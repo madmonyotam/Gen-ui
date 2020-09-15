@@ -29,7 +29,6 @@ const theme = createMuiTheme({
 
 const location = window.location;
 
-
 const handleLocation = (location) => {
 	const split = location.pathname.split('project/');
 	const id = split[1];
@@ -64,9 +63,10 @@ function App({ tree }) {
 		setAppReady(true);
 		return () => setAppReady(false);
 	}, []);
+
 	return (
 		<Root>
-			<ThemeProvider theme={ theme }>
+			<ThemeProvider theme={ theme }> 
 				<Router>
 
 					{ loggedIn && <TopPanel /> }
@@ -79,17 +79,18 @@ function App({ tree }) {
 					</Switch>
 					{
 						appReady &&
-						<React.Suspense fallback={ <div>Loading...</div> }>
+								<React.Suspense fallback={ <div>Loading...</div> }>
 
-							<Routes 
-								routes={ routesConfig } 
-								childDependencies={{ 
-									onLoggedIn: handleLoggedIn, 
-									projectID: handleLocation(location),
-									user: { email: localStorage.getItem('gen-user-email') } 
-								}}
-							/>
-						</React.Suspense>
+									<Routes 
+										routes={ routesConfig } 
+										childDependencies={{ 
+											onLoggedIn: handleLoggedIn, 
+											projectID: handleLocation(location),
+											user: { email: localStorage.getItem('gen-user-email') } 
+										}}
+									/>
+
+								</React.Suspense>
 					}
 				</Router>
 			</ThemeProvider>

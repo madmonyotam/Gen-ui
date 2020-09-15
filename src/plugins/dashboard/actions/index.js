@@ -10,6 +10,14 @@ export const getProjects = email => {
 		});
 };
 
+export const handleRemoveProject = (id, email) => {
+	Request.remove(`https://us-central1-mocking-gen-dev.cloudfunctions.net/projectRestAPI-projectRestAPI/project/${id}/${email}`)
+		.then(({ data }) => {
+			if (data.status.toLowerCase() === 'success') {
+				// getProjects();
+			}
+		});
+}; 
 
 export const getProjectUsers = projectId => { 
 	const random = Math.floor(Math.random() * 25 + 3);
