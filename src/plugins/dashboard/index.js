@@ -66,25 +66,10 @@ function Dashboard() {
 	/* using atoms */
 	const [selectedProject, setSelectedProject] = useRecoilState(projectState);
 	const projects = useRecoilValue(projectListState);
- 
-	const handleDefaultSelectProject = (list) => {
-
-		if (!list.length) setSelectedProject(null);
-		else {
-			if (!selectedProject) setSelectedProject(list[0]);
-			else {
-				const found = list.find(proj => proj.id === selectedProject.id);
-				if (found) setSelectedProject(found);
-				else setSelectedProject(list[0]);
-			}
-		}
-	};
- 
-
 	
 	useEffect(() => { 
 		if (!loading && projects) {
-			handleDefaultSelectProject(projects);
+			setSelectedProject(projects[0]);
 		}
 	}, [loading]);
 
