@@ -1,7 +1,6 @@
 import * as gen from 'gen-engine';
 
 import { get } from 'plugins/requests';
-import { getLibraryPack } from 'plugins/canvases/utils/packUtils';
 import { updateSchemasOnEngine } from 'tree/actions/engine';
 
 export function setItems(tree, items) {
@@ -19,12 +18,10 @@ export function tempGenerate(items) {
 function replaceSchema(tree, items) {
 	const library = tree.get('selectedLibrary');
 	const category = tree.get('selectedCategory');
-	const libraryPack = getLibraryPack();
 
 	get('/replaceSchema', { schema: items, library, category })
 		.then(res => {
 			tree.set('items', res.data);
-			libraryPack.onChangeFromEditor(library, category, res.data);
 			updateSchemasOnEngine();
 		})
 		.catch(err => {

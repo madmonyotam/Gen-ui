@@ -14,9 +14,11 @@ export default class Start extends Component {
 	}
 
 	componentDidMount() {
-		this.measure();
-		const canvas = this.createCanvas();
-		this.do(canvas);
+		setTimeout(() => {			
+			this.measure();
+			const canvas = this.createCanvas();
+			this.do(canvas);
+		}, 100);
 	}
 
 	do(canvas) {
@@ -43,7 +45,7 @@ export default class Start extends Component {
 
 	measure() {
 		const cont = document.getElementById(this.id);
-		const Bounding = cont.getBoundingClientRect();
+		const Bounding = cont ?  cont.getBoundingClientRect() : {};
 
 		this.width = Bounding.width;
 		this.height = Bounding.height;

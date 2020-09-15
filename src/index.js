@@ -4,8 +4,16 @@ import 'index.css';
 import App from 'App';
 //import * as serviceWorker from './serviceWorker';
 import tree from 'tree/tree';
+import { RecoilRoot } from 'recoil';
 
-ReactDOM.render(<App tree={tree} />, document.getElementById('root'));
+const ROOT_ELEMENT = document.getElementById('root');
+
+ReactDOM.render(
+	<RecoilRoot>
+		<App tree={tree} />
+	</RecoilRoot>, 
+	ROOT_ELEMENT
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

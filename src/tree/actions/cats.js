@@ -1,6 +1,4 @@
 import * as gen from 'gen-engine';
-
-import { getLibraryPack } from 'plugins/canvases/utils/packUtils';
 import { get } from 'plugins/requests';
 import { updateSchemasOnEngine } from 'tree/actions/engine';
 
@@ -77,17 +75,10 @@ export function getItemsFromCategory(tree, category) {
 	});
 }
 
-export function setKey(tree, { newKey, schemaName }) {
+export function setKey(tree, { newKey }) {
 	const viewKey = tree.get('viewKey');
-	const lib = tree.get(['focus','lib']);
-  
+	
 	if(viewKey !== newKey){
 		tree.set('viewKey',newKey);
-    
-		setTimeout(() => {
-			getLibraryPack().onCategorySelected(lib,schemaName);
-		}, 200); 
-	} else {
-		getLibraryPack().onCategorySelected(lib,schemaName);
 	}
 }

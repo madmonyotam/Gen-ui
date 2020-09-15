@@ -1,12 +1,28 @@
 import { v4 } from 'node-uuid';
 import { find, findIndex } from 'lodash';
 import Pack from 'plugins/canvases/pack/Pack';
+import * as access from 'plugins/access';
+
 
 export default class LibraryPack extends Pack {
 	constructor(params) {
 		super(params);
 
+		this.colorScaleRange = [
+			access.color('types.packBgStart'),
+			access.color('types.packBgEnd')
+		];
+
+		this.clickColor = access.color('types.clickColor');
+
+		this.textClasses = {
+			out: 'light-text',
+			in: 'light-text-types'
+		};
+
+		this.fillOpacity = 0.5;
 		this.limitByLevel = 3;
+		this.showMainCircle = false;
 	}
 
 	findLibrary(lib) {

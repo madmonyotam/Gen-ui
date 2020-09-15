@@ -64,7 +64,6 @@ function Project() {
 		>
 			<MenuPanel viewKey={viewKey} />
 			<SchemaPanel />
-			<MainCanvas key={viewKey} />
 			<Menu />
 		</Mask>
 	);

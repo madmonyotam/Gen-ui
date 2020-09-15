@@ -9,24 +9,41 @@ export default {
 		blue05: '#21354a',
 		blue06: '#293d52',
 		blueLight01: '#bfd6ef',
+		blueLight02: '#e0e7ee',
+		blueLight03: '#bac4ce',
 		grey01: '#808080',
 		grey02: '#e8e8e8',
+		greyLight01: '#f6f6f6'
 	},
 	materialUI: {
 		primary: 'colors.blue01',
 		secondary: 'colors.blue02',
 	},
+	backLevelColors: {
+		owner: 'colors.blue05',
+		member: 'colors.blueLight01',
+		guest: 'colors.blueLight02'
+	},
+	frontLevelColors: {
+		owner: 'colors.blueLight02',
+		member: 'colors.blue02',
+		guest: 'colors.blue05'
+	},
 	backgrounds: {
 		primary: 'colors.blue01',
 		secondary: 'colors.blueLight01',
+		content: 'colors.blueLight02',
 		active: 'colors.blue02',
 		hover: 'colors.blue03',
 		code: 'colors.grey02',
+		light: 'colors.greyLight01',
+		badge: '#8fa6c2'
 	},
 	texts: {
 		primary: 'colors.white',
 		secondary: 'colors.blue01',
 		placeholder: 'colors.grey01',
+		title: '#6C829B'
 	},
 	searchBar: {
 		bg: 'backgrounds.primary',

@@ -2,6 +2,9 @@ export default {
 	topBar: {
 		height: 60
 	},
+	widgetHeader: {
+		height: 40
+	},
 	flexViews: {
 		leftPanel: 0.2,
 		schemaPanel: 0.3,
