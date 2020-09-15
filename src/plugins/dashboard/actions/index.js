@@ -1,13 +1,31 @@
+import { useEffect, useState } from 'react';
+import { useSetRecoilState } from 'recoil';
 import Request from 'plugins/request';
-import * as gengine from 'gen-engine';
 
-export const getProjects = email => {
-	return Request.get(`https://us-central1-mocking-gen-dev.cloudfunctions.net/projectRestAPI-projectRestAPI/project/users/${email}`)
-		.then(({ data }) => {
-			if (data.status.toLowerCase() === 'success') {
-				return data.projects;
-			}
-		});
+import * as gengine from 'gen-engine';
+import { projectUsersState, projectListState } from 'plugins/dashboard/tree/atoms';
+
+
+export const useFetchProjects = email => {
+	
+	const [loading, setLoading] = useState(true);
+	const setProjectList = useSetRecoilState(projectListState);
+
+	useEffect(() => {
+		if (!email) {
+			setLoading(false);
+			return;
+		}
+		Request.get(`https://us-central1-mocking-gen-dev.cloudfunctions.net/projectRestAPI-projectRestAPI/project/users/${email}`)
+			.then(({ data }) => {
+				if (data.status.toLowerCase() === 'success') {
+					setProjectList( data.projects );
+					setLoading(false);
+				}
+			});
+	}, [email, setProjectList]);
+
+	return loading;
 };
 
 export const handleRemoveProject = (id, email) => {
@@ -19,7 +37,11 @@ export const handleRemoveProject = (id, email) => {
 		});
 }; 
 
-export const getProjectUsers = projectId => { 
+export const useFetchProjectUsers = projectId => { 
+
+	const [loading, setLoading] = useState(true);
+	const setProjectUsers = useSetRecoilState(projectUsersState);
+
 	const random = Math.floor(Math.random() * 25 + 3);
 
 	const schema = {
@@ -42,6 +64,8 @@ export const getProjectUsers = projectId => {
 	users[0].ownership = 'owner';
 	users[1].ownership = 'member';
 	users[2].ownership = 'guest'; 
-	
-	return users;
+		
+	setProjectUsers(users);
+	setLoading(false);
+	return loading;
 };

@@ -16,6 +16,7 @@ const Routes = ({ routes, dependencies, childDependencies }) => {
 			{ ...dependencies }
 			key={ i }
 			path={ route.path }
+			name={ route.name }
 			render={ props => renderChild(props, route) }
 		/>
 	);

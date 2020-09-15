@@ -4,23 +4,13 @@ import PropTypes from 'prop-types';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { projectState, projectListState } from 'plugins/dashboard/tree/atoms';
-
-import * as access from 'plugins/access';
+import { existingProjectNames } from 'plugins/dashboard/tree/selectors';
+ 
 import styled from 'styled-components';
-
-import ProjectCreateInput from 'plugins/dashboard/components/ProjectCreateInput';
-import ProjectListItem from 'plugins/dashboard/components/ProjectListItem';
-
-const Panel = styled.div`
-	width: 235px; 
-	padding: 15px;
-	display: flex; 
-	flex-direction: column;
-	box-shadow:  10px 0px 10px -20px rgba(0,0,0,0.75);
-	background: ${ access.color('backgrounds.light') } 
-	z-index: 1;
-}`;
-
+import Panel from 'plugins/tools/Panel';
+import ProjectCreateInput from 'plugins/dashboard/components/project/CreateInput';
+import ProjectListItem from 'plugins/dashboard/components/project/ProjectListItem';
+ 
 const ProjectsWrapper = styled.div`
 	height: 100%;
     padding-right: 15px;
@@ -28,8 +18,8 @@ const ProjectsWrapper = styled.div`
 	width: 100%;
 `;
 
-const ProjectsPanel = props => {
-	const { 
+const ProjectPanel = props => {
+	const {
 		onEnterProject,
 		onDeleteProject,
 		onProjectCreated,
@@ -37,11 +27,12 @@ const ProjectsPanel = props => {
 
 
 	const [selectedProject, setSelectedProject] = useRecoilState(projectState);
-	
+
 	const projectList = useRecoilValue(projectListState);
 
-	const existingProjects = projectList.map(proj => proj.name.toLowerCase());
-    
+	// const existingProjects = projectList.map(proj => proj.name.toLowerCase());
+	const existingProjects = useRecoilValue(existingProjectNames);
+
 	const renderProjects = project => {
 		const isSelected = selectedProject && selectedProject.id === project.id;
 		return (
@@ -49,29 +40,28 @@ const ProjectsPanel = props => {
 				key={project.id}
 				selected={isSelected}
 				project={project}
-				onEnterProject={ onEnterProject }
-				onDeleteProject={ onDeleteProject } 
-				onClick={ () => setSelectedProject(project) } />
+				onEnterProject={onEnterProject}
+				onDeleteProject={onDeleteProject}
+				onClick={() => setSelectedProject(project)} />
 		);
-	}; 
+	};
 
 	return (
 		<Panel>
 			<ProjectCreateInput
-				onProjectCreated={ onProjectCreated }
-				existingProjects={ existingProjects } />
+				onProjectCreated={onProjectCreated}
+				existingProjects={existingProjects} />
 
 			<Divider style={{ marginBottom: 15 }} />
 
 			<ProjectsWrapper>
-				{ projectList.map(renderProjects) }
+				{projectList.map(renderProjects)}
 			</ProjectsWrapper>
-
 		</Panel>
 	);
 };
 
-ProjectsPanel.propTypes = {
+ProjectPanel.propTypes = {
 	projects: PropTypes.array,
 	selectedProject: PropTypes.object,
 	onEnterProject: PropTypes.func,
@@ -80,13 +70,13 @@ ProjectsPanel.propTypes = {
 	onProjectCreated: PropTypes.func,
 };
 
-ProjectsPanel.defaultProps = {
+ProjectPanel.defaultProps = {
 	projects: [],
 	selectedProject: {},
-	onEnterProject: () => {},
-	onDeleteProject: () => {},
-	onSelectProject: () => {},
-	onProjectCreated: () => {},
+	onEnterProject: () => { },
+	onDeleteProject: () => { },
+	onSelectProject: () => { },
+	onProjectCreated: () => { },
 };
 
-export default ProjectsPanel;
+export default ProjectPanel;

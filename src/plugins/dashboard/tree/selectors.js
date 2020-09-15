@@ -1,12 +1,11 @@
-import { selector, selectorFamily } from 'recoil'; 
-import { getProjects, getProjectUsers } from '../actions';
-// import { listState } from './atoms';
+import { selector } from 'recoil'; 
+import { projectListState } from './atoms';
 
-export const projectList = selectorFamily({
-	key: 'projectList',
-	get: email => async () => {
-		const response = await getProjects(email);
-		return response;
+export const existingProjectNames = selector({
+	key: 'existingProjectNames',
+	get: ({ get }) => {
+		const list = get(projectListState);
+		return list.map(proj => proj.name.toLowerCase());
 	},
 	// set: ({ set }, newList) => {
 	// 	set(listState, )

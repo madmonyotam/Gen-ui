@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Button, Icon } from '@material-ui/core';
 import * as access from 'plugins/access'; 
 
-const ProjectsActionButtons = props => {
+const ActionButtons = props => {
 	const { project, onProjectDelete } = props;
 	return (
 		
@@ -30,14 +30,15 @@ const ProjectsActionButtons = props => {
 
 	);
 };
-ProjectsActionButtons.propTypes = {
+
+ActionButtons.propTypes = {
 	project: PropTypes.object,
 	onProjectDelete: PropTypes.func,
 };
 
-ProjectsActionButtons.defaultProps = {
+ActionButtons.defaultProps = {
 	project: {},
 	onProjectDelete: () => null
 };
 
-export default ProjectsActionButtons;
+export default ActionButtons;

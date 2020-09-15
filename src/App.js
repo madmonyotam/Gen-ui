@@ -108,7 +108,7 @@ function RedirectHandler(props) {
 
 	let isProject = false;
 
-	if (location.pathname.includes('/project')) isProject = true;
+	if (location.pathname.includes('/project') || location.pathname.includes('/old-project'))  isProject = true;
 
 	if (loggedIn) {
 		if (isProject && projectID) {

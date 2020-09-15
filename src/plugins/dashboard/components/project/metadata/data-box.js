@@ -94,10 +94,7 @@ const DataBox = props => {
 };
 
 DataBox.propTypes = {
-	children: PropTypes.oneOfType([
-		PropTypes.object,
-		PropTypes.array,
-	]),
+	children: PropTypes.node,
 	badge: PropTypes.oneOfType([
 		PropTypes.string,
 		PropTypes.number,

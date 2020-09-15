@@ -1,34 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 import { Paper, Typography, Icon } from '@material-ui/core';
 
 /* Recoil Tree */
 import { projectState, projectListState } from './tree/atoms';
-import { projectList } from './tree/selectors';
+
+import { useFetchProjects } from './actions';
 
 /* Plugins */
 import * as access from 'plugins/access';
-import Request from 'plugins/request';
+import LoaderTimeout from 'plugins/tools/LoaderTimeout';
 
 /* Components */
-import ProjectCreateInput from 'plugins/dashboard/components/ProjectCreateInput';
-import ProjectMetadata from 'plugins/dashboard/components/metadata/';
-import ProjectsPanel from 'plugins/dashboard/components/ProjectsPanel';
-import ProjectGraph from 'plugins/dashboard/components/ProjectGraph';
-import ProjectCanvas from 'plugins/dashboard/components/ProjectCanvas'; 
+import ProjectCreateInput from 'plugins/dashboard/components/project/CreateInput';
+import ProjectMetadata from 'plugins/dashboard/components/project/metadata/';
+import ProjectPanel from 'plugins/dashboard/components/project/ProjectPanel';
+import ProjectGraph from 'plugins/dashboard/components/project/ProjectGraph';
+import ProjectCanvas from 'plugins/dashboard/components/project/ProjectCanvas'; 
 
 const Wrap = styled.div`
     position: absolute;
-		display: flex;
+	display: flex;
     top: 60px;
     bottom: 0;
     left: 0;
     right: 0;
-		padding: 0;
-		background: ${access.color('backgrounds.content')};
+	padding: 0;
+	background: ${access.color('backgrounds.content')};
 `;
 
 const EmptyForm = styled.div`
@@ -60,15 +61,11 @@ const TypeTitle = styled(Typography)`
 function Dashboard() {
 
 	const email = localStorage.getItem('gen-user-email');
-
-	const [loading, setLoading] = useState(true);
+	const loading = useFetchProjects(email);
 	
-	/* using selector */
-	const projects = useRecoilValue(projectList(email));
-
 	/* using atoms */
-	const setList = useSetRecoilState(projectListState);
 	const [selectedProject, setSelectedProject] = useRecoilState(projectState);
+	const projects = useRecoilValue(projectListState);
  
 	const handleDefaultSelectProject = (list) => {
 
@@ -84,13 +81,15 @@ function Dashboard() {
 	};
  
 
+	
 	useEffect(() => { 
-		setList(projects);
-		handleDefaultSelectProject(projects);
-	}, [projects]);
+		if (!loading && projects) {
+			handleDefaultSelectProject(projects);
+		}
+	}, [loading]);
 
 	const handleProjectCreated = (res) => {
-		setLoading(true);
+		// setLoading(true);
 		if (res.status.toLowerCase() === 'success') {
 			// getProjects();
 		}
@@ -100,7 +99,7 @@ function Dashboard() {
 		return (
 			<div style={{ display: 'flex', flex: 1 }}> 
 
-				<ProjectsPanel />
+				<ProjectPanel />
 
 				<Content className={'dashboard-content'}>
 					<div style={{ display: 'flex', flexDirection: 'row', height: '50%' }}>
@@ -139,7 +138,9 @@ function Dashboard() {
 
 	return (
 		<Wrap>
-			{ projects && projects.length ? renderContent(projects) : renderSimpleForm(loading) }
+			<LoaderTimeout isLoading={ loading } coverAll={ true } pendingExtraTime={ 1000 }>
+				{ projects && projects.length ? renderContent(projects) : renderSimpleForm(loading) }
+			</LoaderTimeout>
 		</Wrap>
 	);
 }

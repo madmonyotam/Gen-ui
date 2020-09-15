@@ -7,17 +7,17 @@ import LinearScaleIcon from '@material-ui/icons/LinearScale';
 // import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Popper from '@material-ui/core/Popper'; 
 
-import ProjectsActionButtons from 'plugins/dashboard/components/ProjectsActionButtons';
+import ActionButtons from 'plugins/project/components/ActionButtons';
 
 const Panel = styled.div`
-  position: absolute;
-  height: 60px;
-  right: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  z-index: 1;
+	position: absolute;
+	height: 60px;
+	right: 0;
+	left: 0;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	z-index: 1;
 `;
 
 const LeftWrap = styled.div`
@@ -30,6 +30,28 @@ const LeftWrap = styled.div`
 	box-shadow:  10px 0px 10px -20px rgba(0,0,0,0.75);
 `;
 
+const UserTitleWrap = styled.div`
+	margin-left: 10px;
+	overflow: hidden;
+	width: 100%;
+	white-space: nowrap;
+`;
+
+const OverflowTypo = styled(Typography)`
+	text-overflow: ellipsis;
+	width: 100%;
+	overflow: hidden;
+`;
+
+const EmailTypo = styled(OverflowTypo)`
+	font-size: 13px !important;
+	color: #555;
+`;
+
+const NameTypo = styled(OverflowTypo)`
+	font-weight: 600 !important;
+`;
+
 const RightWrap = styled.div`
 	background: ${ access.color('backgrounds.content') };
 	align-items: center;
@@ -38,8 +60,6 @@ const RightWrap = styled.div`
 	flex: 1;
 	padding: 0 25px 0 15px;
 	height: 100%;
-	// box-shadow: 0px 10px 10px -20px rgba(0,0,0,0.75);
-	// border-bottom: 1px solid ${ access.color('backgrounds.content') };
 `;
 
 const MenuIcon = styled(IconButton)`
@@ -65,22 +85,26 @@ const TopPanel = () => {
 		window.location.href = '/login';
 	};
 
+	const UserTitle = () => (
+		<UserTitleWrap>
+			<NameTypo>
+				{userName}
+			</NameTypo>
+			<EmailTypo>
+				{email}
+			</EmailTypo>
+		</UserTitleWrap>
+	);
+
 	return (
 		<Panel background={ access.color('backgrounds.secondary') }>
 			<LeftWrap>
 				<Avatar variant={ 'rounded' } alt={ 'avatar-picsum' } src={ 'https://picsum.photos/200' } />
-				<div style={{ margin: '0 10px', textAlign: 'left' }}>
-					<Typography style={{ fontSize: 15, fontWeight: 600 }}>
-						{ userName }
-					</Typography>
-					<Typography style={{ fontSize: 13, marginTop: -5, color: '#555'  }}>
-						{ email }
-					</Typography>
-				</div>
+				<UserTitle /> 
 			</LeftWrap>
 
 			<RightWrap>
-				<ProjectsActionButtons />
+				<ActionButtons />
 				
 				<Divider orientation={'vertical'} style={{ height: '35%', margin: '0 15px 0 20px' }} />
 
