@@ -10,7 +10,6 @@ import MenuPanel from 'Views/MenuPanel';
 import SchemaPanel from 'Views/SchemaPanel';
 import Mask from 'plugins/tools/Mask';
 
-import MainCanvas from 'plugins/canvases/MainCanvas';
 import Menu from 'plugins/menuModal/Menu';
 
 import Request from 'plugins/request';

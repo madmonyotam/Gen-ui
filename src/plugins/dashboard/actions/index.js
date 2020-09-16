@@ -40,6 +40,23 @@ export const deleteProject = (id, email) => {
 		});
 }; 
 
+export const getUsersContributes = (projectId) => {
+	const offlineParams = {
+		lib: 'users', 
+		cat: 'user',
+		amount: 5
+	};
+	
+	return Request.get('url', { projectId }, offlineParams)
+		.then(({ data }) => {
+			return data;
+		})
+		.catch(error => {
+			console.error(error);
+			return false;
+		});
+}; 
+
 export const getProjectUsers = projectId => { 
 	const random = Math.floor(Math.random() * 25 + 3);
 
