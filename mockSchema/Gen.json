@@ -1,0 +1,33 @@
+{
+  "users": {
+    "overTime": {
+      "date": {
+        "type": "recentDate",
+        "value": {
+          "days": "30",
+          "dateMask": "x"
+        }
+      },
+      "amount": {
+        "type": "numberMax",
+        "value": {
+          "max": "100"
+        }
+      }
+    },
+    "user": {
+      "name": {
+        "type": "fullName"
+      },
+      "contribute": {
+        "type": "category",
+        "value": {
+          "categoryPath": "users.overTime",
+          "amount": ""
+        },
+        "size": "30",
+        "randomSize": true
+      }
+    }
+  }
+}

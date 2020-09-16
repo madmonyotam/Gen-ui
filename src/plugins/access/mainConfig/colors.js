@@ -74,6 +74,11 @@ export default {
 		packBgEnd: 'backgrounds.hover',
 		clickColor: 'colors.blue06',
 	},
+	lineCanvas: {
+		bg: 'colors.blue01',
+		fg: 'colors.blueLight01',
+		move: 'colors.blue05',
+	},
 	types: {
 		bg: 'colors.blue05',
 		packBgStart: 'colors.blue04',
