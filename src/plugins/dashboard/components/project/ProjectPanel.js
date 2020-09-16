@@ -2,8 +2,8 @@ import React from 'react';
 import { Divider } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
-import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
-import { projectState, projectListState, selectedProjectId } from 'plugins/dashboard/tree/atoms';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { projectListState, selectedProjectId } from 'plugins/dashboard/tree/atoms';
  
 import styled from 'styled-components';
 import Panel from 'plugins/tools/Panel';
@@ -24,7 +24,6 @@ const ProjectPanel = props => {
 	} = props;
 
 
-	// const [selectedProject, setSelectedProject] = useRecoilState(projectState);
 	const [ selectedId, setProjectId ] = useRecoilState(selectedProjectId);
 
 	const projectList = useRecoilValue(projectListState);
