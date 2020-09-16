@@ -117,7 +117,6 @@ const TopPanel = () => {
 					</>
 				}
 				
-
 				<Tooltip title={access.translate('Menu')}>
 					<MenuIcon
 						ref={anchorRef}
@@ -127,29 +126,19 @@ const TopPanel = () => {
 						<LinearScaleIcon fontSize={'small'} />
 					</MenuIcon>
 				</Tooltip>
-				{/* <Divider orientation={'vertical'} style={{ height: '60%', margin: '0px 15px' }} />
-				<Tooltip title={access.translate('Back')}>
-					<IconButton
-						size={'small'}
-						onClick={() => window.history.back()}>
-						<ArrowBackIcon fontSize={'small'} />
-					</IconButton>
-				</Tooltip> */}
+				
 			</RightWrap>
+
 			<Popper open={open} anchorEl={anchorRef.current}  role={undefined} transition disablePortal placement={ 'bottom-end' }>
 				<Paper style={{ marginTop: 10 }} >
 					<ClickAwayListener onClickAway={handleClose}>
 						<MenuList dense={ true } autoFocusItem={open} id="menu-list-grow">
-							{/* <MenuItem onClick={handleClose}>{ access.translate('Save As') }</MenuItem>
-							<MenuItem onClick={handleClose}>{ access.translate('New Project') }</MenuItem>
-							<MenuItem onClick={handleClose}>{ access.translate('Open Project') }</MenuItem>
-							<MenuItem onClick={handleClose}>{ access.translate('Remove Project') }</MenuItem>
-							<Divider style={{ margin: '5px 0'}} />  */}
 							<MenuItem onClick={ handleLogout }>{access.translate('Logout')}</MenuItem>
 						</MenuList>
 					</ClickAwayListener>
 				</Paper>
 			</Popper>
+
 		</Panel>
 	);
 

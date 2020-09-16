@@ -1,4 +1,6 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react'; 
+import { useRecoilState } from 'recoil';
+import { projectListState } from 'plugins/dashboard/tree/atoms';
 import PropTypes from 'prop-types';
 import { Icon, Typography, Tooltip, ClickAwayListener } from '@material-ui/core';
 import styled from 'styled-components';
@@ -41,6 +43,7 @@ const ProjectCreateInput = ({ useInput, onProjectCreated, existingProjects }) =>
 	const [projectName, setProjectName] = useState('');
 	const [showCreateInput, setShowCreateInput] = useState(false);
 	const [showConfirm, setShowConfirm] = useState(false);
+	const [projectList, setProjectToList] = useRecoilState(projectListState);
 	const inputRef = useRef();
 
 	
@@ -91,12 +94,28 @@ const ProjectCreateInput = ({ useInput, onProjectCreated, existingProjects }) =>
 		if (!projectName || !showConfirm) return;
 		const valid = projectName;
 		setProjectName('Creating...');	
-		Request.post(PROJECTS_API, {
+
+		let newProject = {
 			name: valid,
 			createdBy: localStorage.getItem('gen-user-email'),
 			projectJson: {}
-		}).then(({ data }) => {
-			if (onProjectCreated) onProjectCreated(data);
+		};
+
+		Request.post(PROJECTS_API, newProject).then(({ data }) => {
+			// console.log(data);
+			newProject = {
+				...newProject,
+				createdTime: Date.now(),
+				updatedTime: Date.now(),
+				id: data.projectId
+			};
+			
+			let newList = [
+				...projectList,
+				newProject
+			];
+			setProjectToList(newList);
+
 			handleClearForm();
 		});
 	}; 

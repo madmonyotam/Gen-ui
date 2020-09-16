@@ -1,14 +1,15 @@
 import React from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import PropTypes from 'prop-types';
 import { Typography, Tooltip, Icon, IconButton } from '@material-ui/core';
 import styled from 'styled-components';
 
 
 import { projectListState } from 'plugins/dashboard/tree/atoms';
+import { deleteProject } from 'plugins/dashboard/actions';
 
 import * as access from 'plugins/access';
-import Request from 'plugins/request';
+// import Request from 'plugins/request';
 import moment from 'moment';
 
 const ProjectCard = styled.div`
@@ -56,7 +57,7 @@ const InnerDetail = styled(Typography)`
 
 const ProjectListItem = props => {
 
-	const [ projectList, setProjectList ] = useRecoilState(projectListState);
+	const [projectList, setProjectList] = useRecoilState(projectListState);
 
 	const { 
 		project, 
@@ -71,18 +72,18 @@ const ProjectListItem = props => {
 		if (onEnterProject) onEnterProject(project.id);
 	};
 
-	const handleDeleteProject = e => {
+	const handleDeleteProject = async e => {
 		e.stopPropagation();
 		
+		const { id } = project;
 		const email = localStorage.getItem('gen-user-email');
 
-		Request.remove(`https://us-central1-mocking-gen-dev.cloudfunctions.net/projectRestAPI-projectRestAPI/project/${project.id}/${email}`)
-			.then(({ data }) => {
-				if (data.status.toLowerCase() === 'success') {
-					const list = projectList.filter(p => p.id !== project.id);
-					setProjectList(list);
-				}
-			});
+		const success = await deleteProject(id, email);
+
+		if (success) {
+			const list = projectList.filter(p => p.id !== id);
+			setProjectList(list);
+		}
 	};
 
 	return (

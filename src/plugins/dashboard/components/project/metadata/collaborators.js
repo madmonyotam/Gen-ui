@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Icon, Tooltip } from '@material-ui/core';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { projectUsersState, projectState } from 'plugins/dashboard/tree/atoms';
+import { projectUsersState, selectedProjectId } from 'plugins/dashboard/tree/atoms';
 import { getProjectUsers } from 'plugins/dashboard/actions';
 
 import * as access from 'plugins/access';
@@ -18,7 +18,7 @@ const List = styled.div`
 const CollaboratorsList = () => {
 
 	const [users, setUsers] = useRecoilState(projectUsersState);
-	const project = useRecoilValue(projectState);
+	const projectId = useRecoilValue(selectedProjectId);
 
 	const fetchUsers = async () => {
 		const data = await getProjectUsers();
@@ -27,7 +27,7 @@ const CollaboratorsList = () => {
 
 	useEffect(() => {
 		fetchUsers();
-	}, [project]);
+	}, [projectId]);
 
 	const renderUsers = user => (
 		<UserListItem user={ user } key={ user.id }/>

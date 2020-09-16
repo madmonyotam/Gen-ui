@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import { Paper, Typography, Icon } from '@material-ui/core';
 
 /* Recoil Tree */
-import { projectState, projectListState } from './tree/atoms';
+import { projectState, projectListState, selectedProjectId } from './tree/atoms';
 
 import { useFetchProjects } from './actions';
 
@@ -64,12 +64,15 @@ function Dashboard() {
 	const loading = useFetchProjects(email);
 	
 	/* using atoms */
-	const [selectedProject, setSelectedProject] = useRecoilState(projectState);
+	// const [selectedProject, setSelectedProject] = useRecoilState(projectState);
+	const setProjectId = useSetRecoilState(selectedProjectId);
 	const projects = useRecoilValue(projectListState);
+
+	console.log(projects);
 	
 	useEffect(() => { 
 		if (!loading && projects) {
-			setSelectedProject(projects[0]);
+			setProjectId(projects[0].id);
 		}
 	}, [loading]);
 
@@ -89,7 +92,7 @@ function Dashboard() {
 				<Content className={'dashboard-content'}>
 					<div style={{ display: 'flex', flexDirection: 'row', height: '50%' }}>
 
-						<ProjectMetadata project={selectedProject} style={{ marginRight: 20 }} />
+						<ProjectMetadata style={{ marginRight: 20 }} />
 						<ProjectCanvas />
 
 					</div>

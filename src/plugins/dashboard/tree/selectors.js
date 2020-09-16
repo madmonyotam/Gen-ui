@@ -1,21 +1,26 @@
 import { selector } from 'recoil'; 
-import { projectListState } from './atoms';
+import { selectedProjectId, projectListState } from './atoms';
 
-export const existingProjectNames = selector({
-	key: 'existingProjectNames',
+
+export const normalizedProject = selector({
+	key: 'normalizedProject',
 	get: ({ get }) => {
-		const list = get(projectListState);
-		return list.map(proj => proj.name.toLowerCase());
-	},
-	// set: ({ set }, newList) => {
-	// 	set(listState, )
-	// }
-});  
-
-/*
-export const projectUsersList = selectorFamily({
-	key: 'projectUsersList',
-	get: projectId => async () => {
+		const list = get(projectListState).reduce((obj, project) => {
+			const newObject = { ...obj, [project.id]: project };
+			return newObject;
+		}, {});
+		
+		return list;
 
 	}
-});*/
+});
+
+export const selectedProject = selector({
+	key: 'selectedProject',
+	get: ({ get }) => {
+		const id = get(selectedProjectId);
+		const projects = get(normalizedProject);
+		return projects[id];
+	}
+});
+

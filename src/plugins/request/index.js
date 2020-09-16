@@ -87,5 +87,5 @@ export default {
 	register,
 	get,
 	post,
-	remove
+	delete: remove
 }; 

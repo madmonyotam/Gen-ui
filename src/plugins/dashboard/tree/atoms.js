@@ -1,5 +1,10 @@
 import { atom } from 'recoil';
 
+export const selectedProjectId = atom({
+	key: 'selectedProjectId',
+	default: undefined
+});
+
 export const projectState = atom({
 	key: 'projectState',
 	default: {}
