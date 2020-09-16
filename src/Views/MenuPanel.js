@@ -1,5 +1,5 @@
 /* eslint-disable no-fallthrough */
-import React, { useEffect, Fragment, useCallback } from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { useBranch } from 'baobab-react/hooks';
 
@@ -17,7 +17,6 @@ import * as libsActions from 'tree/actions/libs';
 import * as catsActions from 'tree/actions/cats';
 import * as itemsActions from 'tree/actions/items';
 // import { get } from "plugins/requests";
-import Request from 'plugins/request'; 
 
 const CollapseColumn = styled(Column)`
   min-width: 50px;
@@ -88,47 +87,47 @@ function LeftPanel({ viewKey }) {
 		};
 
 		switch (getListOf()) {
-		case 'libs':
-			if (libs) {
-				return libs.map(label => (
+			case 'libs':
+				if (libs) {
+					return libs.map(label => (
+						<ListItem
+							key={label}
+							label={label}
+							handleRowClick={handleClickOnLib}
+							handleRemove={handleRemoveLib}
+							handleEdit={handleEditLib}
+						/>
+					));
+				}
+
+			case 'cats':
+				console.log('cats ->', cats);
+				return cats.map(label => (
 					<ListItem
 						key={label}
+						parent={focus.lib}
 						label={label}
-						handleRowClick={handleClickOnLib}
-						handleRemove={handleRemoveLib}
-						handleEdit={handleEditLib}
+						handleRowClick={handleClickOnCat}
+						handleRemove={handleRemoveCat}
+						handleEdit={handleEditCat}
 					/>
 				));
-			}
-
-		case 'cats':
-			console.log('cats ->', cats);
-			return cats.map(label => (
-				<ListItem
-					key={label}
-					parent={focus.lib}
-					label={label}
-					handleRowClick={handleClickOnCat}
-					handleRemove={handleRemoveCat}
-					handleEdit={handleEditCat}
-				/>
-			));
-		case 'items':
-			console.log(items);
-			return Object.keys(items).map(label => (
-				<ListItem
-					key={label}
-					parent={focus.cat}
-					label={label}
-					handleRowClick={handleClickOnItem}
-					handleRemove={handleRemoveItem}
-					handleEdit={handleEditItem}
-				/>
-			));
-		case 'inspector':
-			return <Inspector item={items[focus.item]} />;
-		default:
-			return null;
+			case 'items':
+				console.log(items);
+				return Object.keys(items).map(label => (
+					<ListItem
+						key={label}
+						parent={focus.cat}
+						label={label}
+						handleRowClick={handleClickOnItem}
+						handleRemove={handleRemoveItem}
+						handleEdit={handleEditItem}
+					/>
+				));
+			case 'inspector':
+				return <Inspector item={items[focus.item]} />;
+			default:
+				return null;
 		}
 	};
 
@@ -154,29 +153,29 @@ function LeftPanel({ viewKey }) {
 		};
 
 		switch (addTo) {
-		case 'libs':
-			return (
-				<AddRow
-					label={access.translate('Add Library')}
-					handleAdd={handleAddLib}
-				/>
-			);
-		case 'cats':
-			return (
-				<AddRow
-					label={access.translate('Add Schema')}
-					handleAdd={handleAddCat}
-				/>
-			);
-		case 'items':
-			return (
-				<AddRow
-					label={access.translate('Add Field')}
-					handleAdd={handleAddItem}
-				/>
-			);
-		default:
-			return;
+			case 'libs':
+				return (
+					<AddRow
+						label={access.translate('Add Library')}
+						handleAdd={handleAddLib}
+					/>
+				);
+			case 'cats':
+				return (
+					<AddRow
+						label={access.translate('Add Schema')}
+						handleAdd={handleAddCat}
+					/>
+				);
+			case 'items':
+				return (
+					<AddRow
+						label={access.translate('Add Field')}
+						handleAdd={handleAddItem}
+					/>
+				);
+			default:
+				return;
 		}
 	};
 

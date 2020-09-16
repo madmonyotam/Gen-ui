@@ -5,8 +5,6 @@ import { useBranch } from 'baobab-react/hooks';
 import styled from 'styled-components';
 
 import * as libsActions from 'tree/actions/libs';
-import * as access from 'plugins/access';
-import Mask from 'plugins/tools/Mask';
 import WidgetHeader from 'plugins/tools/WidgetHeader';
 
 import Request from 'plugins/request';
