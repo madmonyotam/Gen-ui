@@ -18,7 +18,7 @@ import LoaderTimeout from 'plugins/tools/LoaderTimeout';
 import ProjectCreateInput from 'plugins/dashboard/components/project/CreateInput';
 import ProjectMetadata from 'plugins/dashboard/components/project/metadata/';
 import ProjectPanel from 'plugins/dashboard/components/project/ProjectPanel';
-import ProjectGraph from 'plugins/dashboard/components/project/ProjectGraph';
+import ContributesGraph from 'plugins/dashboard/components/project/ContributesGraph';
 import ProjectCanvas from 'plugins/dashboard/components/project/ProjectCanvas'; 
 
 const Wrap = styled.div`
@@ -45,8 +45,19 @@ const Content = styled.div`
 	display: flex; 
 	flex-direction: column; 
 	flex: 1;
+	gap: 10px;
 	padding: 15px 25px;
 	background: ${access.color('backgrounds.content')};
+`;
+
+const LineGraphCont = styled.div`
+	display: flex; 
+	flex: 1; 
+`;
+
+const UpperCont = styled.div`
+	display: flex; 
+	height: 60%;
 `;
 
 const TypeTitle = styled(Typography)`
@@ -67,8 +78,6 @@ function Dashboard() {
 	// const [selectedProject, setSelectedProject] = useRecoilState(projectState);
 	const setProjectId = useSetRecoilState(selectedProjectId);
 	const projects = useRecoilValue(projectListState);
-
-	console.log(projects);
 	
 	useEffect(() => { 
 		if (!loading && projects) {
@@ -90,15 +99,15 @@ function Dashboard() {
 				<ProjectPanel />
 
 				<Content className={'dashboard-content'}>
-					<div style={{ display: 'flex', flexDirection: 'row', height: '50%' }}>
+					<UpperCont>
 
 						<ProjectMetadata style={{ marginRight: 20 }} />
 						<ProjectCanvas />
 
-					</div>
-					<div style={{ display: 'flex', flexDirection: 'row', marginTop: 20, flex: 1 }}>
-						<ProjectGraph />
-					</div> 
+					</UpperCont>
+					<LineGraphCont>
+						<ContributesGraph />
+					</LineGraphCont> 
 				</Content>
 
 			</div> 

@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useEffect, useState } from 'react';
+import { useSetRecoilState } from 'recoil';
 import Request from 'plugins/request';
 
 import * as gengine from 'gen-engine';
@@ -33,6 +33,23 @@ export const deleteProject = (id, email) => {
 	return Request.delete(`https://us-central1-mocking-gen-dev.cloudfunctions.net/projectRestAPI-projectRestAPI/project/${id}/${email}`)
 		.then(({ data }) => {
 			return data.status.toLowerCase() === 'success';
+		})
+		.catch(error => {
+			console.error(error);
+			return false;
+		});
+}; 
+
+export const getUsersContributes = (projectId) => {
+	const offlineParams = {
+		lib: 'users', 
+		cat: 'user',
+		amount: 5
+	};
+	
+	return Request.get('url', { projectId }, offlineParams)
+		.then(({ data }) => {
+			return data;
 		})
 		.catch(error => {
 			console.error(error);

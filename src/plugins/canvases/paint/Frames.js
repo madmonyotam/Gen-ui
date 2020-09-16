@@ -1,10 +1,10 @@
 import * as access from 'plugins/access';
 import * as d3 from 'd3';
 
-export const paintFrame = (canvas, width, height) => {
+export const paintFrame = (canvas, width, height, id = 'mainFrame') => {
 	const frame = canvas
 		.append('rect')
-		.attr('id','mainFrame')
+		.attr('id',id)
 		.attr('width', width)
 		.attr('height', height)
 		.attr('fill', access.color('canvases.bg'));
@@ -12,37 +12,12 @@ export const paintFrame = (canvas, width, height) => {
 	return frame;
 };
 
-export const fillFrame = (color) => { 
-	d3.select('#mainFrame')
+export const fillFrame = (color, id = 'mainFrame') => { 
+	d3.select(`#${id}`)
 		.transition()
 		.duration(1000)
 		.attr('fill', color);
 
-};
-
-export const openAddPanel = () => {
-	d3.select('#addPanel')
-		.transition()
-		.duration(access.time('addItemPanel.open'))
-		.attr('width', 100);
-};
-
-export const closeAddPanel = () => {
-	d3.select('#addPanel')
-		.transition()
-		.duration(access.time('addItemPanel.close'))
-		.attr('width', 0);
-};
-
-export const paintAddPanel = (canvas, height) => {
-	const addPanel =  canvas
-		.append('rect')
-		.attr('id', 'addPanel')
-		.attr('width', 0)
-		.attr('height', height)
-		.attr('fill', 'url(#svgGradient)');
-
-	return addPanel;
 };
 
 export const createGradient = defs => {

@@ -9,10 +9,6 @@ export default {
 		transitions: 350,
 	},
 	addItemPanel: {
-		open: 1000,
-		openText: 1000,
-		close: 1000,
-		closeText: 1000,
 		addToSchema: 300,
 	},
 };
