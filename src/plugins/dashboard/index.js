@@ -80,17 +80,10 @@ function Dashboard() {
 	const projects = useRecoilValue(projectListState);
 	
 	useEffect(() => { 
-		if (!loading && projects) {
+		if (!loading && projects.length) {
 			setProjectId(projects[0].id);
 		}
-	}, [loading]);
-
-	const handleProjectCreated = (res) => {
-		// setLoading(true);
-		if (res.status.toLowerCase() === 'success') {
-			// getProjects();
-		}
-	};
+	}, [loading, projects]);
 
 	const renderContent = () => {
 		return (
@@ -126,7 +119,7 @@ function Dashboard() {
 				</TypeTitle>
 
 				<Paper style={{ width: 250, height: 40, padding: '0 15px' }} >
-					<ProjectCreateInput useInput={true} onProjectCreated={handleProjectCreated} />
+					<ProjectCreateInput useInput={true} />
 				</Paper>
 
 			</EmptyForm>
