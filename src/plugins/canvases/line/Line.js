@@ -33,7 +33,7 @@ export default class Line {
 
 	setData(users) {
 
-		console.log(users);
+		// console.log(users);
 		this.paintAxis();
 	}
 
