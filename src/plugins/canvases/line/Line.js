@@ -1,9 +1,6 @@
 import * as d3 from 'd3';
 import * as access from 'plugins/access';
 import moment from 'moment';
-import { sortBy } from 'lodash';
-
-import { move } from 'plugins/canvases/utils/canvasActions';
 
 export default class Line {
 	constructor(params) {
@@ -22,49 +19,18 @@ export default class Line {
 		this.mainGroup = this.canvas.append('g').attr('class', 'line');
 	}
 
-	getContributeForDay(user, day) {
-		const currentDay = day.format('x');
-		const lastDay = day.subtract(1,'day').format('x');
-		
-		let contributeByDay = 0;
-
-		user.contribute.forEach(con => {
-			if(con.date > lastDay && con.date < currentDay){
-				contributeByDay += con.amount;
-			}
-		});
-
-		return contributeByDay;
-	}
-
-	setData(users) {
-		const datesArray = [];
-		const start = moment();
-
-		for (let i = 0; i < 30; i++) {
-			const currentDay = start.subtract(i, 'days');
-			datesArray[i] = {
-				date: currentDay.format('x'),
-				amount: this.getContributeForDay(users[0],currentDay)
-			};	
-		}
-
-		console.log({datesArray});
-		console.log('user: ',users[0]);
-		
-		this.users = users;
-		this.datesArray = datesArray;
+	setData(data) {
+		this.data = data;
 	}
 
 	paintGraph() {
 		this.paintAxis();
-		this.paintLine({contribute:this.datesArray},0);
-		// this.paintLine(this.users[0],0);
+		this.paintLine(this.data,0);
 	}
 
 	paintAxis() {
 		const widthScale = d3.scaleTime()
-			.domain([moment().add(-1, 'month'),moment()])
+			.domain([moment().subtract(1, 'month'),moment()])
 			.range([10,this.width - 10]);   
 				
 		const axis = d3.axisBottom()
@@ -88,11 +54,9 @@ export default class Line {
 
 	}
 
-	paintLine(user, index) {
-		const contributes = sortBy(user.contribute,'date');
-
+	paintLine(data, index) {
 		var xScale = d3.scaleTime()
-			.domain([moment().add(-1, 'month'),moment()])
+			.domain([moment().subtract(1, 'month'),moment()])
 			.range([10,this.width - 10]);
 
 		var yScale = d3.scaleLinear()
@@ -110,7 +74,7 @@ export default class Line {
 		this.createGradient(defs, index);
 
 		group.selectAll('.linePath')
-			.data([contributes])
+			.data([data])
 			.enter()
 			.append('path')
 			.attr('fill','none')

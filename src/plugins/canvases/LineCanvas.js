@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { setAllContributeByDate } from 'plugins/dashboard/adapters/contributes';
+
 import Start from 'plugins/tools/Start';
 import * as access from 'plugins/access';
 import useResizeWindow from 'plugins/hooks/useResizeWindow';
@@ -21,9 +23,10 @@ function LineCanvas(projectId) {
 	const getContributes = (canvas, width, height) => {
 		getUsersContributes(projectId).then((data) => {
 
+			const modifyData = setAllContributeByDate(data);
 			const lineGraph = new LineGraph({ canvas, width, height });
       
-			lineGraph.setData(data);
+			lineGraph.setData(modifyData);
 			lineGraph.paintGraph();
 
 		});
