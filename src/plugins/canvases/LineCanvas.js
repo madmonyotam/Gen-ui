@@ -24,6 +24,7 @@ function LineCanvas(projectId) {
 			const lineGraph = new LineGraph({ canvas, width, height });
       
 			lineGraph.setData(data);
+			lineGraph.paintGraph();
 
 		});
 	};
