@@ -9,8 +9,8 @@ let headers = {
 };
 
 const DEFAULT_PORT = 5588;
-const baseURL = `http://localhost:${ DEFAULT_PORT }/mocking_G`;
-
+// const baseURL = `http://localhost:${ DEFAULT_PORT }/mocking_G`;
+const baseURL = 'https://us-central1-mocking-gen-dev.cloudfunctions.net/';
 class RequestPlugin {
 	
 	constructor(method, url, data = undefined, offlineParams) {
@@ -46,7 +46,10 @@ class RequestPlugin {
 		
 		return instance[method](url, data, config).then(response => {
 			const { status, data } = response;
-			if (status >= 300 || status < 200) throw data;
+			if (status >= 300 || status < 200) {
+				console.debug({ error: data });
+				throw data;
+			}
 			return response;
 		});
 	} 

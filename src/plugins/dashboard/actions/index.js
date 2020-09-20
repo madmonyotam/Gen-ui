@@ -16,7 +16,7 @@ export const useFetchProjects = email => {
 			setLoading(false);
 			return;
 		}
-		Request.get(`https://us-central1-mocking-gen-dev.cloudfunctions.net/projectRestAPI-projectRestAPI/project/users/${email}`)
+		Request.get(`projectRestAPI-projectRestAPI/project/users/${email}`)
 			.then(({ data }) => {
 				if (data.status.toLowerCase() === 'success') {
 					setProjectList( data.projects );
@@ -30,7 +30,7 @@ export const useFetchProjects = email => {
 
 export const deleteProject = (id, email) => {
 	
-	return Request.delete(`https://us-central1-mocking-gen-dev.cloudfunctions.net/projectRestAPI-projectRestAPI/project/${id}/${email}`)
+	return Request.delete(`projectRestAPI-projectRestAPI/project/${id}/${email}`)
 		.then(({ data }) => {
 			return data.status.toLowerCase() === 'success';
 		})

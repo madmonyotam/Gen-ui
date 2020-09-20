@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import { Paper, Typography, Icon } from '@material-ui/core';
 
 /* Recoil Tree */
-import { projectState, projectListState, selectedProjectId } from './tree/atoms';
+import { projectListState, selectedProjectId } from './tree/atoms';
 
 import { useFetchProjects } from './actions';
 
@@ -75,7 +75,7 @@ function Dashboard() {
 	const loading = useFetchProjects(email);
 	
 	/* using atoms */
-	// const [selectedProject, setSelectedProject] = useRecoilState(projectState);
+
 	const setProjectId = useSetRecoilState(selectedProjectId);
 	const projects = useRecoilValue(projectListState);
 	

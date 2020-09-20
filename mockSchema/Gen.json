@@ -25,8 +25,43 @@
           "categoryPath": "users.overTime",
           "amount": ""
         },
-        "size": "30",
-        "randomSize": true
+        "size": "1",
+        "randomSize": false
+      }
+    }
+  },
+  "example": {
+    "Person": {
+      "firstName": {
+        "type": "firstName"
+      },
+      "lastName": {
+        "type": "lastName"
+      },
+      "userName": {
+        "type": "userName"
+      },
+      "lastUpdate": {
+        "type": "recentDate",
+        "value": {
+          "days": "14"
+        }
+      },
+      "email": {
+        "type": "email"
+      }
+    },
+    "Animal": {
+      "name": {
+        "type": "fullName"
+      },
+      "size": {
+        "type": "numberBetween",
+        "value": {
+          "start": "12",
+          "min": "12",
+          "max": "987"
+        }
       }
     }
   }

@@ -20,7 +20,7 @@ const Container = styled.div`
 
 const WidgetCont = styled.div`
 	width: 100%;
-  flex: 1;
+	flex: 1;
 	border-radius: 4px;
 	overflow: hidden;
 	margin-top: 10px;
@@ -31,18 +31,18 @@ const ProjectCanvas = () => {
 	const { libs, dispatch } = useBranch({ libs: ['libs'] });
 	const stableDispatch = useCallback(dispatch, []);
 
-	useEffect(() => {
-		Request.get('/getAllLibraries')
-			.then(res => {
-				stableDispatch(libsActions.setLibs, res.data);
-			});
-	}, [stableDispatch]);
+	// useEffect(() => {
+	// 	Request.get('/getAllLibraries')
+	// 		.then(res => {
+	// 			stableDispatch(libsActions.setLibs, res.data);
+	// 		});
+	// }, [stableDispatch]);
 
 	return (
 		<Container>
 			<WidgetHeader title={'Pack View'} icon={'bubble_chart'}/>
 			<WidgetCont>
-				<MainCanvas/>
+				{/* <MainCanvas/> */}
 			</WidgetCont>
 		</Container>
 	);

@@ -9,7 +9,7 @@ import Badge from 'plugins/tools/Badge';
 
 import Request from 'plugins/request';
 
-const PROJECTS_API = 'https://us-central1-mocking-gen-dev.cloudfunctions.net/projectRestAPI-projectRestAPI/project/';
+const PROJECTS_API = 'projectRestAPI-projectRestAPI/project';
 
 const Wrapper = styled.div`
 	color: ${ access.color('backgrounds.primary') };
@@ -38,7 +38,7 @@ const ProjectsIcon = styled(Icon)`
 	color: ${ props => props.color},
 `;
 
-const ProjectCreateInput = ({ useInput, onProjectCreated, existingProjects }) => {
+const ProjectCreateInput = ({ useInput, existingProjects }) => {
 
 	const [projectName, setProjectName] = useState('');
 	const [showCreateInput, setShowCreateInput] = useState(false);
