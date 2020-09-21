@@ -16,7 +16,6 @@ import {
 class LineCanvas extends PureComponent {
 	constructor(props) {
 		super(props);
-
 		this.setDataToGraph = this.setDataToGraph.bind(this);
 		this.onCanvasReady = this.onCanvasReady.bind(this);
 	}
@@ -24,8 +23,7 @@ class LineCanvas extends PureComponent {
 	
 	componentDidUpdate(prevProps) {
 		const { data } = this.props;
-
-		if(prevProps.data !== data){
+		if (prevProps.data !== data && this.lineGraph){
 			this.lineGraph.setData(data);
 			this.lineGraph.updateLine(0);
 		}
@@ -69,7 +67,7 @@ class LineCanvas extends PureComponent {
 }
 
 LineCanvas.propTypes = {
-	data: PropTypes.object
+	data: PropTypes.array
 };
 
 export default LineCanvas;
