@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import { Paper, Typography, Icon } from '@material-ui/core';
 
 /* Recoil Tree */
-import { projectState, projectListState, selectedProjectId } from './tree/atoms';
+import { projectListState, selectedProjectId } from './tree/atoms';
 
 import { useFetchProjects } from './actions';
 
@@ -75,22 +75,15 @@ function Dashboard() {
 	const loading = useFetchProjects(email);
 	
 	/* using atoms */
-	// const [selectedProject, setSelectedProject] = useRecoilState(projectState);
+
 	const setProjectId = useSetRecoilState(selectedProjectId);
 	const projects = useRecoilValue(projectListState);
 	
 	useEffect(() => { 
-		if (!loading && projects) {
+		if (!loading && projects.length) {
 			setProjectId(projects[0].id);
 		}
-	}, [loading]);
-
-	const handleProjectCreated = (res) => {
-		// setLoading(true);
-		if (res.status.toLowerCase() === 'success') {
-			// getProjects();
-		}
-	};
+	}, [loading, projects]);
 
 	const renderContent = () => {
 		return (
@@ -126,7 +119,7 @@ function Dashboard() {
 				</TypeTitle>
 
 				<Paper style={{ width: 250, height: 40, padding: '0 15px' }} >
-					<ProjectCreateInput useInput={true} onProjectCreated={handleProjectCreated} />
+					<ProjectCreateInput useInput={true} />
 				</Paper>
 
 			</EmptyForm>

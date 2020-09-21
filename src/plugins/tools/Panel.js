@@ -10,19 +10,20 @@ const PanelWrap = styled.div`
 	display: flex; 
 	flex-direction: column;
 	box-shadow:  10px 0px 10px -20px rgba(0,0,0,0.75);
-	background: ${ access.color('backgrounds.light') } 
+	background: ${ access.color('backgrounds.light') } ;
 	z-index: 1;
 }`; 
 
-const Panel = ({ children }) => {
+const Panel = ({ children, style }) => {
 	return (
-		<PanelWrap>
+		<PanelWrap style={style}>
 			{ children }
 		</PanelWrap>
 	);
 };
 
 Panel.propTypes = {
+	style: PropTypes.object,
 	children: PropTypes.node.isRequired
 }; 
 

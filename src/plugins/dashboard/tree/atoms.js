@@ -5,11 +5,6 @@ export const selectedProjectId = atom({
 	default: undefined
 });
 
-export const projectState = atom({
-	key: 'projectState',
-	default: {}
-});
-
 export const projectListState = atom({
 	key: 'projectList',
 	default: []

@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useRecoilValue } from 'recoil';
+import { useLocation } from 'react-router-dom';
 import { projectListState } from 'plugins/dashboard/tree/atoms';
 
 import styled from 'styled-components';
@@ -11,6 +12,8 @@ import LinearScaleIcon from '@material-ui/icons/LinearScale';
 import Popper from '@material-ui/core/Popper'; 
 
 import ActionButtons from 'plugins/project/components/ActionButtons';
+import { useDisplayAction } from 'plugins/dashboard/hooks/useDisplayAction';
+
 
 const Panel = styled.div`
 	position: absolute;
@@ -73,9 +76,13 @@ const MenuIcon = styled(IconButton)`
 `;
 
 const TopPanel = () => { 
+	const location = useLocation()
 	const [open, setOpen] = useState(false);
 	const anchorRef = useRef(null);
 	const existsProjects = useRecoilValue(projectListState);
+	const actions = ['copy', 'download'];
+	const displayActions = useDisplayAction(actions);
+
     
 	const userName = localStorage.getItem('gen-user-name');
 	const email = localStorage.getItem('gen-user-email');
@@ -102,7 +109,7 @@ const TopPanel = () => {
 
 	return (
 		<Panel background={ access.color('backgrounds.secondary') }>
-			<LeftWrap background={existsProjects.length ? access.color('backgrounds.light') : access.color('backgrounds.content')  } >
+			<LeftWrap background={existsProjects.length || window.location.pathname.includes('project') ? access.color('backgrounds.light') : access.color('backgrounds.content')  } >
 				<Avatar variant={ 'rounded' } alt={ 'avatar-picsum' } src={ 'https://picsum.photos/200' } />
 				<UserTitle /> 
 			</LeftWrap>
@@ -110,7 +117,7 @@ const TopPanel = () => {
 			<RightWrap>
 
 				{ 
-					existsProjects.length > 0 && 
+					(existsProjects.length > 0 || location.pathname.includes('project')) && 
 					<>
 						<ActionButtons />
 						<Divider orientation={'vertical'} style={{ height: '35%', margin: '0 15px 0 20px' }} />
@@ -133,6 +140,9 @@ const TopPanel = () => {
 				<Paper style={{ marginTop: 10 }} >
 					<ClickAwayListener onClickAway={handleClose}>
 						<MenuList dense={ true } autoFocusItem={open} id="menu-list-grow">
+							{ displayActions && actions.map(action => (
+								<MenuItem key={ action } >{access.translate(action)}</MenuItem>
+							)) }
 							<MenuItem onClick={ handleLogout }>{access.translate('Logout')}</MenuItem>
 						</MenuList>
 					</ClickAwayListener>
