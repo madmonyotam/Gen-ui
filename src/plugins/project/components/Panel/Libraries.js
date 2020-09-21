@@ -5,6 +5,7 @@ import { useSetRecoilState, useRecoilValue, useRecoilState } from 'recoil';
 import { Divider, Typography } from '@material-ui/core';
 
 import CreateLibrary from './CreateInput';
+import LibraryListItem from './LibraryListItem';
 import { useFetchtLibs } from 'plugins/project/actions';
 import { selectedLibId, librariesState } from 'plugins/project/tree/atoms';
 
@@ -27,13 +28,9 @@ const Libraries = props => {
 			<CreateLibrary existingLibraries={ data } projectId={ projectId } />
 			<Divider style={{ marginBottom: 15 }} />
 
-			<div style={{ paddingLeft: 5 }}>
+			<div>
 				{
-					(!loading && data) && data.map(lib => (
-						<div onClick={ () => setLibId(lib.id) } key={lib.id} style={{ cursor: 'pointer', height: 25, display: 'flex', alignItems: 'center' }}>
-							<Typography style={{ fontSize: selectedlibId === lib.id ? 18 : 12 }}>{lib.name}</Typography>
-						</div>
-					))
+					(!loading && data) && data.map( lib => <LibraryListItem library={ lib } key={ lib.id }/> )
 				}
 			</div>
 		</div>	
@@ -42,12 +39,10 @@ const Libraries = props => {
 
 Libraries.propTypes = { 
 	projectId: PropTypes.string,
-	data: PropTypes.array,
 };
 
 Libraries.defaultProps = { 
 	projectId: '',
-	data: [],
 };
 
 export default Libraries;
