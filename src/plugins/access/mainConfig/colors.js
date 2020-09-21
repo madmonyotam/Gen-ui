@@ -77,7 +77,7 @@ export default {
 	lineCanvas: {
 		bg: 'colors.blue01',
 		fg: 'colors.blueLight01',
-		move: 'colors.blue05',
+		move: '#bfd6ef7a',
 	},
 	types: {
 		bg: 'colors.blue05',
