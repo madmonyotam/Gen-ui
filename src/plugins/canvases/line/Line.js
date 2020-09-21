@@ -1,15 +1,14 @@
 import * as d3 from 'd3';
 import * as access from 'plugins/access';
 import moment from 'moment';
+import { maxBy, get, isEmpty } from 'lodash';
 
 export default class Line {
 	constructor(params) {
-		this.colorScaleRange = [
-			access.color('lineCanvas.fg'),
-			access.color('lineCanvas.move')
-		];
-
 		this.init(params);
+		this.createGradients();
+
+		this.YField = get(params,'YField','amount');
 	}
 
 	init(params) {
@@ -18,14 +17,55 @@ export default class Line {
 		this.height = params.height;
 		this.mainGroup = this.canvas.append('g').attr('class', 'line');
 		this.linesGroup = this.canvas.append('g').attr('class', 'linesGroup');
+		this.defs = this.linesGroup.append('defs');
+	}
+
+	createGradients() {
+		this.defs = this.linesGroup.append('defs');
+		const colors = [
+			{
+				start: access.color('lineCanvas.fg'),
+				end: '#c3f7eb',
+			},
+			{
+				start: access.color('lineCanvas.fg'),
+				end: '#b3898d'
+			}
+		];
+
+		colors.map(this.createGradient.bind(this));
+	}
+
+	createGradient(color, index) {
+		var gradient = this.defs
+			.append('linearGradient')
+			.attr('id', `svgGradient-${index}`)
+			.attr('x1', '100%')
+			.attr('x2', '0%')
+			.attr('y1', '0%')
+			.attr('y2', '0%');
+	
+		gradient
+			.append('stop')
+			.attr('class', 'start')
+			.attr('offset', '0%')
+			.attr('stop-color', color.start)
+			.attr('stop-opacity', 0.8);
+	
+		gradient
+			.append('stop')
+			.attr('class', 'end')
+			.attr('offset', '50%')
+			.attr('stop-color', color.end)
+			.attr('stop-opacity', 1);
 	}
 
 	setData(data) {
 		this.data = data;
+		this.createScale();
 	}
 
 	paintGraph() {
-		this.createScale();
 		this.paintAxis();
 		this.paintLine(this.data,0);
 	}
@@ -54,12 +94,14 @@ export default class Line {
 	}
 
 	createScale() {
+		const Ymax = isEmpty(this.data) ? 100 : maxBy(this.data, this.YField)[this.YField];
+
 		this.xScale = d3.scaleTime()
 			.domain([moment().subtract(1, 'month'),moment()])
 			.range([10,this.width - 10]);
 
 		const yScale = d3.scaleLinear()
-			.domain([0,100])
+			.domain([0,Ymax])
 			.range([25,this.height-25]);
 
 		this.Dline = d3.line()
@@ -75,13 +117,20 @@ export default class Line {
 			.transition()
 			.duration(700)
 			.ease((t)=> d3.easeCubicInOut(t))
-			.attr('d', this.Dline);
+			.attr('d', this.Dline)
+			.attr('opacity',0.3)
+			.attr('stroke-width',1)
+			.on('end', function(){
+				d3.select(this)
+					.transition()
+					.duration(500)
+					.ease((t)=> d3.easeCubicInOut(t))
+					.attr('stroke-width',2)
+					.attr('opacity',1);
+			});
 	}
 
 	paintLine(data, index) {
-		const defs = this.linesGroup.append('defs');
-		this.createGradient(defs, index);
-
 		this.linesGroup.selectAll('.linePath')
 			.data([data])
 			.enter()
@@ -91,42 +140,5 @@ export default class Line {
 			.attr('stroke',  `url(#svgGradient-${index})`)
 			.attr('stroke-width',2)
 			.attr('d', this.Dline);
-	}
-
-	createGradient(defs, index) {
-
-
-		const colors = [
-			{
-				start: access.color('lineCanvas.fg'),
-				end: '#c3f7eb',
-			},
-			{
-				start: access.color('lineCanvas.fg'),
-				end: '#b3898d'
-			}
-		];
-
-		var gradient = defs
-			.append('linearGradient')
-			.attr('id', `svgGradient-${index}`)
-			.attr('x1', '100%')
-			.attr('x2', '0%')
-			.attr('y1', '0%')
-			.attr('y2', '0%');
-	
-		gradient
-			.append('stop')
-			.attr('class', 'start')
-			.attr('offset', '0%')
-			.attr('stop-color', colors[index].start)
-			.attr('stop-opacity', 0.8);
-	
-		gradient
-			.append('stop')
-			.attr('class', 'end')
-			.attr('offset', '50%')
-			.attr('stop-color', colors[index].end)
-			.attr('stop-opacity', 1);
 	}
 }
