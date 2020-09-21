@@ -17,6 +17,7 @@ export default class Line {
 		this.width = params.width;
 		this.height = params.height;
 		this.mainGroup = this.canvas.append('g').attr('class', 'line');
+		this.linesGroup = this.canvas.append('g').attr('class', 'linesGroup');
 	}
 
 	setData(data) {
@@ -24,18 +25,16 @@ export default class Line {
 	}
 
 	paintGraph() {
+		this.createScale();
 		this.paintAxis();
 		this.paintLine(this.data,0);
 	}
 
-	paintAxis() {
-		const widthScale = d3.scaleTime()
-			.domain([moment().subtract(1, 'month'),moment()])
-			.range([10,this.width - 10]);   
+	paintAxis() { 
 				
 		const axis = d3.axisBottom()
 			.ticks(12)
-			.scale(widthScale);
+			.scale(this.xScale);
 
 		const Xaxis = this.mainGroup.attr('transform', `translate(0,${this.height - 20})`).call(axis);
 
@@ -54,33 +53,44 @@ export default class Line {
 
 	}
 
-	paintLine(data, index) {
-		var xScale = d3.scaleTime()
+	createScale() {
+		this.xScale = d3.scaleTime()
 			.domain([moment().subtract(1, 'month'),moment()])
 			.range([10,this.width - 10]);
 
-		var yScale = d3.scaleLinear()
+		const yScale = d3.scaleLinear()
 			.domain([0,100])
 			.range([25,this.height-25]);
 
-		const line = d3.line()
-			.x(d => xScale(d.date))
+		this.Dline = d3.line()
+			.x(d => this.xScale(d.date))
 			.y(d => this.height - yScale(d.amount))
 			.curve(d3.curveBasis);
 
-		const group = this.canvas.append('g');
+	}
 
-		const defs = group.append('defs');
+	updateLine(index) {
+		this.linesGroup.select(`#linePath-${index}`)
+			.data([this.data])
+			.transition()
+			.duration(700)
+			.ease((t)=> d3.easeCubicInOut(t))
+			.attr('d', this.Dline);
+	}
+
+	paintLine(data, index) {
+		const defs = this.linesGroup.append('defs');
 		this.createGradient(defs, index);
 
-		group.selectAll('.linePath')
+		this.linesGroup.selectAll('.linePath')
 			.data([data])
 			.enter()
 			.append('path')
+			.attr('id',`linePath-${index}`)
 			.attr('fill','none')
 			.attr('stroke',  `url(#svgGradient-${index})`)
 			.attr('stroke-width',2)
-			.attr('d', line);	
+			.attr('d', this.Dline);
 	}
 
 	createGradient(defs, index) {

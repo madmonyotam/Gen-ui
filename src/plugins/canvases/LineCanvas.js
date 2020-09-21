@@ -1,14 +1,11 @@
-import React from 'react';
-
-import { setAllContributeByDate } from 'plugins/dashboard/adapters/contributes';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 
 import Start from 'plugins/tools/Start';
 import * as access from 'plugins/access';
-import useResizeWindow from 'plugins/hooks/useResizeWindow';
 
 import { move } from 'plugins/canvases/utils/canvasActions';
 
-import { getUsersContributes } from 'plugins/dashboard/actions';
 import LineGraph from 'plugins/canvases/line/Line';
 
 import {
@@ -16,34 +13,42 @@ import {
 	fillFrame,
 } from 'plugins/canvases/paint/Frames';
 
-function LineCanvas(projectId) {
-	const size = useResizeWindow();
-	const key = `${size.width}-${size.height}`;
+class LineCanvas extends PureComponent {
+	constructor(props) {
+		super(props);
 
-	const getContributes = (canvas, width, height) => {
-		getUsersContributes(projectId).then((data) => {
+		this.setDataToGraph = this.setDataToGraph.bind(this);
+		this.onCanvasReady = this.onCanvasReady.bind(this);
+	}
 
-			const modifyData = setAllContributeByDate(data);
-			const lineGraph = new LineGraph({ canvas, width, height });
+	
+	componentDidUpdate(prevProps) {
+		const { data } = this.props;
+
+		if(prevProps.data !== data){
+			this.lineGraph.setData(data);
+			this.lineGraph.updateLine(0);
+		}
+	}
+	
+
+	setDataToGraph(canvas, width, height) {
+		const { data } = this.props;
+		this.lineGraph = new LineGraph({ canvas, width, height });
       
-			lineGraph.setData(modifyData);
-			lineGraph.paintGraph();
+		this.lineGraph.setData(data);
+		this.lineGraph.paintGraph();
+	}
 
-		});
-	};
-
-	const onCanvasReady = (canvas, width, height) => {
+	onCanvasReady(canvas, width, height) {
 
 		const frame = paintFrame(canvas, width, height, 'lineGraph');
 		move(canvas, frame, access.color('lineCanvas.move'));
-    
-		if(!projectId) return;
-		
 		fillFrame(access.color('lineCanvas.bg'),'lineGraph');
-		getContributes(canvas, width, height);
-	};
+		this.setDataToGraph(canvas, width, height);
+	}
 
-	const renderLineCanvas = () => {
+	renderLineCanvas() {
 		const margin = {
 			top: 0,
 			bottom: 0,
@@ -51,14 +56,20 @@ function LineCanvas(projectId) {
 			right: 0
 		};
 
-		return <Start canvasReady={onCanvasReady} margin={margin} />;
-	};
-
-	return (
-		<div key={ key } style={{ height: '100%', width: '100%', userSelect: 'none' }}>
-			{renderLineCanvas()}
-		</div>
-	);
+		return <Start canvasReady={this.onCanvasReady} margin={margin} />;
+	}
+	
+	render() {
+		return(
+			<div style={{ height: '100%', width: '100%', userSelect: 'none' }}>
+				{this.renderLineCanvas()}
+			</div>
+		);
+	}
 }
+
+LineCanvas.propTypes = {
+	data: PropTypes.object
+};
 
 export default LineCanvas;
