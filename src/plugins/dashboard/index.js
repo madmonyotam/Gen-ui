@@ -57,7 +57,8 @@ const LineGraphCont = styled.div`
 
 const UpperCont = styled.div`
 	display: flex; 
-	height: 60%;
+	min-height: 60%;
+	max-height: 60%;
 `;
 
 const TypeTitle = styled(Typography)`

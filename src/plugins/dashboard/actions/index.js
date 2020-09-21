@@ -58,7 +58,7 @@ export const getUsersContributes = (projectId) => {
 }; 
 
 export const getProjectUsers = projectId => { 
-	const random = Math.floor(Math.random() * 25 + 3);
+	const random = Math.floor(Math.random() * 5 + 3);
 
 	const schema = {
 		firstName: { type: 'firstName' },
