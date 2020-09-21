@@ -1,15 +1,13 @@
 import React from 'react';
 import { useRecoilState } from 'recoil';
 import PropTypes from 'prop-types';
+
 import styled from 'styled-components';
+import * as access from 'plugins/access';
 
 import { Typography, Icon } from '@material-ui/core';
 
 import { selectedLibId } from 'plugins/project/tree/atoms';
-
-import * as access from 'plugins/access';
-
-import moment from 'moment';
 
 const LibraryCard = styled.div`
 	position: relative;
@@ -28,11 +26,6 @@ const LibraryCard = styled.div`
 	transition: all 0.15s ease-in-out;
 `;
 
-const InnerDetail = styled(Typography)`
-	padding-left: 25px;
-	font-size: 13px !important;
-	color: ${props => props.selected ? '#212' : '#444'};
-`;
 
 const LiraryListItem = ({ library }) => {
 
@@ -48,14 +41,7 @@ const LiraryListItem = ({ library }) => {
 					{library.name}
 				</Typography>
 			</div>
-			{/* <div>
-				<InnerDetail selected={selected} >
-					{moment(library.createdTime).format('ll | HH:mm')}
-				</InnerDetail>
-				<InnerDetail selected={selected} >
-					{library.createdBy}
-				</InnerDetail>
-			</div> */}
+			
 		</LibraryCard>
 	);
 };

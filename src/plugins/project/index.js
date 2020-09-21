@@ -6,9 +6,9 @@ import { projectState } from './tree/atoms';
 import * as access from 'plugins/access';
 import { Typography, CircularProgress } from '@material-ui/core';
 
-import Badge from 'plugins/tools/Badge';
+// import Badge from 'plugins/tools/Badge';
 import Panel from 'plugins/tools/Panel'; 
-import WidgetHeader from 'plugins/tools/WidgetHeader';
+// import WidgetHeader from 'plugins/tools/WidgetHeader';
 import Libraries from './components/Panel/Libraries';
 import { getProject } from './actions';
 
@@ -95,31 +95,10 @@ const Project = () => {
 
 	);
 
-	const ProjectStats = ({ collaborators }) => (
+	const ProjectStats = () => (
 		<div style={{ marginTop: 15 }}>
-			
 			<Libraries projectId={ id }/>
-
-			<Box style={{ flexDirection: 'column' }}>
-				<div style={{ display: 'flex', alignItems: 'center' }}>
-					<Typography >
-						{ access.translate('Collaborators') }
-					</Typography>
-					<Badge>{ collaborators.length }</Badge>
-				</div>
-				<div style={{ fontSize: 13, paddingLeft: 5 }}>
-					{
-						collaborators && collaborators.map(collab => (
-							<div key={collab} style={{ height: 25, display: 'flex', alignItems: 'center' }}>
-								<p>{collab}</p>
-							</div>
-						))
-					}
-				</div>
-			</Box>
-			
 		</div>
-	
 	);
 
 	const ProjectDates = () => (
@@ -139,7 +118,7 @@ const Project = () => {
 
 	const PanelContent = () => (
 		<div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flex: 1 }}> 
-			<ProjectStats  collaborators={ project.collaborators }/>
+			<ProjectStats />
 			<div style={{ borderTop: 'solid 1px rgba(221,221,221,.75)', background: '#f1f1f1', position: 'absolute', bottom: 0, left: 0, right: 0, padding: '10px 15px 0' }}>
 				<ProjectTitle />
 				<ProjectDates />
@@ -155,7 +134,7 @@ const Project = () => {
 					{ (!loading && project) && <PanelContent /> }
 				</Panel>
 				<Content>
-					<div style={{ flex: 1 }}>
+					{/* <div style={{ flex: 1 }}>
 						<WidgetHeader title={'Schemas'} icon={'assignment'} />
 						<div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100% - 40px)', overflow: 'hidden', width: '100%' }} >
 						</div>
@@ -171,7 +150,7 @@ const Project = () => {
 							</div>
 		
 						</div>
-					</div>
+					</div> */}
 					
 				</Content>
 			</div>
