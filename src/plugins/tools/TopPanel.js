@@ -64,7 +64,7 @@ const RightWrap = styled.div`
 	display: flex;
 	justify-content: flex-end;
 	flex: 1;
-	padding: 0 25px 0 15px;
+	padding: 0 25px;
 	height: 100%;
 `;
 

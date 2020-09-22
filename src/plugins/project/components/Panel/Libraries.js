@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types'; 
-import { useSetRecoilState, useRecoilValue, useRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
-import { Divider, Typography } from '@material-ui/core';
+import { Divider } from '@material-ui/core';
 
 import CreateLibrary from './CreateInput';
 import LibraryListItem from './LibraryListItem';
@@ -13,7 +13,7 @@ const Libraries = props => {
 	
 	const { projectId } = props;
 	const loading = useFetchtLibs(projectId);
-	const [selectedlibId, setLibId] = useRecoilState(selectedLibId);
+	const setLibId = useSetRecoilState(selectedLibId);
 	const data = useRecoilValue(librariesState);
 
 	useEffect(() => {
