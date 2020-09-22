@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography, Avatar } from '@material-ui/core';
+import { Typography, Avatar, Tooltip } from '@material-ui/core';
 
 import * as access from 'plugins/access';
 import styled from 'styled-components'; 
@@ -10,8 +10,8 @@ const Item = styled.div`
     width: calc(100% - 50px);
     padding: 5px 10px 5px 30px;
     display: flex;
-    flex-direction: row;
     align-items: center;
+		justify-content: space-between;
     background: transparent;
     border-radius: 2px;
     margin-bottom: 10px;
@@ -19,6 +19,12 @@ const Item = styled.div`
         background: ${ access.color('backgrounds.light') };
     }
 `;
+
+const Left = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
 const Badge = styled.div`
 	color: #fef;
 	text-transform: capitalize;
@@ -29,6 +35,15 @@ const Badge = styled.div`
 	color: ${props => access.color('frontLevelColors.' + props.level)};
 	border-radius: 4px;
 `; 
+
+const CuntributeBadge = styled(Badge)`
+	display: flex;
+	justify-content: center;
+	width: 50px;
+	font-size: 12px;
+	padding: 4px;
+	overflow: hidden;
+`;
 
 const TextsContainer = styled.div`
     text-align: left;
@@ -50,27 +65,33 @@ const UserListItem = props => {
 
 	return (
 		<Item> 
-			<Avatar variant={'rounded'} alt={'avatar-picsum'} src={user.avatar} />
+			<Left>
+				<Avatar variant={'rounded'} alt={'avatar-picsum'} src={user.avatar} />
+				<TextsContainer>
 
-			<TextsContainer>
+					<div style={{ display: 'flex', alignItems: 'center' }}>
 
-				<div style={{ display: 'flex', alignItems: 'center' }}>
+						<Badge level={user.ownership} >
+							{access.translate(user.ownership)}
+						</Badge>
+			
+						
+						<UserName>
+							{user.name}
+						</UserName>
+					</div>
 
-					<Badge level={user.ownership} >
-						{access.translate(user.ownership)}
-					</Badge>
-		
-					
-					<UserName>
-						{user.name}
-					</UserName>
-				</div>
-
-				<Typography style={{ fontSize: 13 }}>
-					{ user.email }
-				</Typography>
-                
-			</TextsContainer> 
+					<Typography style={{ fontSize: 13 }}>
+						{ user.email }
+					</Typography>
+									
+				</TextsContainer> 
+			</Left>
+			<Tooltip title={ access.translate('Cuntributes')} placement={ 'top' } enterDelay={ 500 }>
+				<CuntributeBadge level={'member'}>
+					{ user.contribute }
+				</CuntributeBadge>
+			</Tooltip>
 		</Item>
 	); 
 };
