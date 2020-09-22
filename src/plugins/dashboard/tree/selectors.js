@@ -1,5 +1,6 @@
 import { selector } from 'recoil'; 
-import { selectedProjectId, projectListState } from './atoms';
+import { selectedProjectId, projectListState, projectUsersState } from './atoms';
+import { modifyAllContributeByDate, sumAllContribute } from 'plugins/dashboard/adapters/contributes';
 
 
 export const normalizedProject = selector({
@@ -23,4 +24,30 @@ export const selectedProject = selector({
 		return projects[id];
 	}
 });
+
+export const contributeByDate = selector({
+	key: 'contributeByDate',
+	get: ({ get }) => {
+		const users = get(projectUsersState);
+
+		return modifyAllContributeByDate(users);
+	}
+});
+
+export const collaborators = selector({
+	key: 'collaborators',
+	get: ({ get }) => {
+		const users = get(projectUsersState);
+
+		const modifyUsers = users.map((user) => {
+			const modify = { ...user };
+			modify.contribute = sumAllContribute(user.contribute);
+			return modify;
+		});
+		
+		return modifyUsers;
+	}
+});
+
+
 

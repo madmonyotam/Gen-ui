@@ -23,7 +23,7 @@ const getContributeForDay = (users, day) => {
 	return allContributes;
 };
 
-export const setAllContributeByDate = (users) => {
+export const modifyAllContributeByDate = (users) => {
 	const datesArray = [];
 	const start = moment();
 
@@ -36,4 +36,10 @@ export const setAllContributeByDate = (users) => {
 	}
 
 	return( sortBy(datesArray,'date') );
+};
+
+export const sumAllContribute = (contributes) => {
+	return contributes.reduce((sum, c)=>{
+		return sum + c.amount;
+	},0);
 };

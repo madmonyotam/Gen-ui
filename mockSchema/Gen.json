@@ -19,6 +19,12 @@
       "name": {
         "type": "fullName"
       },
+      "email": {
+        "type": "email"
+      },
+      "avatar": {
+        "type": "avatar"
+      },
       "contribute": {
         "type": "category",
         "value": {
@@ -26,7 +32,20 @@
           "amount": ""
         },
         "size": "12",
-        "randomSize": false
+        "randomSize": true
+      },
+      "ownership": {
+        "type": "fromArray",
+        "value": {
+          "dataSet": [
+            "owner",
+            "admin",
+            "member"
+          ]
+        }
+      },
+      "id": {
+        "type": "id"
       }
     }
   },

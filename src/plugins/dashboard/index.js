@@ -15,11 +15,9 @@ import * as access from 'plugins/access';
 import LoaderTimeout from 'plugins/tools/LoaderTimeout';
 
 /* Components */
+import ProjectBody from 'plugins/dashboard/components/project/ProjectBody';
 import ProjectCreateInput from 'plugins/dashboard/components/project/CreateInput';
-import ProjectMetadata from 'plugins/dashboard/components/project/metadata/';
 import ProjectPanel from 'plugins/dashboard/components/project/ProjectPanel';
-import ContributesGraph from 'plugins/dashboard/components/project/ContributesGraph';
-import ProjectCanvas from 'plugins/dashboard/components/project/ProjectCanvas'; 
 
 const Wrap = styled.div`
     position: absolute;
@@ -41,26 +39,6 @@ const EmptyForm = styled.div`
 	justify-content: center;
 `;
 
-const Content = styled.div`
-	display: flex; 
-	flex-direction: column; 
-	flex: 1;
-	gap: 10px;
-	padding: 15px 25px;
-	background: ${access.color('backgrounds.content')};
-`;
-
-const LineGraphCont = styled.div`
-	display: flex; 
-	flex: 1; 
-`;
-
-const UpperCont = styled.div`
-	display: flex; 
-	min-height: 60%;
-	max-height: 60%;
-`;
-
 const TypeTitle = styled(Typography)`
 	display: flex;
 	align-items: center;
@@ -74,8 +52,6 @@ function Dashboard() {
 
 	const email = localStorage.getItem('gen-user-email');
 	const loading = useFetchProjects(email);
-	
-	/* using atoms */
 
 	const setProjectId = useSetRecoilState(selectedProjectId);
 	const projects = useRecoilValue(projectListState);
@@ -89,21 +65,8 @@ function Dashboard() {
 	const renderContent = () => {
 		return (
 			<div style={{ display: 'flex', flex: 1 }}> 
-
 				<ProjectPanel />
-
-				<Content className={'dashboard-content'}>
-					<UpperCont>
-
-						<ProjectMetadata style={{ marginRight: 20 }} />
-						<ProjectCanvas />
-
-					</UpperCont>
-					<LineGraphCont>
-						<ContributesGraph />
-					</LineGraphCont> 
-				</Content>
-
+				<ProjectBody/>
 			</div> 
 
 		);

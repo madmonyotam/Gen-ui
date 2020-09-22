@@ -21,13 +21,13 @@ export default {
 	},
 	backLevelColors: {
 		owner: 'colors.blue05',
-		member: 'colors.blueLight01',
-		guest: 'colors.blueLight02'
+		admin: 'colors.blueLight01',
+		member: 'colors.blueLight02'
 	},
 	frontLevelColors: {
 		owner: 'colors.blueLight02',
-		member: 'colors.blue02',
-		guest: 'colors.blue05'
+		admin: 'colors.blue02',
+		member: 'colors.blue05'
 	},
 	backgrounds: {
 		primary: 'colors.blue01',
