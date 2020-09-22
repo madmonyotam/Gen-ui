@@ -34,7 +34,7 @@ const Badge = ({ children, size }) => (
 ); 
 
 Badge.propTypes = {
-	children: PropTypes.any,
+	children: PropTypes.node,
 	size: PropTypes.oneOf(['default', 'small']),
 };
 

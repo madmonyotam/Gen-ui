@@ -1,0 +1,87 @@
+{
+  "users": {
+    "overTime": {
+      "date": {
+        "type": "recentDate",
+        "value": {
+          "days": "30",
+          "dateMask": "x"
+        }
+      },
+      "amount": {
+        "type": "numberMax",
+        "value": {
+          "max": "100"
+        }
+      }
+    },
+    "user": {
+      "name": {
+        "type": "fullName"
+      },
+      "email": {
+        "type": "email"
+      },
+      "avatar": {
+        "type": "avatar"
+      },
+      "contribute": {
+        "type": "category",
+        "value": {
+          "categoryPath": "users.overTime",
+          "amount": ""
+        },
+        "size": "12",
+        "randomSize": true
+      },
+      "ownership": {
+        "type": "fromArray",
+        "value": {
+          "dataSet": [
+            "owner",
+            "admin",
+            "member"
+          ]
+        }
+      },
+      "id": {
+        "type": "id"
+      }
+    }
+  },
+  "example": {
+    "Person": {
+      "firstName": {
+        "type": "firstName"
+      },
+      "lastName": {
+        "type": "lastName"
+      },
+      "userName": {
+        "type": "userName"
+      },
+      "lastUpdate": {
+        "type": "recentDate",
+        "value": {
+          "days": "14"
+        }
+      },
+      "email": {
+        "type": "email"
+      }
+    },
+    "Animal": {
+      "name": {
+        "type": "fullName"
+      },
+      "size": {
+        "type": "numberBetween",
+        "value": {
+          "start": "12",
+          "min": "12",
+          "max": "987"
+        }
+      }
+    }
+  }
+}

@@ -1,7 +1,13 @@
 import React from 'react';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import PropTypes from 'prop-types';
-import { Typography, Tooltip, Icon, IconButton } from '@material-ui/core';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
+
+import { Typography, Tooltip, Icon, IconButton } from '@material-ui/core';
+
+import { projectListState, selectedProjectId } from 'plugins/dashboard/tree/atoms';
+import { deleteProject } from 'plugins/dashboard/actions';
 
 import * as access from 'plugins/access';
 
@@ -34,7 +40,7 @@ const SideIcons = styled.div`
 	justify-content: space-evenly;
 	text-shadow: none !important;
 	transition: all 0.05s linear;
-	transform: scale(0.95) translate3d(25%, -50%, 0);
+	transform: scale(0.95) translate3d(0, -50%, 0);
 	transform-origin: center center;
 	opacity: 0;
 
@@ -51,28 +57,33 @@ const InnerDetail = styled(Typography)`
 `;
 
 const ProjectListItem = props => {
-	const { 
-		project, 
-		selected, 
-		onClick, 
-		onEnterProject, 
-		onDeleteProject 
-	} = props;
+
+	const history = useHistory();
+	const [projectList, setProjectList] = useRecoilState(projectListState);
+	const setProjectId = useSetRecoilState(selectedProjectId);
+	const { project, selected } = props;
 	
 	const handleEnterProject = e => {
-		e.preventDefault();
-		e.stopPropagation();
-		if (onEnterProject) onEnterProject(project.id);
+		e.stopPropagation(); 
+		history.push('/project/'+project.id);
 	};
 
-	const handleDeleteProject = e => {
-		// e.preventDefault();
+	const handleDeleteProject = async e => {
 		e.stopPropagation();
-		if (onDeleteProject) onDeleteProject(project.id);
+		
+		const { id } = project;
+		const email = localStorage.getItem('gen-user-email');
+
+		const success = await deleteProject(id, email);
+
+		if (success) {
+			const list = projectList.filter(p => p.id !== id);
+			setProjectList(list);
+		}
 	};
 
 	return (
-		<ProjectCard onClick={ onClick } selected={ selected } >
+		<ProjectCard onClick={ () => { setProjectId(project.id); } } selected={ selected } >
 			
 			<div style={{ display: 'flex', alignItems: 'center' }} >
 				<Icon fontSize={ 'small' } >{ selected ? 'bubble_chart' : 'scatter_plot' }</Icon>

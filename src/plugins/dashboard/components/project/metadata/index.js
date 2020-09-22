@@ -1,10 +1,10 @@
-import React  from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { useRecoilValue } from 'recoil';
-import { projectState } from 'plugins/dashboard/tree/atoms';
+import { selectedProject } from 'plugins/dashboard/tree/selectors';
+
 import WidgetHeader from 'plugins/tools/WidgetHeader';
- 
 import ProjectTitle from './title';
 import ProjectDates from './dates';
 import CollaboratorList from './collaborators';
@@ -12,7 +12,7 @@ import CollaboratorList from './collaborators';
 const ProjectMetadata = props => {
 
 	const { style } = props;
-	const project = useRecoilValue(projectState);
+	const project = useRecoilValue(selectedProject);
  
 	return (
 		<div style={{ flex: 1, ...style }}>

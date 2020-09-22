@@ -29,6 +29,7 @@
   },
   "scripts": {
     "no-browser": "BROWSER=none react-scripts start",
+    "server": "npm run --prefix localMockServer start",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

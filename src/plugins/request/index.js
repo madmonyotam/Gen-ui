@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import * as access from 'plugins/access';
 // eslint-disable-next-line no-undef
 const axios = require('axios');
 
@@ -8,15 +9,13 @@ let headers = {
 };
 
 const DEFAULT_PORT = 5588;
-const baseURL = `http://localhost:${ DEFAULT_PORT }/mocking_G`;
-
-
+// const baseURL = `http://localhost:${ DEFAULT_PORT }/mocking_G`;
+const baseURL = 'https://us-central1-mocking-gen-dev.cloudfunctions.net/';
 class RequestPlugin {
 	
-	constructor(method, url, data = undefined) {
+	constructor(method, url, data = undefined, offlineParams) {
 		
-		let instance;
-		let config = {
+		const config = {
 			baseURL,
 			headers,
 			timeout: 20000,
@@ -31,11 +30,26 @@ class RequestPlugin {
 			}
 		};
 		
-		instance = axios.create(config);
+		const instance = axios.create(config);
+
+		if(access.core('mode.offline') && offlineParams) {
+			const { lib, cat, amount = 10} = offlineParams;
+			const baseMockURL = 'http://localhost:5588/mocking_G';
+			const url = `${baseMockURL}/generate?library=${lib}&category=${cat}&amount=${amount}`;
+
+			return instance[method](url, {}, config).then(response => {
+				const { status, data } = response;
+				if (status >= 300 || status < 200) throw data;
+				return response;
+			});
+		}
 		
 		return instance[method](url, data, config).then(response => {
 			const { status, data } = response;
-			if (status >= 300 || status < 200) throw data;
+			if (status >= 300 || status < 200) {
+				console.debug({ error: data });
+				throw data;
+			}
 			return response;
 		});
 	} 
@@ -66,8 +80,8 @@ const login = async (email, password) => {
 	return res;
 };
 
-const get = (url, data) => {
-	const Request = new RequestPlugin('get', url, data);
+const get = (url, data, offlineParams) => {
+	const Request = new RequestPlugin('get', url, data, offlineParams);
 	return Request;
 };
 
@@ -87,5 +101,5 @@ export default {
 	register,
 	get,
 	post,
-	remove
+	delete: remove
 }; 

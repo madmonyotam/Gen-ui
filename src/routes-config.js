@@ -1,6 +1,7 @@
 import Dashboard from 'plugins/dashboard';
+import Project from 'plugins/project';
+import OldProjectView from 'Views/Project';
 import Login from 'Views/Login';
-import Project from 'Views/Project'; 
 
 export default [
 	{
@@ -14,5 +15,9 @@ export default [
 	{
 		path: '/project/:id',
 		component: Project
+	},
+	{
+		path: '/old-project/:id',
+		component: OldProjectView
 	}
 ];

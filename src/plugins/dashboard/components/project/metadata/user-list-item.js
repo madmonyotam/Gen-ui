@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography, Avatar, Tooltip } from '@material-ui/core';
+import { Typography, Avatar } from '@material-ui/core';
 
 import * as access from 'plugins/access';
 import styled from 'styled-components'; 
@@ -41,7 +41,7 @@ const TextsContainer = styled.div`
 
 const UserName = styled.span`
     font-size: 14px;
-    color ${access.color('texts.title') };
+    color: ${access.color('texts.title') };
 `;
 
 
@@ -56,19 +56,14 @@ const UserListItem = props => {
 
 				<div style={{ display: 'flex', alignItems: 'center' }}>
 
-					{
-						user.ownership && (
-							<Badge level={user.ownership} >
-								{access.translate(user.ownership)}
-							</Badge>
-						)
-					}
-
-					<Tooltip title={`${user.firstName} ${user.lastName}`} placement={'right'}>
-						<UserName>
-							{user.userName}
-						</UserName>
-					</Tooltip>
+					<Badge level={user.ownership} >
+						{access.translate(user.ownership)}
+					</Badge>
+		
+					
+					<UserName>
+						{user.name}
+					</UserName>
 				</div>
 
 				<Typography style={{ fontSize: 13 }}>

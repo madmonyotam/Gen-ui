@@ -1,5 +1,9 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { useRecoilValue } from 'recoil';
+import { useLocation } from 'react-router-dom';
+import { projectListState } from 'plugins/dashboard/tree/atoms';
+
 import styled from 'styled-components';
 import * as access from 'plugins/access';
 import { Divider, Tooltip, Avatar, IconButton, Typography, Paper, ClickAwayListener, MenuList, MenuItem } from '@material-ui/core';
@@ -7,17 +11,19 @@ import LinearScaleIcon from '@material-ui/icons/LinearScale';
 // import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Popper from '@material-ui/core/Popper'; 
 
-import ProjectsActionButtons from 'plugins/dashboard/components/ProjectsActionButtons';
+import ActionButtons from 'plugins/project/components/ActionButtons';
+import { useDisplayAction } from 'plugins/dashboard/hooks/useDisplayAction';
+
 
 const Panel = styled.div`
-  position: absolute;
-  height: 60px;
-  right: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  z-index: 1;
+	position: absolute;
+	height: 60px;
+	right: 0;
+	left: 0;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	z-index: 1;
 `;
 
 const LeftWrap = styled.div`
@@ -26,8 +32,30 @@ const LeftWrap = styled.div`
 	align-items: center;
 	width: 235px;
 	padding: 0 15px;
-	background: ${ access.color('backgrounds.light') };
+	background: ${ props => props.background } !important;
 	box-shadow:  10px 0px 10px -20px rgba(0,0,0,0.75);
+`;
+
+const UserTitleWrap = styled.div`
+	margin-left: 10px;
+	overflow: hidden;
+	width: 100%;
+	white-space: nowrap;
+`;
+
+const OverflowTypo = styled(Typography)`
+	text-overflow: ellipsis;
+	width: 100%;
+	overflow: hidden;
+`;
+
+const EmailTypo = styled(OverflowTypo)`
+	font-size: 13px !important;
+	color: #555;
+`;
+
+const NameTypo = styled(OverflowTypo)`
+	font-weight: 600 !important;
 `;
 
 const RightWrap = styled.div`
@@ -38,8 +66,6 @@ const RightWrap = styled.div`
 	flex: 1;
 	padding: 0 25px 0 15px;
 	height: 100%;
-	// box-shadow: 0px 10px 10px -20px rgba(0,0,0,0.75);
-	// border-bottom: 1px solid ${ access.color('backgrounds.content') };
 `;
 
 const MenuIcon = styled(IconButton)`
@@ -50,8 +76,13 @@ const MenuIcon = styled(IconButton)`
 `;
 
 const TopPanel = () => { 
+	const location = useLocation()
 	const [open, setOpen] = useState(false);
 	const anchorRef = useRef(null);
+	const existsProjects = useRecoilValue(projectListState);
+	const actions = ['copy', 'download'];
+	const displayActions = useDisplayAction(actions);
+
     
 	const userName = localStorage.getItem('gen-user-name');
 	const email = localStorage.getItem('gen-user-email');
@@ -65,25 +96,34 @@ const TopPanel = () => {
 		window.location.href = '/login';
 	};
 
+	const UserTitle = () => (
+		<UserTitleWrap>
+			<NameTypo>
+				{userName}
+			</NameTypo>
+			<EmailTypo>
+				{email}
+			</EmailTypo>
+		</UserTitleWrap>
+	);
+
 	return (
 		<Panel background={ access.color('backgrounds.secondary') }>
-			<LeftWrap>
+			<LeftWrap background={existsProjects.length || window.location.pathname.includes('project') ? access.color('backgrounds.light') : access.color('backgrounds.content')  } >
 				<Avatar variant={ 'rounded' } alt={ 'avatar-picsum' } src={ 'https://picsum.photos/200' } />
-				<div style={{ margin: '0 10px', textAlign: 'left' }}>
-					<Typography style={{ fontSize: 15, fontWeight: 600 }}>
-						{ userName }
-					</Typography>
-					<Typography style={{ fontSize: 13, marginTop: -5, color: '#555'  }}>
-						{ email }
-					</Typography>
-				</div>
+				<UserTitle /> 
 			</LeftWrap>
 
 			<RightWrap>
-				<ProjectsActionButtons />
-				
-				<Divider orientation={'vertical'} style={{ height: '35%', margin: '0 15px 0 20px' }} />
 
+				{ 
+					(existsProjects.length > 0 || location.pathname.includes('project')) && 
+					<>
+						<ActionButtons />
+						<Divider orientation={'vertical'} style={{ height: '35%', margin: '0 15px 0 20px' }} />
+					</>
+				}
+				
 				<Tooltip title={access.translate('Menu')}>
 					<MenuIcon
 						ref={anchorRef}
@@ -93,29 +133,22 @@ const TopPanel = () => {
 						<LinearScaleIcon fontSize={'small'} />
 					</MenuIcon>
 				</Tooltip>
-				{/* <Divider orientation={'vertical'} style={{ height: '60%', margin: '0px 15px' }} />
-				<Tooltip title={access.translate('Back')}>
-					<IconButton
-						size={'small'}
-						onClick={() => window.history.back()}>
-						<ArrowBackIcon fontSize={'small'} />
-					</IconButton>
-				</Tooltip> */}
+				
 			</RightWrap>
+
 			<Popper open={open} anchorEl={anchorRef.current}  role={undefined} transition disablePortal placement={ 'bottom-end' }>
 				<Paper style={{ marginTop: 10 }} >
 					<ClickAwayListener onClickAway={handleClose}>
 						<MenuList dense={ true } autoFocusItem={open} id="menu-list-grow">
-							{/* <MenuItem onClick={handleClose}>{ access.translate('Save As') }</MenuItem>
-							<MenuItem onClick={handleClose}>{ access.translate('New Project') }</MenuItem>
-							<MenuItem onClick={handleClose}>{ access.translate('Open Project') }</MenuItem>
-							<MenuItem onClick={handleClose}>{ access.translate('Remove Project') }</MenuItem>
-							<Divider style={{ margin: '5px 0'}} />  */}
+							{ displayActions && actions.map(action => (
+								<MenuItem key={ action } >{access.translate(action)}</MenuItem>
+							)) }
 							<MenuItem onClick={ handleLogout }>{access.translate('Logout')}</MenuItem>
 						</MenuList>
 					</ClickAwayListener>
 				</Paper>
 			</Popper>
+
 		</Panel>
 	);
 

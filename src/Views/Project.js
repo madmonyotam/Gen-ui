@@ -10,7 +10,6 @@ import MenuPanel from 'Views/MenuPanel';
 import SchemaPanel from 'Views/SchemaPanel';
 import Mask from 'plugins/tools/Mask';
 
-import MainCanvas from 'plugins/canvases/MainCanvas';
 import Menu from 'plugins/menuModal/Menu';
 
 import Request from 'plugins/request';
@@ -22,7 +21,7 @@ const InitMask = styled(Mask)`
   flex-direction: column;
 `;
 
-function Project() {
+function OldProjectView() {
 	const { viewKey } = useBranch({ viewKey: ['viewKey'] });
 	const [loading, setLoading] = useState(true);
 	const { libs, dispatch } = useBranch({ libs: ['libs'] });
@@ -54,7 +53,7 @@ function Project() {
 			</InitMask>
 		);
 	}
-    
+
 	return (
 		<Mask
 			opacity={1}
@@ -69,4 +68,4 @@ function Project() {
 	);
 }
 
-export default Project;
+export default OldProjectView;
