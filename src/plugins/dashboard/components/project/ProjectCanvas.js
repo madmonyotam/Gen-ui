@@ -42,7 +42,7 @@ const ProjectCanvas = () => {
 		<Container>
 			<WidgetHeader title={'Pack View'} icon={'bubble_chart'}/>
 			<WidgetCont>
-				{/* <MainCanvas/> */}
+				<MainCanvas/>
 			</WidgetCont>
 		</Container>
 	);

@@ -319,19 +319,19 @@ export default class Pack {
 			if (n.depth === 2) n = n.parent;
 
 			switch (n.data.level) {
-			case 1:
-				this.firstLevelClick(n.data.name);
-				break;
-			case 2:
-				this.secondLevelClick(n.data.name);
-				break;
-			case 3:
-				this.thirdLevelClick(n.data.name);
-				break;
+				case 1:
+					this.firstLevelClick(n.data.name);
+					break;
+				case 2:
+					this.secondLevelClick(n.data.name);
+					break;
+				case 3:
+					this.thirdLevelClick(n.data.name);
+					break;
 
-			default:
-				this.onClick(n.data.name);
-				break;
+				default:
+					this.onClick(n.data.name);
+					break;
 			}
 
 			if(n.depth){
@@ -391,19 +391,19 @@ export default class Pack {
 
 	setLevelClick(level, func) {
 		switch (level) {
-		case 1:
-			this.firstLevelClick = func;
-			break;
-		case 2:
-			this.secondLevelClick = func;
-			break;
-		case 3:
-			this.thirdLevelClick = func;
-			break;
+			case 1:
+				this.firstLevelClick = func;
+				break;
+			case 2:
+				this.secondLevelClick = func;
+				break;
+			case 3:
+				this.thirdLevelClick = func;
+				break;
 
-		default:
-			this.onClick = func;
-			break;
+			default:
+				this.onClick = func;
+				break;
 		}
 	}
 

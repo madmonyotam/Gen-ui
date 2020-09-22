@@ -1,10 +1,10 @@
-import React  from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { useRecoilValue } from 'recoil';
 import { selectedProject } from 'plugins/dashboard/tree/selectors';
+
 import WidgetHeader from 'plugins/tools/WidgetHeader';
- 
 import ProjectTitle from './title';
 import ProjectDates from './dates';
 import CollaboratorList from './collaborators';
