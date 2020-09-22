@@ -1,3 +1,4 @@
+import { sortBy } from 'lodash';
 import { selector } from 'recoil'; 
 import { selectedProjectId, projectListState, projectUsersState } from './atoms';
 import { modifyAllContributeByDate, sumAllContribute } from 'plugins/dashboard/adapters/contributes';
@@ -45,7 +46,7 @@ export const collaborators = selector({
 			return modify;
 		});
 		
-		return modifyUsers;
+		return sortBy(modifyUsers,'contribute').reverse();
 	}
 });
 
