@@ -10,8 +10,19 @@ export const librariesState = atom({
 	default: []
 });
 
+export const schemasState = atom({
+	key: 'schemasState',
+	default: []
+});
+
 export const selectedLibId = atom({
 	key: 'selectedLibId',
+	default: undefined
+});
+
+
+export const selectedSchemaId = atom({
+	key: 'selectedSchemaId',
 	default: undefined
 });
 

@@ -18,10 +18,10 @@ const Header = styled(Typography)`
 `;
 
 const WidgetHeader = (props) => {
-	const { title, icon, showDivider, onIconClick } = props;
+	const { title, icon, showDivider, onIconClick, style } = props;
 	return (
 		<>
-			<Header>
+			<Header style={{ ...style }}>
 				{access.translate(title)}
 				<Icon fontSize={'small'} onClick={ onIconClick } >{icon}</Icon>
 			</Header>
@@ -35,12 +35,14 @@ WidgetHeader.propTypes = {
 	icon: PropTypes.string.isRequired,
 	showDivider: PropTypes.bool,
 	onIconClick: PropTypes.func,
+	style: PropTypes.object,
 };
 
 WidgetHeader.defaultProps = {
 	title: 'Widget Header',
 	icon: 'check',
 	showDivider: true,
+	style: {},
 	onIconClick: () => null
 };
 

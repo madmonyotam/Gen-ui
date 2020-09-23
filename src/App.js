@@ -69,7 +69,7 @@ function App({ tree }) {
 			<ThemeProvider theme={ theme }> 
 				<Router>
 
-					{ loggedIn && <TopPanel /> }
+					{ loggedIn && <TopPanel />}
 				
 
 					<Switch>
