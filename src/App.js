@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import firebase from 'firebase';
 
 import { BrowserRouter as Router, Redirect, Switch } from 'react-router-dom';
 import { useRoot } from 'baobab-react/hooks';
-
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import firebase from 'firebase';
-import { setHeaders } from 'plugins/request';
+
 import * as access from 'plugins/access';
+
+import ErrorBoundaries from 'plugins/tools/ErrorBoundaries';
+import { setHeaders } from 'plugins/request';
 import TopPanel from 'plugins/tools/TopPanel';
 
 import Routes from 'plugins/tools/Routes';
@@ -67,18 +69,19 @@ function App({ tree }) {
 	return (
 		<Root>
 			<ThemeProvider theme={ theme }> 
-				<Router>
+				<ErrorBoundaries>
+					<Router>
 
-					{ loggedIn && <TopPanel />}
+						{ loggedIn && <TopPanel />}
 				
 
-					<Switch>
+						<Switch>
+							{
+								appReady && <RedirectHandler loggedIn={loggedIn} />  
+							}
+						</Switch>
 						{
-							appReady && <RedirectHandler loggedIn={loggedIn} />  
-						}
-					</Switch>
-					{
-						appReady &&
+							appReady &&
 								<React.Suspense fallback={ <div>Loading...</div> }>
 
 									<Routes 
@@ -91,8 +94,9 @@ function App({ tree }) {
 									/>
 
 								</React.Suspense>
-					}
-				</Router>
+						}
+					</Router>
+				</ErrorBoundaries>
 			</ThemeProvider>
 		</Root>
 	);

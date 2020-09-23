@@ -9,7 +9,7 @@ import { selectedLibrary } from 'plugins/project/tree/selectors';
 import styled from 'styled-components';
 import * as access from 'plugins/access';
 
-import { Typography } from '@material-ui/core';
+import { Typography, Button, Icon, IconButton, Tooltip } from '@material-ui/core';
 import WidgetHeader from 'plugins/tools/WidgetHeader';
 import SchemaListItem from './SchemaListItem';
 import CodeEditor from './Editor';
@@ -67,27 +67,23 @@ const Schemas = () => {
 	);
 
 	return (
-		
-		<div style={{
-			flex: 1, 
-			background: 'white',
-			// padding: '0 10px',
-			borderRadius: '4px',
-			border: '1px solid #dedede',
-			position: 'relative',
-			width: '50%'
-		}}>
-			<WidgetHeader title={'Schemas'} icon={'assignment'} style={{ padding: '5px 10px' }}/>
-			<div style={{ display: 'flex', flex: 1, height: 'calc(100% - 40px)' }}>
-				<div style={{
-					flex: 1,
-					borderRight: `1px solid  ${ access.color('backgrounds.light') }`  ,
-					maxWidth: 'calc(235px - 11px)',
-				}}>
+		<div style={{ display: 'flex', flex: 1 }}>
 
+			<div style={{
+				flex: 1, 
+				background: 'white',
+				borderRadius: '4px',
+				border: '1px solid #dedede',
+				position: 'relative',
+				maxWidth: 'calc(235px - 11px)',
+			}}>
+				
+				<WidgetHeader title={'Schemas'} icon={'assignment'} style={{ padding: '5px 10px' }}/>
+				<div style={{ display: 'flex', flex: 1, height: 'calc(100% - 40px)' }}> 
 					<div style={{ 
 						padding: '10px 0', 
 						background: 'white', 
+						flex: 1,
 						height: 'calc(100% - 150px)',
 						position: 'relative', 
 					}}>
@@ -113,13 +109,37 @@ const Schemas = () => {
 								</div>
 							)
 						}
-
+					</div> 
+				</div>
+			</div>
+			<div style={{ flex: 1 }}>
+				<div style={{ height: 40, paddingLeft: 40, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+					<div>
+						<Tooltip title={access.translate('Undo')}  >
+							<IconButton size={'small'} style={{ marginRight: 10 }}>
+								<Icon fontSize={'small'}>undo</Icon>
+							</IconButton>
+						</Tooltip>
+						<Tooltip title={access.translate('Redo')}  >
+							<IconButton size={'small'}>
+								<Icon fontSize={'small'}>redo</Icon>
+							</IconButton>
+						</Tooltip>
+					</div>
+					<div>
+						<Tooltip title={access.translate('Save')}  >
+							<IconButton size={'small'} style={{ marginRight: 10 }}>
+								<Icon fontSize={'small'}>save</Icon>
+							</IconButton>
+						</Tooltip>
+						<Tooltip title={access.translate('Copy')}  >
+							<IconButton size={'small'}>
+								<Icon fontSize={'small'}>content_copy</Icon>
+							</IconButton>
+						</Tooltip>
 					</div>
 				</div>
-				{/* </div> */}
-				<div style={{ flex: 1, background: access.color('backgrounds.light') }}>
-					<CodeEditor />
-				</div>
+				<CodeEditor value={JSON.stringify({ "ibrary": libId }) }/>
 			</div>
 		</div>
 	);

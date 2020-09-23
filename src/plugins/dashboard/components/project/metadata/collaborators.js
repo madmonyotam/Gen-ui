@@ -31,9 +31,7 @@ const CollaboratorsList = () => {
 	return (
 		<DataBox icon={'people'} title={'collaborators'} buttons={ <RightButtons /> } badge={ users.length } >
 			<List>
-				{ 
-					users && users.map(renderUsers) 
-				}
+				{ users.map(renderUsers) }
 			</List>
 		</DataBox>
 	);

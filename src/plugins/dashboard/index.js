@@ -65,7 +65,7 @@ function Dashboard() {
 	const renderContent = () => {
 		return (
 			<div style={{ display: 'flex', flex: 1 }}> 
-				<ProjectPanel />
+				<ProjectPanel/>
 				<ProjectBody/>
 			</div> 
 

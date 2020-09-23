@@ -32,8 +32,11 @@ const Editor = ({ value }) => {
 	};
 
 	const style = {
-		height: '100%',
-		width: '100%'
+		height: 'calc(100% - 41px)',
+		width: '100%',
+		borderTopRightRadius: '4px',
+		borderTop: '1px solid #dedede',
+		borderRight: '1px solid #dedede',
 	};
 
 	return (

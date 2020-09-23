@@ -11,7 +11,7 @@ const ROOT_ELEMENT = document.getElementById('root');
 ReactDOM.render(
 	<RecoilRoot>
 		<App tree={tree} />
-	</RecoilRoot>, 
+	</RecoilRoot>,
 	ROOT_ELEMENT
 );
 
