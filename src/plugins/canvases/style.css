@@ -2,6 +2,16 @@
     pointer-events: all;
 }
 
+.in-text {
+    paint-order: stroke;
+    stroke: #cedae6;
+    stroke-width: 0.6px;
+    stroke-linecap: round;
+    stroke-linejoin: bevel;
+    font-weight: 400;
+    fill: #39536f;
+}
+
 .text {
     paint-order: stroke;
     stroke: #cedae6;
@@ -9,7 +19,7 @@
     stroke-linecap: round;
     stroke-linejoin: bevel;
     font-weight: 600;
-    fill: "#1c4067";
+    fill: #39536f;
 }
 
 .light-text {

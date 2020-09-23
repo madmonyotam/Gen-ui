@@ -15,7 +15,7 @@ const ProjectMetadata = props => {
 	const project = useRecoilValue(selectedProject);
  
 	return (
-		<div style={{ flex: 1, ...style }}>
+		<div style={{ flex: 1.5, marginRight: 20 }}>
 			<WidgetHeader title={'Details'} icon={'description'} />
 
 			{

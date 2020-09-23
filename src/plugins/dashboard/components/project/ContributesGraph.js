@@ -1,5 +1,7 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
+import * as access from 'plugins/access';
+
 import useResizeWindow from 'plugins/hooks/useResizeWindow';
 
 import styled from 'styled-components';
@@ -22,9 +24,11 @@ const Container = styled.div`
 const WidgetCont = styled.div`
 	width: 100%;
   flex: 1;
-	border-radius: 4px;
 	overflow: hidden;
 	margin-top: 10px;
+	background: ${access.color('backgrounds.widget')};
+	border:  1px solid ${ access.color('borders.primary') };
+	border-radius: 4px;
 `;
 
 const ContributesGraph = () => {
@@ -34,7 +38,7 @@ const ContributesGraph = () => {
 
 	return (
 		<Container>
-			<WidgetHeader title={'Updated By Time'} icon={'insert_chart_outlined'}/>
+			<WidgetHeader title={access.translate('Updated By Time')} icon={'insert_chart_outlined'}/>
 			<WidgetCont>
 				<LineCanvas key={sizeKey} data={contribute}/>
 			</WidgetCont>

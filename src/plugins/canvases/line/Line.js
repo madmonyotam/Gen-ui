@@ -24,12 +24,12 @@ export default class Line {
 		this.defs = this.linesGroup.append('defs');
 		const colors = [
 			{
-				start: access.color('lineCanvas.fg'),
-				end: '#c3f7eb',
+				start: access.color('lineCanvas.line'),
+				end: access.color('lineCanvas.fg'),
 			},
 			{
-				start: access.color('lineCanvas.fg'),
-				end: '#b3898d'
+				start: '#b3898d',
+				end: access.color('lineCanvas.fg'),
 			}
 		];
 
@@ -40,9 +40,9 @@ export default class Line {
 		var gradient = this.defs
 			.append('linearGradient')
 			.attr('id', `svgGradient-${index}`)
-			.attr('x1', '100%')
+			.attr('x1', '0%')
 			.attr('x2', '0%')
-			.attr('y1', '0%')
+			.attr('y1', '100%')
 			.attr('y2', '0%');
 	
 		gradient
@@ -55,7 +55,7 @@ export default class Line {
 		gradient
 			.append('stop')
 			.attr('class', 'end')
-			.attr('offset', '50%')
+			.attr('offset', '100%')
 			.attr('stop-color', color.end)
 			.attr('stop-opacity', 1);
 	}
@@ -80,7 +80,7 @@ export default class Line {
 
 		Xaxis.selectAll('.tick text')			
 			.attr('fill', access.color('lineCanvas.fg'))
-			.attr('font-size',10)
+			.attr('font-size',9)
 			.attr('stroke', access.color('lineCanvas.fg'))
 			.attr('stroke-width',0.3);
 		
@@ -89,7 +89,7 @@ export default class Line {
 
 		Xaxis.select('.domain')	
 			.attr('stroke',access.color('lineCanvas.fg'))
-			.attr('stroke-width','2');
+			.attr('stroke-width',1.5);
 
 	}
 
@@ -118,7 +118,7 @@ export default class Line {
 			.duration(700)
 			.ease((t)=> d3.easeCubicInOut(t))
 			.attr('d', this.Dline)
-			.attr('opacity',0.3)
+			.attr('opacity',0.8)
 			.attr('stroke-width',1)
 			.on('end', function(){
 				d3.select(this)

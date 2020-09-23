@@ -8,10 +8,7 @@ import { move } from 'plugins/canvases/utils/canvasActions';
 
 import LineGraph from 'plugins/canvases/line/Line';
 
-import {
-	paintFrame,
-	fillFrame,
-} from 'plugins/canvases/paint/Frames';
+import { paintFrame } from 'plugins/canvases/paint/Frames';
 
 class LineCanvas extends PureComponent {
 	constructor(props) {
@@ -42,7 +39,6 @@ class LineCanvas extends PureComponent {
 
 		const frame = paintFrame(canvas, width, height, 'lineGraph');
 		move(canvas, frame, access.color('lineCanvas.move'));
-		fillFrame(access.color('lineCanvas.bg'),'lineGraph');
 		this.setDataToGraph(canvas, width, height);
 	}
 
