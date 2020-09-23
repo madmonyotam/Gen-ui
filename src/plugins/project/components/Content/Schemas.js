@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useRecoilState, useRecoilValue, /*useSetRecoilState*/ } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import moment from 'moment';
 
 import { useFetchSchemas } from 'plugins/project/actions';
-import { schemasState, /*selectedSchemaId, */selectedLibId } from 'plugins/project/tree/atoms';
+import { schemasState, selectedSchemaId, selectedLibId } from 'plugins/project/tree/atoms';
 import { selectedLibrary } from 'plugins/project/tree/selectors';
 import styled from 'styled-components';
 import * as access from 'plugins/access';
@@ -28,19 +28,17 @@ const Box = styled.div`
 
 const Schemas = () => {
 
-	// const setSchemaId = useSetRecoilState(selectedSchemaId);
+	const setSchemaId = useSetRecoilState(selectedSchemaId);
 	const libId = useRecoilValue(selectedLibId);
 	const library = useRecoilValue(selectedLibrary);
 	const loading = useFetchSchemas(libId);
-	const data = useRecoilValue(schemasState);
+	const schemas = useRecoilValue(schemasState);
 	
 	useEffect(() => {
-		if (!loading && data.length) {
-			console.log(data);
-			console.log(library);
-			// setSchemaId(data[0].id);
+		if (!loading && schemas.length) { 
+			setSchemaId(schemas[0].schemaId);
 		}
-	}, [loading, data]);
+	}, [loading, schemas]);
 	
 	const LibTitle = () => (
 		<div>
@@ -65,53 +63,11 @@ const Schemas = () => {
 			</Box>
 		</div>
 	);
+		
 
-	return (
-		<div style={{ display: 'flex', flex: 1 }}>
-
-			<div style={{
-				flex: 1, 
-				background: 'white',
-				borderRadius: '4px',
-				border: '1px solid #dedede',
-				position: 'relative',
-				maxWidth: 'calc(235px - 11px)',
-			}}>
-				
-				<WidgetHeader title={'Schemas'} icon={'assignment'} style={{ padding: '5px 10px' }}/>
-				<div style={{ display: 'flex', flex: 1, height: 'calc(100% - 40px)' }}> 
-					<div style={{ 
-						padding: '10px 0', 
-						background: 'white', 
-						flex: 1,
-						height: 'calc(100% - 150px)',
-						position: 'relative', 
-					}}>
-						{ 
-							(!loading && data) && data.map(item => (
-								<SchemaListItem key={ item.schemaId } item={ item }/>
-							)) 
-						}
-						{
-							(!loading && library) && (
-								<div style={{ 
-									borderTop: 'solid 1px rgba(221,221,221,.75)', 
-									background: '#f1f1f1', 
-									position: 'absolute', 
-									bottom: -130, 
-									left: 0, 
-									right: 0, 
-									padding: '10px 0 0',
-									height: 120,
-								}}>
-									<LibTitle />
-									<LibDates />
-								</div>
-							)
-						}
-					</div> 
-				</div>
-			</div>
+	const Stuff = () => {
+		console.log('Schemas ->', schemas);
+		return (
 			<div style={{ flex: 1 }}>
 				<div style={{ height: 40, paddingLeft: 40, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 					<div>
@@ -139,8 +95,60 @@ const Schemas = () => {
 						</Tooltip>
 					</div>
 				</div>
-				<CodeEditor value={JSON.stringify({ "ibrary": libId }) }/>
+				<CodeEditor  />
 			</div>
+
+		);
+	};
+	return (
+		<div style={{ display: 'flex', flex: 1 }}>
+
+			<div style={{
+				flex: 1, 
+				background: 'white',
+				borderRadius: '4px',
+				border: '1px solid #dedede',
+				position: 'relative',
+				maxWidth: 'calc(235px - 11px)',
+			}}>
+				
+				<WidgetHeader title={'Schemas'} icon={'assignment'} style={{ padding: '5px 10px' }}/>
+				<div style={{ display: 'flex', flex: 1, height: 'calc(100% - 40px)' }}> 
+					<div style={{ 
+						padding: '10px 0', 
+						background: 'white', 
+						flex: 1,
+						height: 'calc(100% - 150px)',
+						position: 'relative', 
+					}}>
+						{ 
+							(!loading && schemas) && schemas.map(item => (
+								<SchemaListItem key={ item.schemaId } item={ item }/>
+							)) 
+						}
+						{
+							(!loading && library) && (
+								<div style={{ 
+									borderTop: 'solid 1px rgba(221,221,221,.75)', 
+									background: '#f1f1f1', 
+									position: 'absolute', 
+									bottom: -130, 
+									left: 0, 
+									right: 0, 
+									padding: '10px 0 0',
+									height: 120,
+								}}>
+									<LibTitle />
+									<LibDates />
+								</div>
+							)
+						}
+					</div> 
+				</div>
+			</div> 
+			{
+				(!loading && schemas) &&  <Stuff />
+			}
 		</div>
 	);
 };

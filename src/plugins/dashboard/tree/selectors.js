@@ -51,7 +51,7 @@ export const collaborators = selector({
 });
 
 export const librariesForPack = selector({
-	key: 'selectedProject',
+	key: 'librariesForPack',
 	get: ({ get }) => {
 		const libs = get(librariesState);
 		const modifiedLibs = modifyLibsToPack(libs);

@@ -2,11 +2,19 @@ import React, { useState, useRef, useEffect } from 'react';
 import AceEditor from 'react-ace';
 
 import 'ace-builds/src-noconflict/mode-json';
-import 'ace-builds/src-noconflict/theme-github';
+import 'ace-builds/src-noconflict/mode-text';
+import 'ace-builds/src-noconflict/theme-xcode';
+import { useRecoilValue } from 'recoil';
 
-const Editor = ({ value }) => {
+import { selectedSchema } from 'plugins/project/tree/selectors';
+import { selectedSchemaId } from 'plugins/project/tree/atoms';
+
+const Editor = () => {
 	const editorRef = useRef();
-	const [code, setCode] = useState(value || '');
+	const selectedId = useRecoilValue(selectedSchemaId);
+	const selected = useRecoilValue(selectedSchema);
+
+	const [code, setCode] = useState('');
 
 	useEffect(() => {
 		// reset undo maneger
@@ -17,13 +25,18 @@ const Editor = ({ value }) => {
 			undoManager.reset();
 			session.setUndoManager(undoManager);
 		}
-		if (value) setCode(value);
-	}, [value]);
+		if (selectedId && selected && selected.schemaJson) {
+			const c = JSON.stringify(selected.schemaJson, null, 2);
+			setCode(c);
+		}
+
+	}, [selectedId]);
 
 	const onLoad = () => { };
 
-	const onChange = c => {
-		setCode(c);
+	const onChange = value => {
+		console.log('onChange', value)
+		setCode(value);
 	};
 
 	const options = {
@@ -45,7 +58,7 @@ const Editor = ({ value }) => {
 			style={style}
 			debounceChangePeriod={1000}
 			mode="json"
-			theme="github"
+			theme="xcode"
 			name="editor"
 			onLoad={onLoad}
 			onChange={onChange}

@@ -7,7 +7,7 @@ import * as access from 'plugins/access';
 
 import { Typography, Icon } from '@material-ui/core';
 
-import { selectedSchemaId } from 'plugins/project/tree/atoms';
+import { selectedSchemaId } from 'plugins/project/tree/atoms'; 
 
 const ListItem = styled.div`
 	position: relative;
@@ -30,9 +30,9 @@ const ListItem = styled.div`
 
 
 const SchemaListItem = ({ item }) => {
-
 	const [selectedId, setSchemaId] = useRecoilState(selectedSchemaId);
 	const selected = item.schemaId === selectedId;
+
 	return (
 		<ListItem selected={ selected } onClick={ () => setSchemaId(item.schemaId) }>
 			<Typography style={{ marginBottom: 5, fontSize: 14, color: '#333' }} >
