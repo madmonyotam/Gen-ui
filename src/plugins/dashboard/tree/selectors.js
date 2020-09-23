@@ -29,7 +29,7 @@ export const selectedProject = selector({
 export const contributeByDate = selector({
 	key: 'contributeByDate',
 	get: ({ get }) => {
-		const users = get(projectUsersState);
+		const users = get(projectUsersState) || []; //TODO handle Error
 
 		return modifyAllContributeByDate(users);
 	}
@@ -38,7 +38,7 @@ export const contributeByDate = selector({
 export const collaborators = selector({
 	key: 'collaborators',
 	get: ({ get }) => {
-		const users = get(projectUsersState);
+		const users = get(projectUsersState) || []; //TODO handle Error
 
 		const modifyUsers = users.map((user) => {
 			const modify = { ...user };

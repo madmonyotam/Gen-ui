@@ -9,9 +9,8 @@ import ProjectTitle from './title';
 import ProjectDates from './dates';
 import CollaboratorList from './collaborators';
 
-const ProjectMetadata = props => {
+const ProjectMetadata = () => {
 
-	const { style } = props;
 	const project = useRecoilValue(selectedProject);
  
 	return (
