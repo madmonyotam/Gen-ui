@@ -36,7 +36,7 @@ const Badge = styled.div`
 	border-radius: 4px;
 `; 
 
-const CuntributeBadge = styled(Badge)`
+const ContributeBadge = styled(Badge)`
 	display: flex;
 	justify-content: center;
 	width: 50px;
@@ -87,10 +87,10 @@ const UserListItem = props => {
 									
 				</TextsContainer> 
 			</Left>
-			<Tooltip title={ access.translate('Cuntributes')} placement={ 'top' } enterDelay={ 500 }>
-				<CuntributeBadge level={'member'}>
+			<Tooltip title={ access.translate('Contributes')} placement={ 'top' } enterDelay={ 500 }>
+				<ContributeBadge level={'member'}>
 					{ user.contribute }
-				</CuntributeBadge>
+				</ContributeBadge>
 			</Tooltip>
 		</Item>
 	); 
