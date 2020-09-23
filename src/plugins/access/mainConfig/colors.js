@@ -75,8 +75,8 @@ export default {
 		clickColor: 'colors.blue06',
 	},
 	lineCanvas: {
-		bg: 'colors.blue01',
-		fg: 'colors.blueLight01',
+		fg: 'colors.blue01',
+		bg: 'colors.blueLight01',
 		move: '#bfd6ef7a',
 	},
 	types: {
