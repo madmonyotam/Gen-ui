@@ -6,12 +6,12 @@ import { move } from 'plugins/canvases/utils/canvasActions';
 
 export default class Pack {
 	constructor(params) {
-		this.circlePadding = get(params, 'circlePadding', 30);
+		this.circlePadding = get(params, 'circlePadding', 25);
 		this.margin = get(params, 'margin', 45);
 		this.marginBottom = get(params, 'marginBottom', 10);
 		this.marginRight = get(params, 'marginRight', 22);
 		this.showMainCircle = get(params, 'showMainCircle', true);
-		this.limitByLevel = get(params, 'limitByLevel', 10);
+		this.limitByLevel = get(params, 'limitByLevel', 5);
 		this.fillOpacity = get(params, 'fillOpacity', 0.8);
 
 		this.moveOnCircleColor = get(
@@ -37,14 +37,14 @@ export default class Pack {
 		this.clickIsBlock = false;
 		this.packDomain = 0;
 		this.colorScaleRange = [
-			access.color('canvases.packBgStart'),
-			access.color('canvases.packBgEnd')
+			access.color('pack.bgStart'),
+			access.color('pack.bgEnd')
 		];
 
-		this.clickColor = access.color('canvases.clickColor');
+		this.clickColor = access.color('pack.clickColor');
 
 		this.textClasses = {
-			in: 'light-text',
+			in: 'in-text',
 			out: 'text'
 		};
 
@@ -58,8 +58,10 @@ export default class Pack {
 		this.mainGroup = this.canvas.append('g').attr('class', 'pack');
 	}
 
-	initWithData(data, projectName) {
+	initWithData(data, projectName, libs) {
 		this.mainData = this.normalizeData(data, null, projectName);
+
+		console.log(this.mainData,libs);
 		this.createPack(this.mainData, true);
 	}
 
@@ -170,8 +172,9 @@ export default class Pack {
 				.attr('transform', this.getTranslate)
 				.attr('fill-opacity', this.fillOpacity)
 				.transition()
-				.duration(2000)
+				.duration(1000)
 				.attr('fill', d => colorScale(d.data.value))
+				.attr('stroke', access.color('pack.circleStore'))
 				.attr('transform', this.getTranslate)
 				.attr('r', d => d.r);
 		};
@@ -179,7 +182,7 @@ export default class Pack {
 		const exitCircles = c => {
 			c.exit()
 				.transition()
-				.duration(2000)
+				.duration(1000)
 				.attr('r', 0)
 				.transition()
 				.remove();
@@ -187,7 +190,7 @@ export default class Pack {
 
 		const updateCircles = c => {
 			c.transition()
-				.duration(2000)
+				.duration(1000)
 				.attr('fill', d => colorScale(d.data.value))
 				.attr('transform', this.getTranslate)
 				.attr('r', d => d.r);
@@ -260,14 +263,14 @@ export default class Pack {
 				.attr('font-size', '0')
 				.text(d => adaptText(d))
 				.transition()
-				.duration(2000)
+				.duration(1500)
 				.attr('font-size', d => getFontSize(d, childrenScope(d)));
 		};
 
 		const exitTexts = t => {
 			t.exit()
 				.transition()
-				.duration(2000)
+				.duration(250)
 				.attr('font-size', 0)
 				.transition()
 				.remove();
@@ -281,7 +284,7 @@ export default class Pack {
 				.duration(10)
 				.attr('transform', this.getTranslate)
 				.transition()
-				.duration(1000)
+				.duration(500)
 				.text(d => adaptText(d))
 				.attr('y', getTextPosition)
 				.attr('class', d =>
@@ -367,10 +370,10 @@ export default class Pack {
 
 			circle
 				.transition()
-				.duration(200)
+				.duration(250)
 				.attr('fill', this.clickColor)
 				.transition()
-				.duration(600)
+				.duration(400)
 				.attr('fill', orininalColor);
 		};
 

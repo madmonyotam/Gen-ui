@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import * as access from 'plugins/access';
 
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { projectUsersState, selectedProjectId } from 'plugins/dashboard/tree/atoms';
+import { projectUsersState, selectedProjectId, librariesState } from 'plugins/dashboard/tree/atoms';
 import { selectedProject } from 'plugins/dashboard/tree/selectors';
 
-import { getUsersContributes } from 'plugins/dashboard/actions';
+import { getUsersContributes, getAllLibraries } from 'plugins/dashboard/actions';
 
 /* Components */
 import ProjectMetadata from 'plugins/dashboard/components/project/metadata/';
@@ -38,23 +38,32 @@ function ProjectBody() {
 	const projectId = useRecoilValue(selectedProjectId);
 	const project = useRecoilValue(selectedProject);
 	const setUsers = useSetRecoilState(projectUsersState);
+	const setLibraries = useSetRecoilState(librariesState);
 
 	const fetchUsers = async () => {
-		const data = await getUsersContributes();
+		const data = await getUsersContributes(projectId);
+		
 		setUsers(data);
+	};
+
+	const fetchLibraries = async () => {
+		const libs = await getAllLibraries(projectId);
+		
+		setLibraries(libs);
 	};
 
 	useEffect(() => {
 		fetchUsers();
+		fetchLibraries();
 	}, [projectId]);
 
 	return (
 		<Content className={'dashboard-content'}>
 			<UpperCont>
 
-				<ProjectMetadata style={{ marginRight: 20 }} />
-				<ProjectCanvas />
-
+				<ProjectMetadata/>
+				{ project && (<ProjectCanvas />) }
+				
 			</UpperCont>
 			<LineGraphCont>
 				{ project && (<ContributesGraph />) }

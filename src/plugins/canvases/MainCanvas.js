@@ -1,45 +1,45 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 
 import Start from 'plugins/tools/Start';
 import * as access from 'plugins/access';
-import { get } from 'plugins/requests';
-import useResizeWindow from 'plugins/hooks/useResizeWindow';
 
 import { move } from 'plugins/canvases/utils/canvasActions';
 
 import LibraryPack from 'plugins/canvases/pack/LibraryPack';
-import { setLibraryPack } from 'plugins/canvases/utils/packUtils';
 
-import {
-	paintFrame,
-	fillFrame,
-} from 'plugins/canvases/paint/Frames';
+import { paintFrame } from 'plugins/canvases/paint/Frames';
 
-function MainCanvas() {
-	const size = useResizeWindow();
-	const key = `${size.width}-${size.height}`;
 
-	const getAllLibs = (canvas, width, height) => {
-		get('/getAll').then(res => {
-			const {data, projectName } = res.data;
+class MainCanvas extends PureComponent {
+	constructor(props) {
+		super(props);
+		this.setDataToGraph = this.setDataToGraph.bind(this);
+		this.onCanvasReady = this.onCanvasReady.bind(this);
+	}
 
-			const libraryPack = new LibraryPack({ canvas, width, height });
-			libraryPack.initWithData(data,projectName);
+	componentDidUpdate(prevProps) {
+		const { data } = this.props;
+		if (prevProps.data !== data && this.pack){
+			this.pack.createPack(data);
+		}
+	}
 
-			setLibraryPack(libraryPack);
-		});
-	};
+	setDataToGraph(canvas, width, height) {
+		const { data } = this.props;
+		this.pack = new LibraryPack({ canvas, width, height });
+		this.pack.createPack(data);
+	}
 
-	const onCanvasReady = (canvas, width, height) => {
+	onCanvasReady(canvas, width, height) {
 
 		const frame = paintFrame(canvas, width, height);
-		fillFrame(access.color('types.bg'));
-		move(canvas, frame, access.color('canvases.fg'));
+		move(canvas, frame, access.color('canvases.move'));
 
-		getAllLibs(canvas, width, height);
-	};
+		this.setDataToGraph(canvas, width, height);
+	}
 
-	const renderStart = () => {
+	renderPackCanvas() {
 		const margin = {
 			top: 0,
 			bottom: 0,
@@ -47,14 +47,21 @@ function MainCanvas() {
 			right: 0
 		};
 
-		return <Start canvasReady={onCanvasReady} margin={margin} />;
-	};
+		return <Start canvasReady={this.onCanvasReady} margin={margin} />;
+	}
 
-	return (
-		<div key={ key } style={{ height: '100%', width: '100%', userSelect: 'none' }}>
-			{renderStart()}
-		</div>
-	);
+	render(){
+
+		return (
+			<div style={{ height: '100%', width: '100%', userSelect: 'none' }}>
+				{this.renderPackCanvas()}
+			</div>
+		);
+	}
 }
+
+MainCanvas.propTypes = {
+	data: PropTypes.object.isRequired
+};
 
 export default MainCanvas;

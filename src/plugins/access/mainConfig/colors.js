@@ -1,3 +1,5 @@
+import { colors } from '@material-ui/core';
+
 export default {
 	colors: {
 		black: '#000000',
@@ -30,6 +32,7 @@ export default {
 		member: 'colors.blue05'
 	},
 	backgrounds: {
+		widget: 'colors.white',
 		primary: 'colors.blue01',
 		secondary: 'colors.blueLight01',
 		content: 'colors.blueLight02',
@@ -38,6 +41,9 @@ export default {
 		code: 'colors.grey02',
 		light: 'colors.greyLight01',
 		badge: '#8fa6c2'
+	},
+	borders: {
+		primary: '#bac4cebf'
 	},
 	texts: {
 		primary: 'colors.white',
@@ -66,18 +72,23 @@ export default {
 		icon: 'colors.grey02',
 	},
 	canvases: {
-		bg: 'backgrounds.secondary',
+		bg: 'colors.white',
 		fg: 'texts.secondary',
 		moveOnCircle: 'colors.blueLight01',
 		moveOnText: 'colors.blue01',
-		packBgStart: 'backgrounds.primary',
-		packBgEnd: 'backgrounds.hover',
-		clickColor: 'colors.blue06',
+		move: '#bfd6ef7a',
+	},
+	pack: {
+		circleStore: 'colors.blue01',
+		bgStart: 'colors.grey02',
+		bgEnd: 'colors.blueLight03',
+		clickColor: 'colors.blueLight03',
 	},
 	lineCanvas: {
 		fg: 'colors.blue01',
-		bg: 'colors.blueLight01',
-		move: '#bfd6ef7a',
+		bg: 'colors.white',
+		move: 'canvases.move',
+		line: 'colors.blue04'
 	},
 	types: {
 		bg: 'colors.blue05',

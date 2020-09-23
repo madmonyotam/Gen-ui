@@ -3,6 +3,7 @@ import { useSetRecoilState } from 'recoil';
 import Request from 'plugins/request';
 import { projectListState } from '../tree/atoms';
 
+const LIBRARY_API = '/libraryRestAPI-libraryRestAPI/library';
 
 export const useFetchProjects = email => {
 	
@@ -54,5 +55,12 @@ export const getUsersContributes = (projectId) => {
 		.catch(error => {
 			console.error(error);
 			return false;
+		});
+};
+
+export const getAllLibraries = (projectId) => {
+	return Request.get(`${LIBRARY_API}/projects/${projectId}`)
+		.then(({ data }) => {
+			if(data.status.toLowerCase() === 'success') return data.libraries;
 		});
 };

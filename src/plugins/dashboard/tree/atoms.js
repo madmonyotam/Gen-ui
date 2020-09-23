@@ -14,3 +14,10 @@ export const projectUsersState = atom({
 	key: 'projectUsersState',
 	default: []
 });
+
+export const librariesState = atom({
+	key: 'librariesState',
+	default: []
+});
+
+

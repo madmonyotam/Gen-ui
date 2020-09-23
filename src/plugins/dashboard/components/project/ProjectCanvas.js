@@ -1,13 +1,14 @@
-import React, { useEffect, useCallback } from 'react';
-import MainCanvas from 'plugins/canvases/MainCanvas';
-import { useBranch } from 'baobab-react/hooks';
-
+import React from 'react';
 import styled from 'styled-components';
+import * as access from 'plugins/access';
+import { useRecoilValue } from 'recoil';
 
-import * as libsActions from 'tree/actions/libs';
+import useResizeWindow from 'plugins/hooks/useResizeWindow';
+
+import { librariesForPack } from 'plugins/dashboard/tree/selectors';
+
+import MainCanvas from 'plugins/canvases/MainCanvas';
 import WidgetHeader from 'plugins/tools/WidgetHeader';
-
-import Request from 'plugins/request';
 
 const Container = styled.div`
 	display: flex;
@@ -21,28 +22,23 @@ const Container = styled.div`
 const WidgetCont = styled.div`
 	width: 100%;
 	flex: 1;
-	border-radius: 4px;
 	overflow: hidden;
 	margin-top: 10px;
+	background: ${access.color('backgrounds.widget')};
+	border:  1px solid ${ access.color('borders.primary') };
+	border-radius: 4px;
 `;
 
 const ProjectCanvas = () => {
-
-	const { libs, dispatch } = useBranch({ libs: ['libs'] });
-	const stableDispatch = useCallback(dispatch, []);
-
-	// useEffect(() => {
-	// 	Request.get('/getAllLibraries')
-	// 		.then(res => {
-	// 			stableDispatch(libsActions.setLibs, res.data);
-	// 		});
-	// }, [stableDispatch]);
+	const libs = useRecoilValue(librariesForPack);
+	const size = useResizeWindow();
+	const sizeKey = `${size.width}-${size.hight}`; 
 
 	return (
 		<Container>
-			<WidgetHeader title={'Pack View'} icon={'bubble_chart'}/>
+			<WidgetHeader title={access.translate('Pack View')} icon={'bubble_chart'}/>
 			<WidgetCont>
-				<MainCanvas/>
+				<MainCanvas key={sizeKey} data={ libs }/>
 			</WidgetCont>
 		</Container>
 	);

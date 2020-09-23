@@ -17,7 +17,7 @@ const Box = styled.div`
 	margin-bottom: 0px;
 	min-height: 40px;
 	background: #fefefe;
-	border:  1px solid rgba(186,196,206, .75);
+	border:  1px solid ${ access.color('borders.primary') };
 	border-radius: 4px;
 	flex: ${props => props.container ? 1 : .25};
 	transition: all 0.10s ease;
