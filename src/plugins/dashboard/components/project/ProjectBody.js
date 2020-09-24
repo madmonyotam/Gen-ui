@@ -11,7 +11,7 @@ import { getUsersContributes, getAllLibraries } from 'plugins/dashboard/actions'
 /* Components */
 import ProjectMetadata from 'plugins/dashboard/components/project/metadata/';
 import ContributesGraph from 'plugins/dashboard/components/project/ContributesGraph';
-import ProjectCanvas from 'plugins/dashboard/components/project/ProjectCanvas'; 
+import LibrariesPack from 'plugins/dashboard/components/project/LibrariesPack'; 
 
 const Content = styled.div`
 	display: flex; 
@@ -62,7 +62,7 @@ function ProjectBody() {
 			<UpperCont>
 
 				<ProjectMetadata/>
-				{ project && (<ProjectCanvas />) }
+				{ project && (<LibrariesPack />) }
 				
 			</UpperCont>
 			<LineGraphCont>

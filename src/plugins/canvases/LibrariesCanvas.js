@@ -11,7 +11,7 @@ import LibraryPack from 'plugins/canvases/pack/LibraryPack';
 import { paintFrame } from 'plugins/canvases/paint/Frames';
 
 
-class MainCanvas extends PureComponent {
+class LibrariesCanvas extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.setDataToGraph = this.setDataToGraph.bind(this);
@@ -33,7 +33,7 @@ class MainCanvas extends PureComponent {
 
 	onCanvasReady(canvas, width, height) {
 
-		const frame = paintFrame(canvas, width, height);
+		const frame = paintFrame(canvas, width, height, 'librariesPack');
 		move(canvas, frame, access.color('canvases.move'));
 
 		this.setDataToGraph(canvas, width, height);
@@ -60,8 +60,8 @@ class MainCanvas extends PureComponent {
 	}
 }
 
-MainCanvas.propTypes = {
+LibrariesCanvas.propTypes = {
 	data: PropTypes.object.isRequired
 };
 
-export default MainCanvas;
+export default LibrariesCanvas;
