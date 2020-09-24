@@ -27,7 +27,7 @@ export const modifyAllContributeByDate = (users) => {
 	const datesArray = [];
 	const start = moment();
 
-	for (let i = 0; i < 32; i++) {
+	for (let i = 0; i < 366; i++) {
 		const currentDay = moment(start).subtract(i, 'days');
 		datesArray[i] = {
 			date: currentDay.format('x'),

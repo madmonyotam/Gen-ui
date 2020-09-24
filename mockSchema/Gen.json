@@ -4,14 +4,14 @@
       "date": {
         "type": "recentDate",
         "value": {
-          "days": "30",
+          "days": "90",
           "dateMask": "x"
         }
       },
       "amount": {
         "type": "numberMax",
         "value": {
-          "max": "100"
+          "max": "30"
         }
       }
     },
@@ -31,7 +31,7 @@
           "categoryPath": "users.overTime",
           "amount": ""
         },
-        "size": "12",
+        "size": "20",
         "randomSize": true
       },
       "ownership": {
