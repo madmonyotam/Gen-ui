@@ -36,7 +36,7 @@ const ProjectCanvas = () => {
 
 	return (
 		<Container>
-			<WidgetHeader title={access.translate('Pack View')} icon={'bubble_chart'}/>
+			<WidgetHeader title={access.translate('Libraries')} icon={'bubble_chart'}/>
 			<WidgetCont>
 				<MainCanvas key={sizeKey} data={ libs }/>
 			</WidgetCont>

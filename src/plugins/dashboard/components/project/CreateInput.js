@@ -35,7 +35,7 @@ const Input = styled.input`
 
 const ProjectsIcon = styled(Icon)`
 	cursor: pointer;
-	color: ${ props => props.color},
+	color: ${ props => props.color};
 `;
 
 const ProjectCreateInput = ({ useInput, existingProjects }) => {
