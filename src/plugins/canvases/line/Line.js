@@ -5,10 +5,14 @@ import { maxBy, get, isEmpty } from 'lodash';
 
 export default class Line {
 	constructor(params) {
+		this.monthBack = get(params,'monthBack', 1);
+
 		this.init(params);
 		this.createGradients();
 
 		this.YField = get(params,'YField','amount');
+
+		this.initTimeAxis();
 	}
 
 	init(params) {
@@ -18,6 +22,46 @@ export default class Line {
 		this.mainGroup = this.canvas.append('g').attr('class', 'line');
 		this.linesGroup = this.canvas.append('g').attr('class', 'linesGroup');
 		this.defs = this.linesGroup.append('defs');
+	}
+
+	initTimeAxis() {
+		this.xScale = d3.scaleTime()
+			.domain([moment().subtract(this.monthBack, 'month'),moment()])
+			.range([10,this.width - 10]);
+		
+		this.axis = d3.axisBottom().ticks(12).scale(this.xScale);
+	}
+
+	updateTimeAxis(monthBack) {
+		this.monthBack = monthBack;
+		this.xScale.domain([moment().subtract(this.monthBack, 'month'),moment()]);
+		this.axis.scale(this.xScale);
+
+		d3.select('#timeAxis')
+			.transition()
+			.duration(1200)
+			.call(this.axis);
+
+		this.setData(this.data);	
+		this.updateLine(0);
+	}
+
+	paintAxis() { 
+		const Xaxis = this.mainGroup.attr('transform', `translate(0,${this.height - 20})`).attr('id','timeAxis').call(this.axis);
+
+		Xaxis.selectAll('.tick text')			
+			.attr('fill', access.color('lineCanvas.fg'))
+			.attr('font-size',9)
+			.attr('stroke', access.color('lineCanvas.fg'))
+			.attr('stroke-width',0.3);
+		
+		Xaxis.selectAll('.tick line')
+			.attr('stroke',access.color('lineCanvas.fg'));	
+
+		Xaxis.select('.domain')	
+			.attr('stroke',access.color('lineCanvas.fg'))
+			.attr('stroke-width',1.5);
+
 	}
 
 	createGradients() {
@@ -70,39 +114,12 @@ export default class Line {
 		this.paintLine(this.data,0);
 	}
 
-	paintAxis() { 
-				
-		const axis = d3.axisBottom()
-			.ticks(12)
-			.scale(this.xScale);
-
-		const Xaxis = this.mainGroup.attr('transform', `translate(0,${this.height - 20})`).call(axis);
-
-		Xaxis.selectAll('.tick text')			
-			.attr('fill', access.color('lineCanvas.fg'))
-			.attr('font-size',9)
-			.attr('stroke', access.color('lineCanvas.fg'))
-			.attr('stroke-width',0.3);
-		
-		Xaxis.selectAll('.tick line')
-			.attr('stroke',access.color('lineCanvas.fg'));	
-
-		Xaxis.select('.domain')	
-			.attr('stroke',access.color('lineCanvas.fg'))
-			.attr('stroke-width',1.5);
-
-	}
-
 	createScale() {
 		const Ymax = isEmpty(this.data) ? 100 : maxBy(this.data, this.YField)[this.YField];
 
-		this.xScale = d3.scaleTime()
-			.domain([moment().subtract(1, 'month'),moment()])
-			.range([10,this.width - 10]);
-
 		const yScale = d3.scaleLinear()
 			.domain([0,Ymax])
-			.range([25,this.height-25]);
+			.range([25,this.height-15]);
 
 		this.Dline = d3.line()
 			.x(d => this.xScale(d.date))

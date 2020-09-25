@@ -7,7 +7,7 @@ import useResizeWindow from 'plugins/hooks/useResizeWindow';
 
 import { librariesForPack } from 'plugins/dashboard/tree/selectors';
 
-import MainCanvas from 'plugins/canvases/MainCanvas';
+import LibrariesCanvas from 'plugins/canvases/LibrariesCanvas';
 import WidgetHeader from 'plugins/tools/WidgetHeader';
 
 const Container = styled.div`
@@ -29,19 +29,19 @@ const WidgetCont = styled.div`
 	border-radius: 4px;
 `;
 
-const ProjectCanvas = () => {
+const LibrariesPack = () => {
 	const libs = useRecoilValue(librariesForPack);
 	const size = useResizeWindow();
 	const sizeKey = `${size.width}-${size.hight}`; 
 
 	return (
 		<Container>
-			<WidgetHeader title={access.translate('Pack View')} icon={'bubble_chart'}/>
+			<WidgetHeader title={access.translate('Libraries')} icon={'bubble_chart'}/>
 			<WidgetCont>
-				<MainCanvas key={sizeKey} data={ libs }/>
+				<LibrariesCanvas key={sizeKey} data={ libs }/>
 			</WidgetCont>
 		</Container>
 	);
 };
 
-export default ProjectCanvas;
+export default LibrariesPack;
