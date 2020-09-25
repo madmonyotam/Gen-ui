@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState, useRecoilState } from 'recoil';
 
 import { useFetchSchemas } from 'plugins/project/actions';
 import { schemasState, selectedSchemaId, selectedLibId } from 'plugins/project/tree/atoms';
 import * as access from 'plugins/access';
 
-import { CircularProgress, Divider, Icon, IconButton, Tooltip } from '@material-ui/core';
+import { Divider, Icon, IconButton, Tooltip } from '@material-ui/core';
 import SchemaListItem from './SchemaListItem';
 import LibraryInformation from './LibraryInfo';
 import CodeEditor from './Editor';
@@ -17,7 +17,7 @@ const Schemas = () => {
 	const libId = useRecoilValue(selectedLibId);
 	// const library = useRecoilValue(selectedLibrary);
 	const loading = useFetchSchemas(libId);
-	const schemas = useRecoilValue(schemasState);
+	const [schemas, setSchemas] = useRecoilState(schemasState);
 	
 	useEffect(() => {
 		if (!loading && schemas.length) {
@@ -61,6 +61,25 @@ const Schemas = () => {
 
 		);
 	}; 
+
+	const handleCreated = (res) => {
+		console.debug({ handleCreated: res });
+		const newSchema = {
+			...res.params,
+			schemaId: res.schemaId,
+			createdTime: Date.now(),
+			updatedTime: Date.now()
+		};
+
+		const newlist = [
+			...schemas,
+			newSchema
+		];
+		setSchemas(newlist);
+		//console.log(schemas);
+
+	};
+	if (!libId) return null;
 	return (
 		<div style={{ display: 'flex', flex: 1, position: 'relative' }}>
 
@@ -75,11 +94,10 @@ const Schemas = () => {
 				
 				<LoaderTimeout isLoading={ loading } coverAll={false} pendingExtraTime={1000}>
 					<div style={{ padding: '0 10px' }}>
-						<CreateInput type={ 'schema' } existingData={schemas.length ? schemas.map(s => s.name.toLowerCase()) : [] } />
+						<CreateInput type={ 'schema' } existingData={schemas.length ? schemas.map(s => s.name.toLowerCase()) : [] } onCreated={ handleCreated }/>
 						<Divider />
 					</div>
 					
-					{/* // <WidgetHeader title={'Schemas'} icon={'assignment'} style={{ padding: '5px 10px' }}/> */}
 					<div style={{ display: 'flex', flex: 1, height: 'calc(100% - 40px)' }}> 
 						<div style={{ 
 							padding: '10px 0', 
@@ -88,11 +106,13 @@ const Schemas = () => {
 							height: 'calc(100% - 150px)',
 							position: 'relative', 
 						}}>
-							{ 
-								(!loading && schemas) && schemas.map(item => (
-									<SchemaListItem key={ item.schemaId } item={ item }/>
-								)) 
-							}
+							<div style={{ height: '100%', overflow: 'auto' }}>
+							
+								{ 
+									(!loading && schemas) && schemas.map(item => (
+										<SchemaListItem key={ item.schemaId } item={ item }/>
+									)) 
+								}</div>
 							<LibraryInformation />
 						</div> 
 					</div>

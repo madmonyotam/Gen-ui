@@ -70,7 +70,7 @@ const Project = () => {
 	);
 
 	const ProjectStats = () => (
-		<div style={{ marginTop: 15 }}>
+		<div style={{ height: '100%', marginTop: 15 }}>
 			<Libraries projectId={id} />
 		</div>
 	);

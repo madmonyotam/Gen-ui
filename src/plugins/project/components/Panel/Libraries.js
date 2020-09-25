@@ -39,13 +39,13 @@ const Libraries = props => {
 	};
 
 	return (
-		<div style={{ flexDirection: 'column' }}>
+		<div style={{ flexDirection: 'column', height: '100%' }}>
 			{
 				<CreateInput existingData={ existingLibraries } type={ 'library' } onCreated={ handleCreated } />
 			} 
 			<Divider style={{ marginBottom: 15 }} />
 
-			<div>
+			<div style={{ overflow: 'auto', height: 'calc(100% - 175px)' }}>
 				{
 					(!loading && libraries) && libraries.map( lib => <LibraryListItem library={ lib } key={ lib.id }/> )
 				}
