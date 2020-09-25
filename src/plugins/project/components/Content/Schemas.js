@@ -1,72 +1,33 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import moment from 'moment';
 
 import { useFetchSchemas } from 'plugins/project/actions';
 import { schemasState, selectedSchemaId, selectedLibId } from 'plugins/project/tree/atoms';
-import { selectedLibrary } from 'plugins/project/tree/selectors';
-import styled from 'styled-components';
 import * as access from 'plugins/access';
 
-import { Typography, Button, Icon, IconButton, Tooltip } from '@material-ui/core';
-import WidgetHeader from 'plugins/tools/WidgetHeader';
+import { CircularProgress, Divider, Icon, IconButton, Tooltip } from '@material-ui/core';
 import SchemaListItem from './SchemaListItem';
+import LibraryInformation from './LibraryInfo';
 import CodeEditor from './Editor';
-
-
-const Box = styled.div`
-	position: relative;
-	color: #333;
-	text-shadow: .5px .5px 1px #fefefe;
-	padding: 5px 10px;
-	margin-bottom: 10px;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-`;
+import CreateInput from 'plugins/tools/CreateInput';
+import LoaderTimeout from 'plugins/tools/LoaderTimeout';
 
 const Schemas = () => {
-
 	const setSchemaId = useSetRecoilState(selectedSchemaId);
 	const libId = useRecoilValue(selectedLibId);
-	const library = useRecoilValue(selectedLibrary);
+	// const library = useRecoilValue(selectedLibrary);
 	const loading = useFetchSchemas(libId);
 	const schemas = useRecoilValue(schemasState);
 	
 	useEffect(() => {
-		if (!loading && schemas.length) { 
+		if (!loading && schemas.length) {
 			setSchemaId(schemas[0].schemaId);
 		}
 	}, [loading, schemas]);
 	
-	const LibTitle = () => (
-		<div>
-			<Box >
-				<Typography style={{ flex: 1, fontSize: 13, display: 'flex', justifyContent: 'space-between' }}>
-					{library.name}
-				</Typography>
-			</Box>
-		</div>
-	);
-	const LibDates = () => (
-		<div>
-			<Box>
-				<Typography style={{ flex: 1, fontSize: 13, display: 'flex', justifyContent: 'space-between' }}>
-					Created at <span>{moment(library.createdTime).format('DD-MM-YY @ hh:mm')}</span>
-				</Typography>
-			</Box>
-			<Box>
-				<Typography style={{ flex: 1, fontSize: 13, display: 'flex', justifyContent: 'space-between' }}>
-					Last updated at <span>{moment(library.updatedTime).format('DD-MM-YY @ hh:mm')}</span>
-				</Typography>
-			</Box>
-		</div>
-	);
-		
 
-	const Stuff = () => {
-		console.log('Schemas ->', schemas);
+	const EditorContainer = () => {
+		if (!loading && !schemas.length) return null;
 		return (
 			<div style={{ flex: 1 }}>
 				<div style={{ height: 40, paddingLeft: 40, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -95,13 +56,13 @@ const Schemas = () => {
 						</Tooltip>
 					</div>
 				</div>
-				<CodeEditor  />
+				<CodeEditor />
 			</div>
 
 		);
-	};
+	}; 
 	return (
-		<div style={{ display: 'flex', flex: 1 }}>
+		<div style={{ display: 'flex', flex: 1, position: 'relative' }}>
 
 			<div style={{
 				flex: 1, 
@@ -112,53 +73,35 @@ const Schemas = () => {
 				maxWidth: 'calc(235px - 11px)',
 			}}>
 				
-				<WidgetHeader title={'Schemas'} icon={'assignment'} style={{ padding: '5px 10px' }}/>
-				<div style={{ display: 'flex', flex: 1, height: 'calc(100% - 40px)' }}> 
-					<div style={{ 
-						padding: '10px 0', 
-						background: 'white', 
-						flex: 1,
-						height: 'calc(100% - 150px)',
-						position: 'relative', 
-					}}>
-						{ 
-							(!loading && schemas) && schemas.map(item => (
-								<SchemaListItem key={ item.schemaId } item={ item }/>
-							)) 
-						}
-						{
-							(!loading && library) && (
-								<div style={{ 
-									borderTop: 'solid 1px rgba(221,221,221,.75)', 
-									background: '#f1f1f1', 
-									position: 'absolute', 
-									bottom: -130, 
-									left: 0, 
-									right: 0, 
-									padding: '10px 0 0',
-									height: 120,
-								}}>
-									<LibTitle />
-									<LibDates />
-								</div>
-							)
-						}
-					</div> 
-				</div>
-			</div> 
-			{
-				(!loading && schemas) &&  <Stuff />
-			}
+				<LoaderTimeout isLoading={ loading } coverAll={false} pendingExtraTime={1000}>
+					<div style={{ padding: '0 10px' }}>
+						<CreateInput type={ 'schema' } existingData={schemas.length ? schemas.map(s => s.name.toLowerCase()) : [] } />
+						<Divider />
+					</div>
+					
+					{/* // <WidgetHeader title={'Schemas'} icon={'assignment'} style={{ padding: '5px 10px' }}/> */}
+					<div style={{ display: 'flex', flex: 1, height: 'calc(100% - 40px)' }}> 
+						<div style={{ 
+							padding: '10px 0', 
+							background: 'white', 
+							flex: 1,
+							height: 'calc(100% - 150px)',
+							position: 'relative', 
+						}}>
+							{ 
+								(!loading && schemas) && schemas.map(item => (
+									<SchemaListItem key={ item.schemaId } item={ item }/>
+								)) 
+							}
+							<LibraryInformation />
+						</div> 
+					</div>
+				</LoaderTimeout>
+			</div>
+			<EditorContainer />
 		</div>
 	);
 };
-
-Schemas.propTypes = {
-	libId: PropTypes.string,
-};
-
-Schemas.defaultProps = {
-	libId: '',
-};
+ 
 
 export default Schemas;

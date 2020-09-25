@@ -6,7 +6,6 @@ import Request from 'plugins/request';
 
 const PROJECTS_API = '/projectRestAPI-projectRestAPI/project';
 const LIBRARY_API = '/libraryRestAPI-libraryRestAPI/library';
-const USERS_API = '/userRestAPI-userRestAPI/user';
 const SCHEMA_API = 'schemaRestAPI-schemaRestAPI/schema';
 
 
@@ -37,6 +36,8 @@ export const useFetchSchemas = libId => {
 	const setSchemas = useSetRecoilState(schemasState);
 
 	useEffect(() => {
+		setLoading(true);
+		setSchemas([]);
 		if (!libId) {
 			setLoading(false);
 			return;
@@ -49,9 +50,9 @@ export const useFetchSchemas = libId => {
 				}
 			});
 	}, [libId, setSchemas]);
-
+	console.log('Fetching ', libId);
 	return loading; 
-}
+};
 
 
 // export const useFetchSchema = id => {
@@ -78,7 +79,7 @@ export const useFetchSchemas = libId => {
 
 
 export const getProject = id => {
-	console.log('getProject ->',id)
+	console.log('getProject ->',id);
 	return Request.get(`${PROJECTS_API}/${id}`)
 		.then(async ({ data }) => {
 			if (data.status.toLowerCase() === 'success') {

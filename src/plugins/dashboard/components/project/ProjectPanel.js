@@ -1,13 +1,13 @@
 import React from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 import { projectListState, selectedProjectId } from 'plugins/dashboard/tree/atoms';
 
 import { Divider } from '@material-ui/core';
 import Panel from 'plugins/tools/Panel';
-import ProjectCreateInput from 'plugins/dashboard/components/project/CreateInput';
 import ProjectListItem from 'plugins/dashboard/components/project/ProjectListItem';
+import CreateInput from 'plugins/tools/CreateInput';
  
 const ProjectsWrapper = styled.div`
 	height: 100%;
@@ -20,7 +20,7 @@ const ProjectPanel = () => {
 
 	const selectedId = useRecoilValue(selectedProjectId);
 
-	const projectList = useRecoilValue(projectListState);
+	const [projectList, setProjectToList] = useRecoilState(projectListState);
 
 	const existingProjects = projectList.map(proj => proj.name.toLowerCase());
 
@@ -34,10 +34,25 @@ const ProjectPanel = () => {
 		);
 	};
 
+	const handleCreated = res => {
+		let newProject = {
+			...res.params,
+			createdTime: Date.now(),
+			updatedTime: Date.now(),
+			id: res.projectId
+		};
+
+		let newList = [
+			...projectList,
+			newProject
+		];
+		setProjectToList(newList);
+	};
+
 	return (
 		<Panel>
-			<ProjectCreateInput existingProjects={existingProjects} />
-
+			<CreateInput type={ 'project' } existingData={ existingProjects } onCreated={ handleCreated }/>
+			
 			<Divider style={{ marginBottom: 15 }} />
 
 			<ProjectsWrapper>

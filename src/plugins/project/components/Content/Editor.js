@@ -1,18 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
+
+
 import AceEditor from 'react-ace';
-
 import 'ace-builds/src-noconflict/mode-json';
-import 'ace-builds/src-noconflict/mode-text';
 import 'ace-builds/src-noconflict/theme-xcode';
-import { useRecoilValue } from 'recoil';
 
+import { useRecoilValue } from 'recoil';
 import { selectedSchema } from 'plugins/project/tree/selectors';
-import { selectedSchemaId } from 'plugins/project/tree/atoms';
 
 const Editor = () => {
 	const editorRef = useRef();
-	const selectedId = useRecoilValue(selectedSchemaId);
-	const selected = useRecoilValue(selectedSchema);
+	const schema = useRecoilValue(selectedSchema);
 
 	const [code, setCode] = useState('');
 
@@ -24,18 +22,24 @@ const Editor = () => {
 			const undoManager = session.getUndoManager();
 			undoManager.reset();
 			session.setUndoManager(undoManager);
-		}
-		if (selectedId && selected && selected.schemaJson) {
-			const c = JSON.stringify(selected.schemaJson, null, 2);
-			setCode(c);
+			if (schema && schema.schemaJson) {
+				try {
+					const c = JSON.stringify(schema.schemaJson, null, 2);
+					setCode(c);
+				}
+				catch(err){
+					setCode('');
+				}
+			} else setCode('');
 		}
 
-	}, [selectedId]);
+	}, [schema]);
 
 	const onLoad = () => { };
+	const onBeforeLoad = ace => { };
 
 	const onChange = value => {
-		console.log('onChange', value)
+		if (!value || !editorRef) return;
 		setCode(value);
 	};
 
@@ -45,21 +49,26 @@ const Editor = () => {
 	};
 
 	const style = {
-		height: 'calc(100% - 41px)',
+		height: 'calc(100% - 171px)',
 		width: '100%',
 		borderTopRightRadius: '4px',
-		borderTop: '1px solid #dedede',
-		borderRight: '1px solid #dedede',
+		borderBottomRightRadius: '4px',
+		border: 'solid #dedede',
+		borderTop: 1,
+		borderBottom: 1,
+		borderRight: 1,
+		borderLeft: 0
 	};
 
 	return (
 		<AceEditor
 			ref={editorRef}
 			style={style}
-			debounceChangePeriod={1000}
+			onBeforeLoad={onBeforeLoad }
+			debounceChangePeriod={150}
 			mode="json"
 			theme="xcode"
-			name="editor"
+			name="schema-editor"
 			onLoad={onLoad}
 			onChange={onChange}
 			fontSize={14}

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import * as access from 'plugins/access';
 
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { projectUsersState, selectedProjectId, librariesState } from 'plugins/dashboard/tree/atoms';
+import { projectUsersState, selectedProjectId, librariesPackState } from 'plugins/dashboard/tree/atoms';
 import { selectedProject } from 'plugins/dashboard/tree/selectors';
 
 import { getUsersContributes, getAllLibraries } from 'plugins/dashboard/actions';
@@ -38,7 +38,7 @@ function ProjectBody() {
 	const projectId = useRecoilValue(selectedProjectId);
 	const project = useRecoilValue(selectedProject);
 	const setUsers = useSetRecoilState(projectUsersState);
-	const setLibraries = useSetRecoilState(librariesState);
+	const setLibraries = useSetRecoilState(librariesPackState);
 
 	const fetchUsers = async () => {
 		const data = await getUsersContributes(projectId);

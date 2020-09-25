@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import { Paper, Typography, Icon } from '@material-ui/core';
@@ -16,7 +16,7 @@ import LoaderTimeout from 'plugins/tools/LoaderTimeout';
 
 /* Components */
 import ProjectBody from 'plugins/dashboard/components/project/ProjectBody';
-import ProjectCreateInput from 'plugins/dashboard/components/project/CreateInput';
+import CreateInput from 'plugins/tools/CreateInput';
 import ProjectPanel from 'plugins/dashboard/components/project/ProjectPanel';
 
 const Wrap = styled.div`
@@ -53,12 +53,12 @@ function Dashboard() {
 	const email = localStorage.getItem('gen-user-email');
 	const loading = useFetchProjects(email);
 
-	const setProjectId = useSetRecoilState(selectedProjectId);
+	const [projectId, setProjectId] = useRecoilState(selectedProjectId);
 	const projects = useRecoilValue(projectListState);
 	
 	useEffect(() => { 
 		if (!loading && projects.length) {
-			setProjectId(projects[0].id);
+			if (!projectId) setProjectId(projects[0].id);
 		}
 	}, [loading, projects]);
 
@@ -83,7 +83,7 @@ function Dashboard() {
 				</TypeTitle>
 
 				<Paper style={{ width: 250, height: 40, padding: '0 15px' }} >
-					<ProjectCreateInput useInput={true} />
+					<CreateInput useInput={true} type={ 'project' } />
 				</Paper>
 
 			</EmptyForm>

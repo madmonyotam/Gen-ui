@@ -15,8 +15,8 @@ export const projectUsersState = atom({
 	default: []
 });
 
-export const librariesState = atom({
-	key: 'librariesState',
+export const librariesPackState = atom({
+	key: 'librariesPackState',
 	default: []
 });
 

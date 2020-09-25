@@ -1,6 +1,6 @@
 import { sortBy } from 'lodash';
 import { selector } from 'recoil'; 
-import { selectedProjectId, projectListState, projectUsersState, librariesState } from './atoms';
+import { selectedProjectId, projectListState, projectUsersState, librariesPackState } from './atoms';
 import { modifyAllContributeByDate, sumAllContribute } from 'plugins/dashboard/adapters/contributes';
 
 
@@ -53,7 +53,7 @@ export const collaborators = selector({
 export const librariesForPack = selector({
 	key: 'librariesForPack',
 	get: ({ get }) => {
-		const libs = get(librariesState);
+		const libs = get(librariesPackState);
 		const modifiedLibs = modifyLibsToPack(libs);
 
 		return modifiedLibs;

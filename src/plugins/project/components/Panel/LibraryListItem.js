@@ -31,9 +31,12 @@ const LiraryListItem = ({ library }) => {
 
 	const [selectedId, setLibId] = useRecoilState(selectedLibId);
 	const selected = selectedId === library.id;
- 
+	const handleSelect = () => {
+		if (selected) return;
+		setLibId(library.id); 
+	}
 	return (
-		<LibraryCard onClick={() => { setLibId(library.id); }} selected={selected} >
+		<LibraryCard onClick={ handleSelect } selected={ selected } >
 
 			<div style={{ display: 'flex', alignItems: 'center' }} >
 				<Icon fontSize={'small'} >{selected ? 'folder_open' : 'folder'}</Icon>

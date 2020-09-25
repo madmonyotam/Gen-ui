@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { projectState, selectedLibId } from './tree/atoms';
+import { useRecoilState  } from 'recoil';
+import { projectState  } from './tree/atoms';
 import * as access from 'plugins/access';
-import { Typography, CircularProgress } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 
-// import Badge from 'plugins/tools/Badge';
 import Panel from 'plugins/tools/Panel';
-import WidgetHeader from 'plugins/tools/WidgetHeader';
 import Libraries from './components/Panel/Libraries';
 import Schemas from './components/Content/Schemas';
 import { getProject } from './actions';
 
 import moment from 'moment';
+import LoaderTimeout from 'plugins/tools/LoaderTimeout';
 
 const Wrap = styled.div`
   position: absolute;
@@ -42,27 +41,12 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding: 15px 15px 0;
+  padding: 15px 25px 0;
   background: ${access.color('backgrounds.content')};
-`;
-
-const Loader = styled.div`
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  bottom: 0;
-  top: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(250, 250, 250, 0.5);
-  z-index: 2;
 `;
 
 const Project = () => {
 	const [project, setProject] = useRecoilState(projectState);
-	// const libId = useRecoilValue(selectedLibId)
 	const [loading, setLoading] = useState(true);
 	const { id } = useParams();
 
@@ -148,38 +132,18 @@ const Project = () => {
 			</div>
 		</div>
 	);
-
 	return (
 		<Wrap>
-			<div style={{ display: 'flex', flex: 1 }}>
-				<Panel style={{ paddingTop: 0, position: 'relative' }}>
-					{loading && (
-						<Loader>
-							<CircularProgress />{' '}
-						</Loader>
-					)}
-					{!loading && project && <PanelContent />}
-				</Panel>
-				<Content>
-					<Schemas />
-					{/* <div style={{ flex: 1 }}>
-						<div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100% - 40px)', overflow: 'hidden', width: '100%' }} >
-						</div>
-					</div>
-					<div style={{ flex: 2 }}>
-						<WidgetHeader title={'Schema 1'} icon={'edit'} />
-						<div style={{ display: 'flex', flexDirection: 'row', height: 'calc(100% - 40px)', overflow: 'hidden', width: '100%' }} >
-							<div style={{ flex: 1, marginRight: 25 }}>
-								<WidgetHeader title={'Fields'} icon={'edit'} />
-							</div>
-							<div style={{ flex: 2 }}>
-								<WidgetHeader title={'Editor'} icon={'edit'} />
-							</div>
-		
-						</div>
-					</div> */}
-				</Content>
-			</div>
+			<LoaderTimeout isLoading={loading} coverAll={true} pendingExtraTime={1000}>
+				<div style={{ display: 'flex', flex: 1 }}>
+					<Panel style={{ paddingTop: 0, position: 'relative' }}>
+						{ project && <PanelContent /> }
+					</Panel>
+					<Content>
+						{ project && <Schemas /> } 
+					</Content>
+				</div>
+			</LoaderTimeout> 
 		</Wrap>
 	);
 };
