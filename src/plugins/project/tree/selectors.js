@@ -1,7 +1,6 @@
 import { selector } from 'recoil';
 import { selectedLibId, librariesState, selectedSchemaId, schemasState } from './atoms';
 
-
 export const normalizedLib = selector({
 	key: 'normalizedLib',
 	get: ({ get }) => {
@@ -40,7 +39,7 @@ export const normalizedSchema = selector({
 
 export const selectedSchema = selector({
 	key: 'selectedSchema',
-	get: ({ get }) => {
+	get: async ({ get }) => {
 		const id = get(selectedSchemaId);
 		const schemas = get(normalizedSchema);
 		return schemas[id];

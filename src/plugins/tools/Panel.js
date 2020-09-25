@@ -27,4 +27,8 @@ Panel.propTypes = {
 	children: PropTypes.node.isRequired
 }; 
 
+Panel.defaultProps = {
+	children: <div />
+};
+
 export default Panel;

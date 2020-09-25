@@ -3,10 +3,9 @@ import { useSetRecoilState } from 'recoil';
 import { librariesState, schemasState } from '../tree/atoms';
 import Request from 'plugins/request';
 
-
 const PROJECTS_API = '/projectRestAPI-projectRestAPI/project';
 const LIBRARY_API = '/libraryRestAPI-libraryRestAPI/library';
-const SCHEMA_API = 'schemaRestAPI-schemaRestAPI/schema';
+const SCHEMA_API = '/schemaRestAPI-schemaRestAPI/schema';
 
 
 export const useFetchtLibs = id => {
@@ -50,43 +49,69 @@ export const useFetchSchemas = libId => {
 				}
 			});
 	}, [libId, setSchemas]);
-	console.log('Fetching ', libId);
 	return loading; 
 };
 
 
-// export const useFetchSchema = id => {
-// 	const [loading, setLoading] = useState(true);
-// 	const setSchema = useSetRecoilState(schemasState);
+export const fetchSchema = id => {
+	if (!id) return null;
+	return Request.get(`${SCHEMA_API}/${id}`)
+		.then(({ data }) => {
+			if (data.status.toLowerCase() === 'success') {
+				return data.schema;
+			}
+		});
+};
 
-// 	useEffect(() => {
-// 		if (!id) {
-// 			setLoading(false);
-// 			return;
-// 		}
-// 		Request.get(`${SCHEMA_API}/${libId}`)
-// 			.then(({ data }) => {
-// 				if (data.status.toLowerCase() === 'success') {
-// 					setLoading(false);
-// 					setSchema(data.schemas);
-// 				}
-// 			});
-// 	}, [libId, setSchemas]);
 
-// 	return loading; 
-// }
+export const removeLibrary = (id, userId) => {
+	if (!id || !userId) return;
+	return Request.delete(`${LIBRARY_API}/${id}/${userId}`)
+		.then(({ data }) => {
+			return data.status.toLowerCase() === 'success';
+		})
+		.catch(err => {
+			console.error('Delete Library error >>', err);
+			return false;
+		});
+};
+
+
+export const removeSchema = (id, userId) => {
+	if (!id || !userId) return;
+	return Request.delete(`${SCHEMA_API}/${id}/${userId}`)
+		.then(({ data }) => {
+			return data.status.toLowerCase() === 'success';
+		})
+		.catch(err => {
+			console.error('Delete Schema error >>', err);
+			return false;
+		});
+};
 
 
 
 export const getProject = id => {
-	console.log('getProject ->',id);
 	return Request.get(`${PROJECTS_API}/${id}`)
 		.then(async ({ data }) => {
 			if (data.status.toLowerCase() === 'success') {
 				let project = { ...data.project };
-
 				return project;
 
 			}
 		});
+};
+
+
+export default {
+	libsActions: {
+		useFetchtLibs,
+		removeLibrary
+	},
+	schemasActions: {
+		useFetchSchemas,
+		fetchSchema,
+		removeSchema
+	}
+
 };

@@ -113,7 +113,7 @@ function LeftPanel({ viewKey }) {
 					/>
 				));
 			case 'items':
-				console.log(items);
+				console.log('items ->',items);
 				return Object.keys(items).map(label => (
 					<ListItem
 						key={label}
@@ -125,6 +125,8 @@ function LeftPanel({ viewKey }) {
 					/>
 				));
 			case 'inspector':
+				console.log(items);
+				console.log('focus ->',focus)
 				return <Inspector item={items[focus.item]} />;
 			default:
 				return null;
