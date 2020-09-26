@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-
-
 import AceEditor from 'react-ace';
+
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-github';
 
@@ -10,11 +9,12 @@ import * as access from 'plugins/access';
 
 import { useRecoilValue } from 'recoil';
 import { selectedSchema } from 'plugins/project/tree/selectors';
+import { fieldDrawerState } from 'plugins/project/tree/atoms';
 
 const Editor = () => {
 	const editorRef = useRef();
-	const wrapRef = useRef();
 	const schema = useRecoilValue(selectedSchema);
+	const fieldDrawerId = useRecoilValue(fieldDrawerState);
 
 	const [code, setCode] = useState('');
 
@@ -22,6 +22,7 @@ const Editor = () => {
 		// reset undo maneger
 		if (editorRef.current) {
 			const { editor } = editorRef.current;
+			window.editor = editor;
 			const session = editor.getSession();
 			const undoManager = session.getUndoManager();
 			undoManager.reset();
@@ -39,6 +40,15 @@ const Editor = () => {
 		}
 
 	}, [schema]); 
+
+	useEffect(() => {
+		if (editorRef && editorRef.current) {
+			const { editor } = editorRef.current;
+			setTimeout(() => {
+				editor.resize();
+			}, 250);
+		}
+	}, [fieldDrawerId, !fieldDrawerId]);
 
 	const onLoad = () => { 
 		if (editorRef.current) {
@@ -62,15 +72,16 @@ const Editor = () => {
  
 
 	const style = {
-		height: '100%',
+		height: 'calc(100% - 41px)',
 		width: '100%',
 		borderTopRightRadius: '4px',
-		borderBottomRightRadius: '4px',
 		border: 'solid #dedede',
 		borderTop: 1,
 		borderBottom: 0,
 		borderRight: 1,
-		borderLeft: 0
+		borderLeft: 0,
+		transition: 'height 0.35s linear'
+
 	};
 
 	return (
@@ -101,28 +112,24 @@ const Editor = () => {
 					</Tooltip>
 				</div>
 			</div>
-			<div ref={wrapRef} style={{
-				height: 'calc(100% - 45px)',
-				width: '100%',
-			}}>
-				<AceEditor
-					ref={editorRef}
-					style={style}
-					onBeforeLoad={onBeforeLoad}
-					debounceChangePeriod={150}
-					mode="json"
-					theme="github"
-					name="schema-editor"
-					onLoad={onLoad}
-					onChange={onChange}
-					fontSize={14}
-					showPrintMargin={true}
-					showGutter={true}
-					highlightActiveLine={true}
-					value={code}
-					setOptions={options}
-				/>
-			</div>
+			
+			<AceEditor
+				ref={editorRef}
+				style={style}
+				onBeforeLoad={onBeforeLoad}
+				debounceChangePeriod={150}
+				mode="json"
+				theme="github"
+				name="schema-editor"
+				onLoad={onLoad}
+				onChange={onChange}
+				fontSize={14}
+				showPrintMargin={true}
+				showGutter={true}
+				highlightActiveLine={true}
+				value={code}
+				setOptions={options}
+			/>
 
 		</div>
  

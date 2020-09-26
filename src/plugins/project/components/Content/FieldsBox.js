@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, /*useSetRecoilState*/ } from 'recoil';
 import { selectedSchema } from 'plugins/project/tree/selectors';
 
-import { typesState } from './tree/atoms';
-import { countedTypes } from './tree/selectors';
-import { getTypesFromSchema } from './utils';
+// import { typesState } from './tree/atoms';
+// import { countedTypes } from './tree/selectors';
+// import { getTypesFromSchema } from './utils';
 
 import { fieldDrawerState } from 'plugins/project/tree/atoms';
 import { Typography, Button } from '@material-ui/core';
 import Badge from 'plugins/tools/Badge';
+// import { filter } from 'lodash';
 
 // import { get } from 'plugins/requests';
 // import { groupBy } from 'lodash';
@@ -37,29 +38,29 @@ const Box = styled.div`
 	justify-content: space-between;
 `;
 
-const Counter = styled.div`
-	font-size: .7rem;
-    border: 1px solid #dcdcdc;
-    margin-left: 5px;
-    padding: .5em;
-    border-radius: 4px;
-	background: white;
-`;
+// const Counter = styled.div`
+// 	font-size: .7rem;
+//     border: 1px solid #dcdcdc;
+//     margin-left: 5px;
+//     padding: .5em;
+//     border-radius: 4px;
+// 	background: white;
+// `;
 
 const FieldsBox = () => {
 	const [fields, setFields] = useState([]);
-	const setFieldDrawer = useSetRecoilState(fieldDrawerState);
-	const setTypes = useSetRecoilState(typesState);
+	const [fieldDrawerId, setFieldDrawer] = useRecoilState(fieldDrawerState);
+	// const setTypes = useSetRecoilState(typesState);
 	const schema = useRecoilValue(selectedSchema);
-	const legend = useRecoilValue(countedTypes);
-	console.log('legend', legend);
+	// const legend = useRecoilValue(countedTypes);
+	// console.log('legend', legend);
 
 	const getFields =  async () => {
 		if (!schema || !schema.schemaJson) return;
 		const res = Object.keys(schema.schemaJson);
 		setFields(res);
-		const types = await getTypesFromSchema(schema.schemaJson);
-		setTypes(types);
+		// const types = await getTypesFromSchema(schema.schemaJson);
+		// setTypes(types);
 	};
 
 
@@ -67,25 +68,43 @@ const FieldsBox = () => {
 		getFields();
 	}, [schema]);
 
+	const setDrawerId = field => {
+		if (fieldDrawerId === field) setFieldDrawer(null);
+		else setFieldDrawer(field);
+	};
+
 	const renderField = field => (
 		<Button 
 			style={{ height: 25, margin: '0 10px 10px 0' }} 
-			onClick={ () => setFieldDrawer(field) } 
+			onClick={ () => setDrawerId(field) } 
 			size={'small'} 
-			variant={'outlined'} 
+			disableElevation
+			color={field === fieldDrawerId ? 'primary' : 'secondary' }
+			variant={ field === fieldDrawerId ? 'outlined' : 'contained'} 
 			key={field}>
 			{ field }
 		</Button>
 	);
 
+	const renderFields = () => {
+		let filtered = fields;
+		if (fieldDrawerId) {
+			filtered = fields.filter(field => field === fieldDrawerId);
+		} 
+		return filtered.map(renderField);
+
+	};
+
 	if (!schema || !schema.schemaJson) return null;
 
 	return (
 		<div style={{
-			height: 120,
+			height: fieldDrawerId ? '50%' : 120,
+			transition: 'all .25s ease-in-out',
 			padding: '10px 0 0 10px',
-			borderTop: '1px solid rgba(221,221,221,.75)',
-			background: '#f1f1f1'
+			borderTop: fieldDrawerId ? '1px transparent' : '1px solid rgba(221,221,221,.75)',
+			// boxShadow: fieldDrawerId ? 'rgba(0, 0, 0, 1) 0px -2px 23px -35px' : 'unset',
+			background: !fieldDrawerId ? '#f1f1f1' : '#e0e7ee'
 		}}>
 			<Box >
 				<div style={{ display: 'flex', alignItems: 'center' }}>
@@ -94,12 +113,12 @@ const FieldsBox = () => {
 					</Typography>
 					<Badge size={'small'}>{ fields.length }</Badge>
 				</div>
-				<div style={{ display:'flex', alignItems: 'center', paddingRight: 10 }}>
+				{/* <div style={{ display:'flex', alignItems: 'center', paddingRight: 10 }}>
 					{ legend && legend.map(l => <Counter key={ l.key }>{ l.key } { l.count }</Counter> ) }
-				</div>
+				</div> */}
 			</Box>
 			<Grid>
-				{ fields.map(renderField) }
+				{ renderFields() }
 			</Grid>
 		</div>
 	);

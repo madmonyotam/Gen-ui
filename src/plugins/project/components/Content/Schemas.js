@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 import { useRecoilValue, useRecoilState } from 'recoil';
-import * as access from 'plugins/access';
 
 import { useFetchSchemas } from 'plugins/project/actions';
-import { schemasState, selectedSchemaId, selectedLibId, fieldDrawerState } from 'plugins/project/tree/atoms';
+import { schemasState, selectedSchemaId, selectedLibId } from 'plugins/project/tree/atoms';
 import { selectedSchema } from 'plugins/project/tree/selectors';
 
-import { Divider, Drawer} from '@material-ui/core';
+import { Divider } from '@material-ui/core';
 import SchemaListItem from './SchemaListItem';
 import LibraryInformation from './LibraryInfo';
 import CodeEditor from './Editor';
@@ -17,7 +16,6 @@ import FieldsBox from './FieldsBox';
 const Schemas = () => {
 	const [schemaId, setSchemaId] = useRecoilState(selectedSchemaId);
 	const libId = useRecoilValue(selectedLibId);
-	const [drawerFieldId, setFieldDrawer] = useRecoilState(fieldDrawerState);
 
 	const loading = useFetchSchemas(libId);
 	const [schemas, setSchemas] = useRecoilState(schemasState);
@@ -51,7 +49,6 @@ const Schemas = () => {
 	};
 
 	if (!libId) return null;
-
 	return (
 		<div style={{ display: 'flex', flex: 1, position: 'relative' }}>
 
@@ -94,17 +91,6 @@ const Schemas = () => {
 				{ (!loading && !schemas.length) ? null : <CodeEditor /> }
 				{ (!loading && !schema) ? null : <FieldsBox /> }
 			</div>
-			
-			<Drawer 
-				elevation={8} 
-				anchor={ 'right' } 
-				open={ drawerFieldId } 
-				onClose={ () => { setFieldDrawer(null); } }
-				PaperProps={{ style: { padding: '10px', background: access.color('backgrounds.code') } }}
-				ModalProps={{ BackdropProps: { invisible: true } }}
-			>  
-				<div style={{ width: 450 }}>{drawerFieldId}</div>
-			</Drawer>
 		</div>
 	);
 };
