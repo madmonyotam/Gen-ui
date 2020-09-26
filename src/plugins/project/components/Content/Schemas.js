@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { useRecoilValue, useRecoilState } from 'recoil';
+import * as access from 'plugins/access';
 
 import { useFetchSchemas } from 'plugins/project/actions';
-import { schemasState, selectedSchemaId, selectedLibId } from 'plugins/project/tree/atoms';
+import { schemasState, selectedSchemaId, selectedLibId, fieldDrawerState } from 'plugins/project/tree/atoms';
 import { selectedSchema } from 'plugins/project/tree/selectors';
 
-import { Divider } from '@material-ui/core';
+import { Divider, Drawer} from '@material-ui/core';
 import SchemaListItem from './SchemaListItem';
 import LibraryInformation from './LibraryInfo';
 import CodeEditor from './Editor';
@@ -16,6 +17,8 @@ import FieldsBox from './FieldsBox';
 const Schemas = () => {
 	const [schemaId, setSchemaId] = useRecoilState(selectedSchemaId);
 	const libId = useRecoilValue(selectedLibId);
+	const [drawerFieldId, setFieldDrawer] = useRecoilState(fieldDrawerState);
+
 	const loading = useFetchSchemas(libId);
 	const [schemas, setSchemas] = useRecoilState(schemasState);
 	const schema = useRecoilValue(selectedSchema);
@@ -26,6 +29,9 @@ const Schemas = () => {
 			if (schemaId) return;
 			setSchemaId(schemas[0].schemaId);
 		}
+		
+		return () => { setSchemaId(undefined); };
+
 	}, [loading, schemas]);
 	
 	const handleCreated = (res) => {
@@ -86,8 +92,19 @@ const Schemas = () => {
 			</div>
 			<div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
 				{ (!loading && !schemas.length) ? null : <CodeEditor /> }
-				{(!loading && !schema) ? null : <FieldsBox /> }
+				{ (!loading && !schema) ? null : <FieldsBox /> }
 			</div>
+			
+			<Drawer 
+				elevation={8} 
+				anchor={ 'right' } 
+				open={ drawerFieldId } 
+				onClose={ () => { setFieldDrawer(null); } }
+				PaperProps={{ style: { padding: '10px', background: access.color('backgrounds.code') } }}
+				ModalProps={{ BackdropProps: { invisible: true } }}
+			>  
+				<div style={{ width: 450 }}>{drawerFieldId}</div>
+			</Drawer>
 		</div>
 	);
 };

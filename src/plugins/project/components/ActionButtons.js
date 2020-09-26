@@ -35,7 +35,7 @@ const ActionButtons = () => {
 	return (
 		
 		<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flex: displayActions ? 1 : 0 }}>
-			{
+			{/* {
 				displayEnter && (
 					<Button
 						variant={'contained'}
@@ -71,7 +71,7 @@ const ActionButtons = () => {
 				onClick={ handleDeleteProject }
 				endIcon={<Icon fontSize={'small'}>delete_outline</Icon>} >
 				{access.translate('Delete')}
-			</Button>
+			</Button> */}
 		</div>
 
 	);

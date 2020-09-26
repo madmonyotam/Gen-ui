@@ -37,19 +37,17 @@ export function onSchemaChange(tree, items) {
 
 function getValueByRendererType(renderer) {
 	switch (renderer.type) {
-	case 'number':
-		return 10;
-	case 'string':
-		return renderer.placeholder;
-	case 'autocompleteArray':
-	case 'array':
-		return [];
+		case 'number':
+			return 10;
+		case 'string':
+			return renderer.placeholder;
+		case 'autocompleteArray':
+		case 'array':
+			return [];
 
-	default:
-		return renderer.placeholder;
+		default:
+			return renderer.placeholder;
 	}
-
-  
 }
 
 function getAdditionalFields(type) {

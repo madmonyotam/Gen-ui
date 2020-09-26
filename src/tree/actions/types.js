@@ -23,11 +23,11 @@ export function getAllTypes(typesByGroup) {
 	return allTypes;
 }
 
-export function getGroupFromType(typ) {
+export function getGroupFromType(type) {
 
 	for (const group in types) {
 		const keys = Object.keys(types[group]);
-		if(keys.includes(typ)){
+		if(keys.includes(type)){
 			return getOptionFormat(group);
 		} 
 	}

@@ -41,8 +41,9 @@ function getOptionFormat(value, label) {
 }
 
 function Inspector({ item }) {
-
+	console.log('item ->',item);
 	const g = getGroupFromType(item.type);
+	console.log('g ->', g);
 	const [group, setGroup] = useState(g);
 
 	let initType = getTypeByKey(item.type) || getOptionFormat('');

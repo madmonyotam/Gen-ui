@@ -17,13 +17,19 @@ const Header = styled(Typography)`
 	font-family: Cabin !important;
 `;
 
+const WidgetIcon = styled(Icon)`
+	cursor: ${ props => props.onIconClick ? 'pointer' : 'default' };
+`;
+
 const WidgetHeader = (props) => {
 	const { title, icon, showDivider, onIconClick, style } = props;
 	return (
 		<>
 			<Header style={{ ...style }}>
 				{access.translate(title)}
-				<Icon fontSize={'small'} onClick={ onIconClick } >{icon}</Icon>
+				<WidgetIcon fontSize={'small'} onClick={onIconClick}>
+					{ icon }
+				</WidgetIcon>
 			</Header>
 			{ showDivider && <Divider /> }
 		</>
@@ -43,7 +49,7 @@ WidgetHeader.defaultProps = {
 	icon: 'check',
 	showDivider: true,
 	style: {},
-	onIconClick: () => null
+	onIconClick: null
 };
 
 export default WidgetHeader;

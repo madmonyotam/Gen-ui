@@ -11,7 +11,7 @@ const Wrap = styled.span`
     padding: 0 ${ props => props.size === 'default' ? '6px' : '4px'};
     z-index: 1;
     flex-wrap: wrap;
-    font-size: ${ props => props.size === 'default' ? '0.75rem': '0.60rem'};
+    font-size: ${ props => props.size === 'default' ? '0.75rem': '0.65rem'};
     min-width: 20px;
     box-sizing: border-box;
     align-items: center;

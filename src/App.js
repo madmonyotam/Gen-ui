@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import firebase from 'firebase';
+import * as gen from 'gen-engine';
 
 import { BrowserRouter as Router, Redirect, Switch } from 'react-router-dom';
 import { useRoot } from 'baobab-react/hooks';
@@ -17,6 +18,9 @@ import routesConfig from 'routes-config';
 
 const primary = access.color('materialUI.primary');
 const secondary = access.color('materialUI.secondary');
+
+window.gen = gen;
+console.log('gen', gen)
 
 const theme = createMuiTheme({
 	palette: {

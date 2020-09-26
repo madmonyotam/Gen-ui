@@ -13,6 +13,7 @@ import { selectedSchema } from 'plugins/project/tree/selectors';
 
 const Editor = () => {
 	const editorRef = useRef();
+	const wrapRef = useRef();
 	const schema = useRecoilValue(selectedSchema);
 
 	const [code, setCode] = useState('');
@@ -34,14 +35,20 @@ const Editor = () => {
 					setCode('');
 				}
 			} else setCode('');
+
 		}
 
-	}, [schema]);
+	}, [schema]); 
 
-	const onLoad = () => { };
-
+	const onLoad = () => { 
+		if (editorRef.current) {
+			const { editor } = editorRef.current;
+			editor.resize();
+		}
+	}; 
 	// eslint-disable-next-line no-unused-vars
-	const onBeforeLoad = ace => {  };
+	const onBeforeLoad = ace => { 
+	};
 
 	const onChange = value => {
 		if (!value || !editorRef) return;
@@ -50,12 +57,12 @@ const Editor = () => {
 
 	const options = {
 		showLineNumbers: true,
-		tabSize: 2
+		tabSize: 2,
 	};
+ 
 
 	const style = {
-		// height: '100%',
-		height: 'calc(100% - 41px)',
+		height: '100%',
 		width: '100%',
 		borderTopRightRadius: '4px',
 		borderBottomRightRadius: '4px',
@@ -67,7 +74,7 @@ const Editor = () => {
 	};
 
 	return (
-		<div style={{ flex: 1 }}>
+		<div style={{ flex: 1 }} >
 			<div style={{ height: 40, paddingLeft: 40, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 				<div>
 					<Tooltip title={access.translate('Undo')}  >
@@ -94,23 +101,29 @@ const Editor = () => {
 					</Tooltip>
 				</div>
 			</div>
-			<AceEditor
-				ref={editorRef}
-				style={style}
-				onBeforeLoad={onBeforeLoad}
-				debounceChangePeriod={150}
-				mode="json"
-				theme="github"
-				name="schema-editor"
-				onLoad={onLoad}
-				onChange={onChange}
-				fontSize={14}
-				showPrintMargin={true}
-				showGutter={true}
-				highlightActiveLine={true}
-				value={code}
-				setOptions={options}
-			/>
+			<div ref={wrapRef} style={{
+				height: 'calc(100% - 45px)',
+				width: '100%',
+			}}>
+				<AceEditor
+					ref={editorRef}
+					style={style}
+					onBeforeLoad={onBeforeLoad}
+					debounceChangePeriod={150}
+					mode="json"
+					theme="github"
+					name="schema-editor"
+					onLoad={onLoad}
+					onChange={onChange}
+					fontSize={14}
+					showPrintMargin={true}
+					showGutter={true}
+					highlightActiveLine={true}
+					value={code}
+					setOptions={options}
+				/>
+			</div>
+
 		</div>
  
 	);
