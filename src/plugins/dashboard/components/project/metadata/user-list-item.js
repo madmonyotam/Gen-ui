@@ -16,7 +16,7 @@ const Item = styled.div`
     border-radius: 2px;
     margin-bottom: 10px;
     :hover {
-        background: ${ access.color('backgrounds.light') };
+        background: ${ access.color('backgrounds.hover') };
     }
 `;
 

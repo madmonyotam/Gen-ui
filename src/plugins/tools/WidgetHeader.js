@@ -17,19 +17,28 @@ const Header = styled(Typography)`
 	font-family: Cabin !important;
 `;
 
+const ActionsSide = styled.div`
+	display: flex;
+	align-items: center;
+	gap: ${ (p) => p.gap };
+`;
+
 const WidgetIcon = styled(Icon)`
 	cursor: ${ props => props.onIconClick ? 'pointer' : 'default' };
 `;
 
 const WidgetHeader = (props) => {
-	const { title, icon, showDivider, onIconClick, style } = props;
+	const { title, icon, showDivider, onIconClick, style, actionGap, actionBtns } = props;
 	return (
 		<>
 			<Header style={{ ...style }}>
 				{access.translate(title)}
-				<WidgetIcon fontSize={'small'} onClick={onIconClick}>
-					{ icon }
-				</WidgetIcon>
+				<ActionsSide gap={actionGap}>
+					{ actionBtns() }
+					<WidgetIcon fontSize={'small'} onClick={onIconClick}>
+						{ icon }
+					</WidgetIcon>
+				</ActionsSide>
 			</Header>
 			{ showDivider && <Divider /> }
 		</>
@@ -42,6 +51,8 @@ WidgetHeader.propTypes = {
 	showDivider: PropTypes.bool,
 	onIconClick: PropTypes.func,
 	style: PropTypes.object,
+	actionBtns: PropTypes.func,
+	actionGap: PropTypes.string,
 };
 
 WidgetHeader.defaultProps = {
@@ -49,7 +60,9 @@ WidgetHeader.defaultProps = {
 	icon: 'check',
 	showDivider: true,
 	style: {},
-	onIconClick: null
+	onIconClick: null,
+	actionGap: '8px',
+	actionBtns: () => null
 };
 
 export default WidgetHeader;

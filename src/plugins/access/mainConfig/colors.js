@@ -36,8 +36,9 @@ export default {
 		primary: 'colors.blue01',
 		secondary: 'colors.blueLight01',
 		content: 'colors.blueLight02',
+		selected: 'colors.blueLight03',
+		hover: 'colors.greyLight01',
 		active: 'colors.blue02',
-		hover: 'colors.blue03',
 		code: 'colors.grey02',
 		light: 'colors.greyLight01',
 		badge: '#8fa6c2'

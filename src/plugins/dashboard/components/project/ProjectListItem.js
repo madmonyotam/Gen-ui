@@ -26,7 +26,7 @@ const ProjectCard = styled.div`
 	height: 65px;
 	display: flex;
 	flex-direction: column;
-	background: ${ props => props.selected ? access.color('colors.blueLight03') : access.color('backgrounds.code') } ;
+	background: ${ props => props.selected ? access.color('backgrounds.selected') : access.color('backgrounds.code') } ;
 	transition: all 0.15s ease-in-out;
 `;
 	

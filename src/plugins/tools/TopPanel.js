@@ -76,7 +76,7 @@ const MenuIcon = styled(IconButton)`
 `;
 
 const TopPanel = () => { 
-	const location = useLocation()
+	const location = useLocation();
 	const [open, setOpen] = useState(false);
 	const anchorRef = useRef(null);
 	const existsProjects = useRecoilValue(projectListState);
