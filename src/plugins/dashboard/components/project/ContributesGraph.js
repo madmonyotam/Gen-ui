@@ -5,7 +5,7 @@ import * as access from 'plugins/access';
 import useResizeWindow from 'plugins/hooks/useResizeWindow';
 
 import styled from 'styled-components';
-import { IconButton, Paper, ClickAwayListener, Fade } from '@material-ui/core';
+import { IconButton, Paper, Tooltip, ClickAwayListener, Fade } from '@material-ui/core';
 import TimeScaleIcon from '@material-ui/icons/History';
 import Popper from '@material-ui/core/Popper'; 
 
@@ -57,13 +57,13 @@ const ContributesGraph = () => {
 	const size = useResizeWindow();
 	const sizeKey = `${size.width}-${size.hight}`; 
 
+	const label = timeFrame > 1 ? access.translate('Months') : access.translate('Month');
+
 	const handleClose = () => {
 		setOpen(false);
 	};
 
 	const renderItemInList  = (value) => {
-		const label = value > 1 ? access.translate('Months') : access.translate('Month');
-
 		const handleItemClick = (v) => () => {
 			getContributeLine().updateTimeAxis(v);
 			setTimeFrame(v);
@@ -88,15 +88,17 @@ const ContributesGraph = () => {
 	};
 
 	const renderTimeSelect = () => {
+		const title = open ? '' : `${timeFrame} ${label}`;
 		return (
-			<>							
-				<IconButton
-					ref={anchorRef}
-					size={'small'}
-					isopen={ open.toString() }
-					onClick={() => setOpen(!open)}>
-					<TimeScaleIcon fontSize={'small'} color={ 'primary' }/>
-				</IconButton>
+			<>	
+				<Tooltip title={title} placement={'top'} >
+					<IconButton
+						ref={anchorRef}
+						size={'small'}
+						onClick={() => setOpen(!open)}>
+						<TimeScaleIcon fontSize={'small'} color={ 'primary' }/>
+					</IconButton>
+				</Tooltip>						
 			
 				<Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal placement={ 'bottom-end' }>
 					{({ TransitionProps }) => (
