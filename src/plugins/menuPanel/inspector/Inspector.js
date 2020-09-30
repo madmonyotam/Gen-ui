@@ -49,7 +49,6 @@ function Inspector({ item }) {
 	let initType = getTypeByKey(item.type) || getOptionFormat('');
 	initType.label = initType.name || initType.label;
 	const [type, setType] = useState(initType);
-
 	const [tempItem, setTempItem] = useState(item);
 	const [tempData, setTempData] = useState({});
 	const [showButtons, setShowButtons] = useState(false);
@@ -66,6 +65,7 @@ function Inspector({ item }) {
 	const groups = Object.keys(types).map(t => {
 		return getOptionFormat(t);
 	});
+	console.log('types', types)
 
 	const typesToSelect = getTypesToSelect(group.value);
 

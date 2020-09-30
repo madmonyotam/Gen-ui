@@ -3,9 +3,10 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useRecoilState  } from 'recoil';
 import { projectState  } from './tree/atoms';
-import * as access from 'plugins/access';
-import { Typography } from '@material-ui/core';
 
+import * as access from 'plugins/access';
+
+import { Typography } from '@material-ui/core';
 import Panel from 'plugins/tools/Panel';
 import Libraries from './components/Panel/Libraries';
 import Schemas from './components/Content/Schemas';

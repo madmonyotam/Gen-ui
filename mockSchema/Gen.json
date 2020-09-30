@@ -75,14 +75,20 @@
         "type": "fullName"
       },
       "size": {
-        "type": "numberBetween",
+        "type": "recentDate",
         "value": {
           "start": "12",
           "min": "12",
-          "max": "987"
-        }
+          "max": "987",
+          "days": "1213",
+          "dateMask": " dd yy "
+        },
+        "size": "12",
+        "prefix": "aaa-",
+        "suffix": "-vvv",
+        "addEmpty": false
       }
     }
   },
-  "t": {}
+  "f": {}
 }

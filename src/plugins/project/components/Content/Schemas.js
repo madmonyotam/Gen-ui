@@ -12,6 +12,7 @@ import CodeEditor from './Editor';
 import CreateInput from 'plugins/tools/CreateInput';
 import LoaderTimeout from 'plugins/tools/LoaderTimeout'; 
 import FieldsBox from './FieldsBox';
+import Generator from './Generator';
 
 const Schemas = () => {
 	const [schemaId, setSchemaId] = useRecoilState(selectedSchemaId);
@@ -47,50 +48,62 @@ const Schemas = () => {
 		setSchemas(newlist);
 
 	};
+	const Panel = () => (
+		<div style={{
+			flex: 1,
+			background: '#fff',
+			borderRadius: '4px',
+			border: '1px solid #dedede',
+			position: 'relative',
+			maxWidth: 'calc(235px - 11px)',
+		}}>
+
+			<LoaderTimeout isLoading={loading} coverAll={false} pendingExtraTime={1500}>
+				<div style={{ padding: '0 10px' }}>
+					<CreateInput type={'schema'} existingData={schemas.length ? schemas.map(s => s.name.toLowerCase()) : []} onCreated={handleCreated} />
+					<Divider />
+				</div>
+
+				<div style={{ display: 'flex', flex: 1, height: 'calc(100% - 40px)' }}>
+					<div style={{
+						padding: '10px 0',
+						background: '#fff',
+						flex: 1,
+						height: 'calc(100% - 150px)',
+						position: 'relative',
+					}}>
+						<div style={{ height: '100%', overflow: 'auto' }}>
+
+							{
+								schemas && schemas.map(item => (
+									<SchemaListItem key={item.schemaId} item={item} />
+								))
+							}
+						</div>
+
+						<LibraryInformation />
+					</div>
+				</div>
+			</LoaderTimeout>
+		</div>
+	);
 
 	if (!libId) return null;
 	return (
 		<div style={{ display: 'flex', flex: 1, position: 'relative' }}>
 
-			<div style={{
-				flex: 1, 
-				background: 'white',
-				borderRadius: '4px',
-				border: '1px solid #dedede',
-				position: 'relative',
-				maxWidth: 'calc(235px - 11px)',
-			}}>
-				
-				<LoaderTimeout isLoading={ loading } coverAll={false} pendingExtraTime={1500}>
-					<div style={{ padding: '0 10px' }}>
-						<CreateInput type={ 'schema' } existingData={schemas.length ? schemas.map(s => s.name.toLowerCase()) : [] } onCreated={ handleCreated }/>
-						<Divider />
+			<Panel />
+			{
+				(!loading && schemas.length > 0) && (
+					<div style={{ display: 'flex', flexDirection: 'row', flex: 1, padding:'0 0 25px 25px' }}>
+						<div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+							<CodeEditor />  
+							<FieldsBox />
+						</div>
+						<Generator />
 					</div>
-					
-					<div style={{ display: 'flex', flex: 1, height: 'calc(100% - 40px)' }}> 
-						<div style={{ 
-							padding: '10px 0', 
-							background: 'white', 
-							flex: 1,
-							height: 'calc(100% - 150px)',
-							position: 'relative', 
-						}}>
-							<div style={{ height: '100%', overflow: 'auto' }}>
-							
-								{ 
-									schemas && schemas.map(item => (
-										<SchemaListItem key={ item.schemaId } item={ item }/>
-									)) 
-								}</div>
-							<LibraryInformation />
-						</div> 
-					</div>
-				</LoaderTimeout>
-			</div>
-			<div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-				{ (!loading && !schemas.length) ? null : <CodeEditor /> }
-				{ (!loading && !schema) ? null : <FieldsBox /> }
-			</div>
+				)
+			} 
 		</div>
 	);
 };

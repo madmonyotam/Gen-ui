@@ -1,15 +1,27 @@
 import React, { useState, useRef, useEffect } from 'react';
 import AceEditor from 'react-ace';
+import styled from 'styled-components';
 
 import 'ace-builds/src-noconflict/mode-json';
-import 'ace-builds/src-noconflict/theme-github';
+import 'ace-builds/src-noconflict/theme-xcode';
 
 import { Tooltip, IconButton, Icon } from '@material-ui/core';
 import * as access from 'plugins/access';
+import WidgetHeader from 'plugins/tools/WidgetHeader';
 
 import { useRecoilValue } from 'recoil';
 import { selectedSchema } from 'plugins/project/tree/selectors';
 import { fieldDrawerState } from 'plugins/project/tree/atoms';
+
+
+const Box = styled.div`
+	position: relative;
+	background: #fefefe;
+	border:  1px solid ${access.color('borders.primary')};
+	border-radius: 4px;
+	margin-top: 10px;
+	flex: 1;
+`; 
 
 const Editor = () => {
 	const editorRef = useRef();
@@ -70,70 +82,76 @@ const Editor = () => {
 		tabSize: 2,
 	};
  
-
 	const style = {
-		height: 'calc(100% - 41px)',
+		height: '100%',
 		width: '100%',
-		borderTopRightRadius: '4px',
-		border: 'solid #dedede',
-		borderTop: 1,
-		borderBottom: 0,
-		borderRight: 1,
-		borderLeft: 0,
-		transition: 'height 0.35s linear'
-
+		borderRadius: '4px',
 	};
 
-	return (
-		<div style={{ flex: 1 }} >
-			<div style={{ height: 40, paddingLeft: 40, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-				<div>
-					<Tooltip title={access.translate('Undo')}  >
-						<IconButton size={'small'} style={{ marginRight: 10 }}>
-							<Icon fontSize={'small'}>undo</Icon>
-						</IconButton>
-					</Tooltip>
-					<Tooltip title={access.translate('Redo')}  >
-						<IconButton size={'small'}>
-							<Icon fontSize={'small'}>redo</Icon>
-						</IconButton>
-					</Tooltip>
-				</div>
-				<div>
-					<Tooltip title={access.translate('Save')}  >
-						<IconButton size={'small'} style={{ marginRight: 10 }}>
-							<Icon fontSize={'small'}>save</Icon>
-						</IconButton>
-					</Tooltip>
-					<Tooltip title={access.translate('Copy')}  >
-						<IconButton size={'small'}>
-							<Icon fontSize={'small'}>content_copy</Icon>
-						</IconButton>
-					</Tooltip>
-				</div>
-			</div>
+	// return (
+		// <div style={{ flex: 1 }} >
+		// 	<div style={{ height: 40, paddingLeft: 40, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+		// 		<div>
+		// 			<Tooltip title={access.translate('Undo')}  >
+		// 				<IconButton size={'small'} style={{ marginRight: 10 }}>
+		// 					<Icon fontSize={'small'}>undo</Icon>
+		// 				</IconButton>
+		// 			</Tooltip>
+		// 			<Tooltip title={access.translate('Redo')}  >
+		// 				<IconButton size={'small'}>
+		// 					<Icon fontSize={'small'}>redo</Icon>
+		// 				</IconButton>
+		// 			</Tooltip>
+		// 		</div>
+		// 		<div>
+		// 			<Tooltip title={access.translate('Save')}  >
+		// 				<IconButton size={'small'} style={{ marginRight: 10 }}>
+		// 					<Icon fontSize={'small'}>save</Icon>
+		// 				</IconButton>
+		// 			</Tooltip>
+		// 			<Tooltip title={access.translate('Copy')}  >
+		// 				<IconButton size={'small'}>
+		// 					<Icon fontSize={'small'}>content_copy</Icon>
+		// 				</IconButton>
+		// 			</Tooltip>
+		// 		</div>
+		// 	</div>
 			
-			<AceEditor
-				ref={editorRef}
-				style={style}
-				onBeforeLoad={onBeforeLoad}
-				debounceChangePeriod={150}
-				mode="json"
-				theme="github"
-				name="schema-editor"
-				onLoad={onLoad}
-				onChange={onChange}
-				fontSize={14}
-				showPrintMargin={true}
-				showGutter={true}
-				highlightActiveLine={true}
-				value={code}
-				setOptions={options}
-			/>
 
-		</div>
+		// </div>
  
-	);
+	// );
+	return (
+		<div style={{ 
+			transition: 'all .15s ease-in-out',
+			flex: fieldDrawerId ? .35 : .6, 
+			marginBottom: 10, 
+			display: 'flex', 
+			flexDirection: 'column' 
+		}}>
+			<WidgetHeader title={access.translate('Editor')} icon={'code'} />
+			<Box >
+				<AceEditor
+					ref={editorRef}
+					style={style}
+					onBeforeLoad={onBeforeLoad}
+					debounceChangePeriod={150}
+					mode="json"
+					theme="xcode"
+					name="schema-editor"
+					onLoad={onLoad}
+					onChange={onChange}
+					fontSize={14}
+					showPrintMargin={true}
+					showGutter={true}
+					highlightActiveLine={true}
+					value={code}
+					setOptions={options}
+				/>
+
+			</Box>
+		</div>
+	)
 };
 
 export default Editor;

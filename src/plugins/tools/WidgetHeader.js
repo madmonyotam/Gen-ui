@@ -24,7 +24,7 @@ const ActionsSide = styled.div`
 `;
 
 const WidgetIcon = styled(Icon)`
-	cursor: ${ props => props.onIconClick ? 'pointer' : 'default' };
+	cursor: ${ props => props.onClick ? 'pointer' : 'default' };
 `;
 
 const WidgetHeader = (props) => {
