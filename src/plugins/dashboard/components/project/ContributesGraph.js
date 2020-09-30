@@ -57,13 +57,12 @@ const ContributesGraph = () => {
 	const size = useResizeWindow();
 	const sizeKey = `${size.width}-${size.hight}`; 
 
-	const label = timeFrame > 1 ? access.translate('Months') : access.translate('Month');
-
 	const handleClose = () => {
 		setOpen(false);
 	};
 
 	const renderItemInList  = (value) => {
+		const label = value > 1 ? access.translate('Months') : access.translate('Month');
 		const handleItemClick = (v) => () => {
 			getContributeLine().updateTimeAxis(v);
 			setTimeFrame(v);
@@ -88,6 +87,7 @@ const ContributesGraph = () => {
 	};
 
 	const renderTimeSelect = () => {
+		const label = timeFrame > 1 ? access.translate('Months') : access.translate('Month');
 		const title = open ? '' : `${timeFrame} ${label}`;
 		return (
 			<>	
