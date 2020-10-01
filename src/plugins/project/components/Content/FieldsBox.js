@@ -22,7 +22,8 @@ const Typo = styled(Typography)`
 	cursor: pointer;
 	position: relative;
     color: #333;
-    border-left: 5px solid transparent;
+    border-left: 5px solid ${ props => props.selected ? '#bac4ce': 'transparent' };
+    background: ${ props => props.selected ? access.color('backgrounds.light') : 'transparent' };
 	display: flex;
     align-items: center;
     margin: 10px 0 !important;
@@ -108,7 +109,7 @@ const FieldsBox = () => {
 	};
 
 	const renderField = field => field === 'empty' ? null : (
-		<Typo key={ field } onClick={ () => setDrawerId(field) } >
+		<Typo key={ field } onClick={ () => setDrawerId(field) } selected={ field === fieldDrawerId }>
 			{ field }
 			<Tooltip title={ access.translate('Preview') }>
 				<PreviewIcon fontSize={ 'small' } onClick={ e => handleOnPreview(e, field) } >ondemand_video</PreviewIcon>
