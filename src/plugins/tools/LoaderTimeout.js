@@ -50,20 +50,22 @@ class LoaderTimeout extends Component {
 		this.renderLoader = this.renderLoader.bind(this);
     
 		this.state = {
-			showLoader: true
+			showLoader: false
 		};
 	}
 
 	componentDidMount() {
 		this.mounted = true;
 	}
-  
-	componentDidUpdate(prevProps) {
-		const { isLoading } = this.props;
 
-		if (isLoading !== prevProps.isLoading && isLoading) {
-			this.setState({ showLoader: true });
-		} 
+	static getDerivedStateFromProps(props, state){
+		if(props.isLoading && !state.showLoader){
+			return {
+				showLoader: true
+			};
+		}
+
+		return null;
 	}
 
 	componentWillUnmount() {
