@@ -2,8 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import * as gen from 'gen-engine'; 
  
-import { Divider } from '@material-ui/core'; 
+import EditorGenerator from 'plugins/project/components/Content/EditorGenerator';
 import WidgetHeader from 'plugins/tools/WidgetHeader';
+import Mask from 'plugins/tools/Mask';
 
 import * as access from 'plugins/access'; 
 
@@ -22,11 +23,8 @@ const Generator = () => {
 		<div style={{ width: '50%' , marginLeft: 20, display: 'flex', flexDirection: 'column' }}>
 			<WidgetHeader title={access.translate('Generator')} icon={'gavel'}   />
 			<Box >
-				{/* <div style={{ display: 'flex', alignItems: 'center' }}>
-					<Typography style={{ fontSize: 13, display: 'flex', justifyContent: 'space-between' }}>
-						Generator
-					</Typography> 
-				</div>  */}
+				<Mask mask={'transparent'} zIndex={5}/>
+				<EditorGenerator/>
 			</Box> 
 		</div>
 	);

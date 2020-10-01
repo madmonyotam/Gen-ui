@@ -2,6 +2,7 @@ import { selector } from 'recoil';
 import { typesState } from './atoms';
 import { groupBy } from 'lodash';
 
+
 export const countedTypes = selector({
 	key: 'countedTypes',
 	get: ({ get }) => {

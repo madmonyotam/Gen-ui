@@ -21,7 +21,6 @@ const Schemas = () => {
 	const loading = useFetchSchemas(libId);
 	const [schemas, setSchemas] = useRecoilState(schemasState);
 	const schema = useRecoilValue(selectedSchema);
-
 	
 	useEffect(() => {
 		if (!loading && schemas.length) {

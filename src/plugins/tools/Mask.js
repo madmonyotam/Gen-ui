@@ -9,17 +9,19 @@ const Mask = styled.div`
   right: ${props => props.right || 0};
   opacity: ${props => props.opacity};
   background: ${props => props.mask};
-  z-index: 0;
+  z-index: ${props => props.zIndex};
 `;
 
 Mask.defaultProps = {
 	opacity: 0.7,
 	mask: 'white',
+	zIndex: 0
 };
   
 Mask.propTypes = {
 	opacity: PropTypes.number,
 	mask: PropTypes.string,
+	zIndex: PropTypes.number,
 };
   
   
