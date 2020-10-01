@@ -87,7 +87,8 @@
         "prefix": "aaa-",
         "suffix": "-vvv",
         "addEmpty": false
-      }
+      },
+      ";": {}
     }
   },
   "f": {}

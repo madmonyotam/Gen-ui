@@ -124,7 +124,8 @@ const Editor = () => {
 	return (
 		<div style={{ 
 			transition: 'all .15s ease-in-out',
-			flex: fieldDrawerId ? .35 : .6, 
+			// flex: fieldDrawerId ? .35 : .6, 
+			height: fieldDrawerId ? '35%' : '55%',
 			marginBottom: 10, 
 			display: 'flex', 
 			flexDirection: 'column' 

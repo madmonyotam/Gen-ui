@@ -96,7 +96,7 @@ const Schemas = () => {
 			{
 				(!loading && schemas.length > 0) && (
 					<div style={{ display: 'flex', flexDirection: 'row', flex: 1, padding:'0 0 25px 25px' }}>
-						<div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+						<div style={{ display: 'flex', flexDirection: 'column', width: '50%' }}>
 							<CodeEditor />  
 							<FieldsBox />
 						</div>

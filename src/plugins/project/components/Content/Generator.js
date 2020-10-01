@@ -19,7 +19,7 @@ const Box = styled.div`
 `; 
 const Generator = () => {
 	return (
-		<div style={{ flex: 1, marginLeft: 20, display: 'flex', flexDirection: 'column' }}>
+		<div style={{ width: '50%' , marginLeft: 20, display: 'flex', flexDirection: 'column' }}>
 			<WidgetHeader title={access.translate('Generator')} icon={'gavel'}   />
 			<Box >
 				{/* <div style={{ display: 'flex', alignItems: 'center' }}>

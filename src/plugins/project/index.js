@@ -39,11 +39,12 @@ const Box = styled.div`
 `;
 
 const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  padding: 15px 25px 0;
-  background: ${access.color('backgrounds.content')};
+	display: flex;
+	width: 100%;
+  /* flex-direction: column; */
+  /* flex: 1; */
+	padding: 15px 25px 0;
+	background: ${access.color('backgrounds.content')};
 `;
 
 const Project = () => {

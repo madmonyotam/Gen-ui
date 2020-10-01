@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import * as access from 'plugins/access'; 
 
-const Header = styled(Typography)`
+const Header = styled.div`
 	color: ${ access.color('backgrounds.primary')};
 	font-size: 15px; 
 	padding: 5px 0; 

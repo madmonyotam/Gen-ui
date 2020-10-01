@@ -12,23 +12,62 @@ import * as access from 'plugins/access';
 import { fieldDrawerState } from 'plugins/project/tree/atoms';
 import { Typography, Tooltip, Icon,  Button } from '@material-ui/core';
 import { isUndefined } from 'lodash';
-import DataBox from 'plugins/dashboard/components/project/metadata/data-box';
-import WidgetHeader from 'plugins/tools/WidgetHeader';
-// import { filter } from 'lodash';
 
+// import { filter, groupBy } from 'lodash';
 // import { get } from 'plugins/requests';
-// import { groupBy } from 'lodash';
+
+import WidgetHeader from 'plugins/tools/WidgetHeader';
+
+const Typo = styled(Typography)`
+	cursor: pointer;
+	position: relative;
+    color: #333;
+    border-left: 5px solid transparent;
+	display: flex;
+    align-items: center;
+    margin: 10px 0 !important;
+    height: 35px;
+    padding: 5px 0 0 10px;
+	font-size: .85rem !important;
+	:hover {
+	    border-left: 5px solid #bac4ce;
+		background: ${ access.color('backgrounds.light') };
+	}
+`;
+
 window.gen = gen;
 
 const WidgetCont = styled.div`
 	width: 100%;
 	flex: 1;
-	overflow: hidden;
+	overflow: auto;
 	margin-top: 10px;
 	background: ${access.color('backgrounds.widget')};
 	border:  1px solid ${access.color('borders.primary')};
 	border-radius: 4px;
 `;
+
+
+const PreviewIcon = styled(Icon)`
+	position: absolute;
+	right: 10px;
+	top: 50%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	transition: all 0.05s linear;
+	transform: scale(0.95) translate3d(0, -50%, 0);
+	transform-origin: center center;
+	color: #777;
+	opacity: 0;
+
+	${Typo}:hover & {
+		transform: scale(1) translate3d(0, -50%, 0);
+		opacity:1;
+	}
+`;
+
 
 
 const FieldsBox = () => {
@@ -54,27 +93,27 @@ const FieldsBox = () => {
 		// setTypes(types);
 	};
 
-
 	useEffect(() => {
 		getFields();
 	}, [schema]);
+
+	const handleOnPreview = (e, field) => {
+		e.stopPropagation();
+		alert(field);
+	};
 
 	const setDrawerId = field => {
 		if (fieldDrawerId === field) setFieldDrawer(null);
 		else setFieldDrawer(field);
 	};
 
-	const renderField = field => (
-		<Button 
-			style={{ height: 25, margin: '0 10px 10px 0' }} 
-			onClick={ () => setDrawerId(field) } 
-			size={'small'} 
-			disableElevation
-			color={field === fieldDrawerId ? 'secondary' : 'primary' }
-			variant={field === fieldDrawerId ?'contained':'text' }
-			key={field}>
+	const renderField = field => field === 'empty' ? null : (
+		<Typo key={ field } onClick={ () => setDrawerId(field) } >
 			{ field }
-		</Button>
+			<Tooltip title={ access.translate('Preview') }>
+				<PreviewIcon fontSize={ 'small' } onClick={ e => handleOnPreview(e, field) } >ondemand_video</PreviewIcon>
+			</Tooltip>
+		</Typo>
 	);
 
 	const renderFields = () => {
@@ -83,11 +122,11 @@ const FieldsBox = () => {
 			filtered = fields.filter(field => field === fieldDrawerId);
 		} 
 		return (
-			<div style={{ flex: 1 }} >
+			<>
 				{
 					fieldDrawerId ? renderField(fieldDrawerId) : filtered.map(renderField) 
 				}
-			</div>
+			</>
 		);
 	};
 
@@ -95,16 +134,10 @@ const FieldsBox = () => {
 
 	return (
 		<div style={{
-			flex: fieldDrawerId ? .65 : .4,
+			height: fieldDrawerId ? '65%' : '45%',
 			display: 'flex',
 			flexDirection: 'column',
-			// height: fieldDrawerId ? '50%' : 120,
-			// transition: 'box-shadow .25s ease-in-out',
-			transition: 'all .15s ease-in-out',
-
-			// width: 'calc(50% - 15px)',
-			//borderTop: fieldDrawerId ? '1px transparent' : '1px solid rgba(221,221,221,.75)',
-			boxShadow: fieldDrawerId ? 'rgba(0, 0, 0, 1) 0px -2px 23px -35px' : 'unset',
+			transition: 'all .15s ease-in-out'
 		}}>
 			<WidgetHeader title={schema.name} icon={ 'playlist_add' } onIconClick={ () => setDrawerId('empty') }/>
 			<WidgetCont>
