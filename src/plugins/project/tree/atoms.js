@@ -25,8 +25,3 @@ export const selectedSchemaId = atom({
 	key: 'selectedSchemaId',
 	default: undefined
 });
-
-export const fieldDrawerState = atom({
-	key: 'fieldDrawerState',
-	default: null
-});

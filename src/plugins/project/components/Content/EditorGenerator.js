@@ -4,7 +4,8 @@ import * as gen from 'gen-engine';
 import * as access from 'plugins/access';
 
 import 'ace-builds/src-noconflict/mode-json';
-import 'ace-builds/src-noconflict/theme-xcode';
+import 'ace-builds/src-noconflict/theme-solarized_dark';
+// import 'ace-builds/src-noconflict/theme-xcode';
 
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { selectedSchema } from 'plugins/project/tree/selectors';
@@ -55,12 +56,12 @@ const EditorGen = () => {
 			style={style}
 			debounceChangePeriod={150}
 			mode="json"
-			theme="xcode"
+			theme="solarized_dark"
 			name="schema-editor"
 			onLoad={onLoad}
 			fontSize={14}
 			showPrintMargin={true}
-			showGutter={true}
+			showGutter={false}
 			highlightActiveLine={true}
 			value={generatedData}
 			setOptions={options}

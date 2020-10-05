@@ -12,6 +12,7 @@ export function generate(tree, { items, amount = 1 }) {
 }
 
 export function tempGenerate(items) {
+	console.log('items :>> ', items);
 	return gen.generate(items,1);
 }
 

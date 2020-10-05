@@ -11,7 +11,7 @@ import WidgetHeader from 'plugins/tools/WidgetHeader';
 
 import { useRecoilValue } from 'recoil';
 import { selectedSchema } from 'plugins/project/tree/selectors';
-import { fieldDrawerState } from 'plugins/project/tree/atoms';
+//import { inspectorState } from 'plugins/project/tree/atoms';
 
 
 const Box = styled.div`
@@ -26,7 +26,7 @@ const Box = styled.div`
 const Editor = () => {
 	const editorRef = useRef();
 	const schema = useRecoilValue(selectedSchema);
-	const fieldDrawerId = useRecoilValue(fieldDrawerState);
+	//const fieldDrawerId = useRecoilValue(fieldDrawerState);
 
 	const [code, setCode] = useState('');
 
@@ -60,7 +60,7 @@ const Editor = () => {
 				editor.resize();
 			}, 250);
 		}
-	}, [fieldDrawerId, !fieldDrawerId]);
+	}, [schema]);
 
 	const onLoad = () => { 
 		if (editorRef.current) {
@@ -89,43 +89,43 @@ const Editor = () => {
 	};
 
 	// return (
-		// <div style={{ flex: 1 }} >
-		// 	<div style={{ height: 40, paddingLeft: 40, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-		// 		<div>
-		// 			<Tooltip title={access.translate('Undo')}  >
-		// 				<IconButton size={'small'} style={{ marginRight: 10 }}>
-		// 					<Icon fontSize={'small'}>undo</Icon>
-		// 				</IconButton>
-		// 			</Tooltip>
-		// 			<Tooltip title={access.translate('Redo')}  >
-		// 				<IconButton size={'small'}>
-		// 					<Icon fontSize={'small'}>redo</Icon>
-		// 				</IconButton>
-		// 			</Tooltip>
-		// 		</div>
-		// 		<div>
-		// 			<Tooltip title={access.translate('Save')}  >
-		// 				<IconButton size={'small'} style={{ marginRight: 10 }}>
-		// 					<Icon fontSize={'small'}>save</Icon>
-		// 				</IconButton>
-		// 			</Tooltip>
-		// 			<Tooltip title={access.translate('Copy')}  >
-		// 				<IconButton size={'small'}>
-		// 					<Icon fontSize={'small'}>content_copy</Icon>
-		// 				</IconButton>
-		// 			</Tooltip>
-		// 		</div>
-		// 	</div>
+	// <div style={{ flex: 1 }} >
+	// 	<div style={{ height: 40, paddingLeft: 40, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+	// 		<div>
+	// 			<Tooltip title={access.translate('Undo')}  >
+	// 				<IconButton size={'small'} style={{ marginRight: 10 }}>
+	// 					<Icon fontSize={'small'}>undo</Icon>
+	// 				</IconButton>
+	// 			</Tooltip>
+	// 			<Tooltip title={access.translate('Redo')}  >
+	// 				<IconButton size={'small'}>
+	// 					<Icon fontSize={'small'}>redo</Icon>
+	// 				</IconButton>
+	// 			</Tooltip>
+	// 		</div>
+	// 		<div>
+	// 			<Tooltip title={access.translate('Save')}  >
+	// 				<IconButton size={'small'} style={{ marginRight: 10 }}>
+	// 					<Icon fontSize={'small'}>save</Icon>
+	// 				</IconButton>
+	// 			</Tooltip>
+	// 			<Tooltip title={access.translate('Copy')}  >
+	// 				<IconButton size={'small'}>
+	// 					<Icon fontSize={'small'}>content_copy</Icon>
+	// 				</IconButton>
+	// 			</Tooltip>
+	// 		</div>
+	// 	</div>
 			
 
-		// </div>
+	// </div>
  
 	// );
 	return (
 		<div style={{ 
 			transition: 'all .15s ease-in-out',
 			// flex: fieldDrawerId ? .35 : .6, 
-			height: fieldDrawerId ? '35%' : '55%',
+			height: '50%',
 			// marginBottom: 10, 
 			display: 'flex', 
 			flexDirection: 'column' 
@@ -152,7 +152,7 @@ const Editor = () => {
 
 			</Box>
 		</div>
-	)
+	);
 };
 
 export default Editor;
