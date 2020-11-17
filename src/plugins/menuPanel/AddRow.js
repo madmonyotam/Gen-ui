@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { TextField, ClickAwayListener } from '@material-ui/core';
 import { useBranch } from 'baobab-react/hooks';
 
-import * as access from 'plugins/access';
+import access from 'plugins/access';
 
 import Row from 'plugins/Layouts/Row';
 import Center from 'plugins/Layouts/Center';

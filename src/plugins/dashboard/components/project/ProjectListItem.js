@@ -9,7 +9,7 @@ import { Typography, Tooltip, Icon, IconButton } from '@material-ui/core';
 import { projectListState, selectedProjectId } from 'plugins/dashboard/tree/atoms';
 import { deleteProject } from 'plugins/dashboard/actions';
 
-import * as access from 'plugins/access';
+import access, { translate } from 'plugins/access';
 
 import moment from 'moment';
 
@@ -101,12 +101,12 @@ const ProjectListItem = props => {
 			</div>
 
 			<SideIcons >
-				<Tooltip title={ access.translate('Enter') } >
+				<Tooltip title={ translate('Enter') } >
 					<IconButton size={ 'small' } onClick={ handleEnterProject }>
 						<Icon fontSize={ 'small' } style={{ color: '#333' }}> keyboard_return </Icon>
 					</IconButton>
 				</Tooltip>
-				<Tooltip title={ access.translate('Delete') } >
+				<Tooltip title={ translate('Delete') } >
 					<IconButton size={'small'} onClick={ handleDeleteProject }>
 						<Icon fontSize={ 'small' } style={{ color: '#333' }}> delete_outline </Icon>
 					</IconButton>

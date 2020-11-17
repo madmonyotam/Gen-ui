@@ -2,7 +2,7 @@ import React from 'react';
 import { useRecoilValue } from 'recoil';
 import moment from 'moment';
 import styled from 'styled-components';
-import * as access from 'plugins/access';
+import access from 'plugins/access';
 import { Typography } from '@material-ui/core';
 import { selectedLibrary } from 'plugins/project/tree/selectors';
 

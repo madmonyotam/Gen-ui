@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { find } from 'lodash';
 import { ClickAwayListener } from '@material-ui/core';
 
-import * as access from 'plugins/access';
+import access from 'plugins/access';
 
 import Row from 'plugins/Layouts/Row';
 import Column from 'plugins/Layouts/Column';

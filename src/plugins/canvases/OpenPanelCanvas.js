@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useBranch } from 'baobab-react/hooks';
 
-import * as access from 'plugins/access';
+import access from 'plugins/access';
 
 import Start from 'plugins/tools/Start';
 import { dropCircles } from 'plugins/canvases/utils/canvasActions';

@@ -8,7 +8,7 @@ import React from 'react';
 import { useDisplayAction } from 'plugins/dashboard/hooks/useDisplayAction';
 
 // import { Button, Icon } from '@material-ui/core';
-// import * as access from 'plugins/access'; 
+// import access from 'plugins/access'; 
 
 const ActionButtons = () => {
 	// const history = useHistory();
@@ -45,7 +45,7 @@ const ActionButtons = () => {
 						onClick={ e => { history.push(`/project/${ projectId }` ); } }
 						style={{ marginRight: 15 }}
 						endIcon={<Icon fontSize={'small'}>keyboard_return</Icon>} >
-						{access.translate('Enter')}
+						{translate('Enter')}
 					</Button>
 				)
 				
@@ -60,7 +60,7 @@ const ActionButtons = () => {
 						onClick={e => { history.push(`/project/${projectId}`); }}
 						style={{ marginRight: 15 }}
 						endIcon={<Icon fontSize={'small'}>play_circle_outline</Icon>} >
-						{access.translate('Generate')}
+						{translate('Generate')}
 					</Button>
 				)
 			}
@@ -70,7 +70,7 @@ const ActionButtons = () => {
 				disableElevation
 				onClick={ handleDeleteProject }
 				endIcon={<Icon fontSize={'small'}>delete_outline</Icon>} >
-				{access.translate('Delete')}
+				{translate('Delete')}
 			</Button> */}
 		</div>
 

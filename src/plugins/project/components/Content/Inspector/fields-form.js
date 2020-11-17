@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import * as access from 'plugins/access';
+import access from 'plugins/access';
 import { Icon } from '@material-ui/core';
 
 const Form = styled.div`

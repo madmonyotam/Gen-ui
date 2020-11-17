@@ -5,7 +5,7 @@ import { useBranch } from 'baobab-react/hooks';
 
 import { TextField, ClickAwayListener } from '@material-ui/core';
 
-import * as access from 'plugins/access';
+import access from 'plugins/access';
 
 import Row from 'plugins/Layouts/Row';
 import Label from 'plugins/tools/Label';

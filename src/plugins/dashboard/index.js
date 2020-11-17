@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 import { Paper, Typography, Icon } from '@material-ui/core';
@@ -11,7 +11,7 @@ import { projectListState, selectedProjectId } from './tree/atoms';
 import { useFetchProjects } from './actions';
 
 /* Plugins */
-import * as access from 'plugins/access';
+import access, { translate } from 'plugins/access';
 import LoaderTimeout from 'plugins/tools/LoaderTimeout';
 
 /* Components */
@@ -78,7 +78,7 @@ function Dashboard() {
 			<EmptyForm>
 				
 				<TypeTitle>
-					{access.translate('Create Your First Project!')}
+					{translate('Create Your First Project!')}
 					<Icon color={'secondary'}>bubble_chart</Icon>
 				</TypeTitle>
 

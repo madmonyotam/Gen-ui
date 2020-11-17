@@ -6,7 +6,7 @@ import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-xcode';
 
 import { Tooltip, IconButton, Icon } from '@material-ui/core';
-import * as access from 'plugins/access';
+import access, { translate } from 'plugins/access';
 import WidgetHeader from 'plugins/tools/WidgetHeader';
 
 import { useRecoilValue } from 'recoil';
@@ -92,24 +92,24 @@ const Editor = () => {
 	// <div style={{ flex: 1 }} >
 	// 	<div style={{ height: 40, paddingLeft: 40, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 	// 		<div>
-	// 			<Tooltip title={access.translate('Undo')}  >
+	// 			<Tooltip title={translate('Undo')}  >
 	// 				<IconButton size={'small'} style={{ marginRight: 10 }}>
 	// 					<Icon fontSize={'small'}>undo</Icon>
 	// 				</IconButton>
 	// 			</Tooltip>
-	// 			<Tooltip title={access.translate('Redo')}  >
+	// 			<Tooltip title={translate('Redo')}  >
 	// 				<IconButton size={'small'}>
 	// 					<Icon fontSize={'small'}>redo</Icon>
 	// 				</IconButton>
 	// 			</Tooltip>
 	// 		</div>
 	// 		<div>
-	// 			<Tooltip title={access.translate('Save')}  >
+	// 			<Tooltip title={translate('Save')}  >
 	// 				<IconButton size={'small'} style={{ marginRight: 10 }}>
 	// 					<Icon fontSize={'small'}>save</Icon>
 	// 				</IconButton>
 	// 			</Tooltip>
-	// 			<Tooltip title={access.translate('Copy')}  >
+	// 			<Tooltip title={translate('Copy')}  >
 	// 				<IconButton size={'small'}>
 	// 					<Icon fontSize={'small'}>content_copy</Icon>
 	// 				</IconButton>
@@ -130,7 +130,7 @@ const Editor = () => {
 			display: 'flex', 
 			flexDirection: 'column' 
 		}}>
-			<WidgetHeader title={access.translate('Editor')} icon={'code'} />
+			<WidgetHeader title={translate('Editor')} icon={'code'} />
 			<Box >
 				<AceEditor
 					ref={editorRef}

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import * as access from 'plugins/access';
+import access from 'plugins/access';
 import { useBranch } from 'baobab-react/hooks';
 
 import styled from 'styled-components';

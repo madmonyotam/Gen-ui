@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import * as access from 'plugins/access';
+import access from 'plugins/access';
 import styled from 'styled-components';
 
 

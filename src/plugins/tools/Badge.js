@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import styled from 'styled-components';
-import * as access from 'plugins/access';
+import access from 'plugins/access';
 
 
 const Wrap = styled.span`

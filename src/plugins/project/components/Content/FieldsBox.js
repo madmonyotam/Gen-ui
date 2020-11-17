@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import * as gen from 'gen-engine';
 import { useSetRecoilState, useRecoilValue  } from 'recoil';
 import { selectedSchema } from 'plugins/project/tree/selectors';
-import * as access from 'plugins/access';
+import access, { translate } from 'plugins/access';
  
 import { inspectorState } from './tree/atoms';
 import { Typography, Tooltip, Icon } from '@material-ui/core';
@@ -118,7 +118,7 @@ const FieldsBox = () => {
 	const renderField = field => field === 'empty' ? null : (
 		<FieldListItem key={field} onClick={e => handleOnPreview(e, field)} >
 			{ field }
-			<Tooltip title={ access.translate('Preview') }>
+			<Tooltip title={ translate('Preview') }>
 				<PreviewIcon fontSize={ 'small' } onClick={ e => handleOnPreview(e, field) } >ondemand_video</PreviewIcon>
 			</Tooltip>
 		</FieldListItem>

@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import Pack from 'plugins/canvases/pack/Pack';
-import * as access from 'plugins/access';
+import access from 'plugins/access';
 import { isEmpty } from 'lodash';
 import Tag from 'plugins/canvases/paint/Tag';
 

@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react';
 import { useBranch } from 'baobab-react/hooks';
 import { Modal, ClickAwayListener } from '@material-ui/core';
 
-import * as access from 'plugins/access';
+import access, { translate } from 'plugins/access';
 
 import Center from 'plugins/Layouts/Center';
 import Row from 'plugins/Layouts/Row';
@@ -39,7 +39,7 @@ function Menu(params) {
 
 	const MenuHeader = () => {
 
-		const label = focus ? access.translate(focus) : access.translate('menu');
+		const label = focus ? translate(focus) : translate('menu');
 
 		return (
 			<Row
@@ -88,14 +88,14 @@ function Menu(params) {
 
 		return (
 			<Fragment>
-				<MenuItem label={access.translate('Save as')} onClick={handleSave} />
-				<MenuItem label={access.translate('New project')} onClick={handleNew} />
+				<MenuItem label={translate('Save as')} onClick={handleSave} />
+				<MenuItem label={translate('New project')} onClick={handleNew} />
 				<MenuItem
-					label={access.translate('Open project')}
+					label={translate('Open project')}
 					onClick={handleOpen}
 				/>
 				<MenuItem
-					label={access.translate('Remove project')}
+					label={translate('Remove project')}
 					onClick={handleRemove}
 				/>
 			</Fragment>

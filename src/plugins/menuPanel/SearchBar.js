@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import * as access from 'plugins/access';
+import access from 'plugins/access';
 
 import Row from 'plugins/Layouts/Row';
 import Label from 'plugins/tools/Label';

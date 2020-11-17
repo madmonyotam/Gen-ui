@@ -3,7 +3,7 @@ import { useRecoilState } from 'recoil';
 import PropTypes from 'prop-types';
 
 import styled from 'styled-components';
-import * as access from 'plugins/access';
+import access, { translate } from 'plugins/access';
 
 import { Typography, Icon, Tooltip } from '@material-ui/core';
 
@@ -77,7 +77,7 @@ const SchemaListItem = ({ item }) => {
 			</Typography>
 			<Typography style={{ fontSize: 12, color: '#777' }}>{numFields} Fields</Typography>
 
-			<Tooltip title={ access.translate('Delete') }>
+			<Tooltip title={ translate('Delete') }>
 				<DeleteIcon fontSize={'small'} onClick={deleteSchema}>delete</DeleteIcon>
 			</Tooltip>
 		</ListItem>

@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useRecoilValue } from 'recoil';
-import * as access from 'plugins/access';
+import access, { translate } from 'plugins/access';
 
 import useResizeWindow from 'plugins/hooks/useResizeWindow';
 
@@ -62,7 +62,7 @@ const ContributesGraph = () => {
 	};
 
 	const renderItemInList  = (value) => {
-		const label = value > 1 ? access.translate('Months') : access.translate('Month');
+		const label = value > 1 ? translate('Months') : translate('Month');
 		const handleItemClick = (v) => () => {
 			getContributeLine().updateTimeAxis(v);
 			setTimeFrame(v);
@@ -87,7 +87,7 @@ const ContributesGraph = () => {
 	};
 
 	const renderTimeSelect = () => {
-		const label = timeFrame > 1 ? access.translate('Months') : access.translate('Month');
+		const label = timeFrame > 1 ? translate('Months') : translate('Month');
 		const title = open ? '' : `${timeFrame} ${label}`;
 		return (
 			<>	
@@ -117,7 +117,7 @@ const ContributesGraph = () => {
 
 	return (
 		<Container>
-			<WidgetHeader title={access.translate('Updated By Time')} icon={'insert_chart_outlined'} actionBtns={ renderTimeSelect }/>
+			<WidgetHeader title={translate('Updated By Time')} icon={'insert_chart_outlined'} actionBtns={ renderTimeSelect }/>
 			<WidgetCont>
 				<LineCanvas key={sizeKey} data={contribute}/>
 			</WidgetCont>

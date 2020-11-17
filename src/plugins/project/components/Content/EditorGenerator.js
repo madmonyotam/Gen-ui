@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import AceEditor from 'react-ace';
 import * as gen from 'gen-engine';
-import * as access from 'plugins/access';
+import { translate } from 'plugins/access';
 
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-solarized_dark';
@@ -27,7 +27,7 @@ const EditorGen = () => {
 				setGeneratedData(mockString);
 			}
 			catch(err){
-				setGeneratedData(access.translate('schema is corrupted'));
+				setGeneratedData(translate('schema is corrupted'));
 			}
 		}
 	}, [schema]); 

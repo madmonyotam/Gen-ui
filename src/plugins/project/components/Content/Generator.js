@@ -4,9 +4,8 @@ import * as gen from 'gen-engine';
  
 import EditorGenerator from 'plugins/project/components/Content/EditorGenerator';
 import WidgetHeader from 'plugins/tools/WidgetHeader';
-import Mask from 'plugins/tools/Mask';
 
-import * as access from 'plugins/access'; 
+import access, { translate } from 'plugins/access';
 
 window.gen = gen; 
  
@@ -21,9 +20,8 @@ const Box = styled.div`
 const Generator = () => {
 	return (
 		<div style={{ width: '65%' , marginLeft: 20, display: 'flex', flexDirection: 'column' }}>
-			<WidgetHeader title={access.translate('Generator')} icon={'gavel'}   />
+			<WidgetHeader title={translate('Generator')} icon={'gavel'}   />
 			<Box >
-				{/* <Mask mask={'transparent'} zIndex={5}/> */}
 				<EditorGenerator/>
 			</Box> 
 		</div>

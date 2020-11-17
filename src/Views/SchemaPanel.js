@@ -3,7 +3,7 @@ import { useBranch } from 'baobab-react/hooks';
 
 import styled from 'styled-components';
 
-import * as access from 'plugins/access';
+import access from 'plugins/access';
 
 import Row from 'plugins/Layouts/Row';
 import Column from 'plugins/Layouts/Column';

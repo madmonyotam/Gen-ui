@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Typography, Divider, Icon } from '@material-ui/core';
 import styled from 'styled-components';
 
-import * as access from 'plugins/access'; 
+import access, { translate } from 'plugins/access';
 
 const Header = styled.div`
 	color: ${ access.color('backgrounds.primary')};
@@ -63,7 +63,7 @@ const WidgetHeader = (props) => {
 		<>
 			<Header style={{ ...style }}>
 				<Typo ref={ titleRef }>
-					{access.translate(title)}
+					{translate(title)}
 				</Typo>
 				<ActionsSide gap={actionGap} side={ actionSide } title={ title } titleRef={ titleRef }>
 					{ actionBtns() }

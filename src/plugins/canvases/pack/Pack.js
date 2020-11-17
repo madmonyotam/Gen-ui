@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import { isEmpty, get } from 'lodash';
-import * as access from 'plugins/access';
+import access from 'plugins/access';
 
 import { move } from 'plugins/canvases/utils/canvasActions';
 

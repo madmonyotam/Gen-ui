@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import Start from 'plugins/tools/Start';
-import * as access from 'plugins/access';
+import access from 'plugins/access';
 
 import { paintFrame } from 'plugins/canvases/paint/Frames';
 import { move } from 'plugins/canvases/utils/canvasActions';

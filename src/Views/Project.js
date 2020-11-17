@@ -4,7 +4,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import styled from 'styled-components';
 
 import * as libsActions from 'tree/actions/libs';
-import * as access from 'plugins/access';
+import access from 'plugins/access';
 
 import MenuPanel from 'Views/MenuPanel';
 import SchemaPanel from 'Views/SchemaPanel';

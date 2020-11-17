@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useRecoilState  } from 'recoil';
 import { projectState  } from './tree/atoms';
 
-import * as access from 'plugins/access';
+import access from 'plugins/access';
 
 import { Typography } from '@material-ui/core';
 import Panel from 'plugins/tools/Panel';

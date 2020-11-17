@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-import * as access from 'plugins/access';
+import access from 'plugins/access';
 // eslint-disable-next-line no-undef
 const axios = require('axios');
 

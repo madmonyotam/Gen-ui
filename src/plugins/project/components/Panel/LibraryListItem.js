@@ -3,7 +3,7 @@ import { useRecoilState } from 'recoil';
 import PropTypes from 'prop-types';
 
 import styled from 'styled-components';
-import * as access from 'plugins/access';
+import access, { translate } from 'plugins/access';
 
 import { Typography, Icon, Tooltip } from '@material-ui/core';
 
@@ -62,7 +62,7 @@ const LiraryListItem = ({ library }) => {
 	const handleSelect = () => {
 		if (selected) return;
 		setLibId(library.id); 
-	}
+	};
 
 	const deleteLibrary = async e => {
 		e.stopPropagation();
@@ -71,18 +71,18 @@ const LiraryListItem = ({ library }) => {
 			const list = libraries.filter(l => l.id !== library.id);
 			setLibraries(list);
 		}
-	}
+	};
 
 	return (
 		<LibraryCard onClick={ handleSelect } selected={ selected } >
 
 			{/* <div style={{ display: 'flex', alignItems: 'center' }} > */}
-				<Icon fontSize={'small'} >{selected ? 'folder_open' : 'folder'}</Icon>
-				<Typography style={{ marginLeft: 5, fontSize: 15, color: '#333' }} >
-					{library.name}
-				</Typography>
+			<Icon fontSize={'small'} >{selected ? 'folder_open' : 'folder'}</Icon>
+			<Typography style={{ marginLeft: 5, fontSize: 15, color: '#333' }} >
+				{library.name}
+			</Typography>
 			{/* </div> */}
-			<Tooltip title={access.translate('Delete')}>
+			<Tooltip title={translate('Delete')}>
 				<DeleteIcon fontSize={'small'} onClick={deleteLibrary}>delete</DeleteIcon>
 			</Tooltip>
 		</LibraryCard>

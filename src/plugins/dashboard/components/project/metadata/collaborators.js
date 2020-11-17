@@ -4,7 +4,7 @@ import { Icon, Tooltip } from '@material-ui/core';
 import { useRecoilValue } from 'recoil';
 import { collaborators } from 'plugins/dashboard/tree/selectors';
 
-import * as access from 'plugins/access';
+import { translate } from 'plugins/access';
 import styled from 'styled-components';
 import DataBox from  './data-box';
 import UserListItem from './user-list-item';
@@ -23,7 +23,7 @@ const CollaboratorsList = () => {
 	);
 
 	const RightButtons = () => (
-		<Tooltip title={access.translate('Invite People')}>
+		<Tooltip title={translate('Invite People')}>
 			<Icon style={{ cursor: 'pointer' }} fontSize={'small'}>add</Icon>
 		</Tooltip>
 	); 

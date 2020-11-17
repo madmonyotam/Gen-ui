@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Icon, Tooltip, ClickAwayListener } from '@material-ui/core';
 import styled from 'styled-components';
-import * as access from 'plugins/access'; 
+import access, { translate } from 'plugins/access';
 import Badge from 'plugins/tools/Badge';
 
 import Request from 'plugins/request';
@@ -158,10 +158,10 @@ const CreateInput = ({ useInput, existingData, type, onCreated }) => {
 		return (
 			<>
 				<span style={{ display: 'flex', alignItems: 'center' , position: 'relative' }}>
-					{ type ? access.translate(label) : '' }
+					{ type ? translate(label) : '' }
 					<Badge>{ existingData.length }</Badge>
 				</span>
-				<Tooltip title={<span style={{ textTransform: 'capitalize' }}>{access.translate(`Create New ${type}`)}</span>}>
+				<Tooltip title={<span style={{ textTransform: 'capitalize' }}>{translate(`Create New ${type}`)}</span>}>
 					<InputIcon fontSize={'small'} onClick={handleShowInput}>{ icon }</InputIcon>
 				</Tooltip>
 			</>
@@ -184,7 +184,7 @@ const CreateInput = ({ useInput, existingData, type, onCreated }) => {
 					<div style={{ display: 'flex' }}>
 						{
 							showConfirm && (
-								<Tooltip title={access.translate('Create')}>
+								<Tooltip title={translate('Create')}>
 									<InputIcon fontSize={'small'} onClick={handleCreate}>check</InputIcon>
 								</Tooltip>
 							)

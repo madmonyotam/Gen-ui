@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography, Avatar, Tooltip } from '@material-ui/core';
 
-import * as access from 'plugins/access';
+import access, { translate } from 'plugins/access';
 import styled from 'styled-components'; 
 
 const Item = styled.div`
@@ -72,7 +72,7 @@ const UserListItem = props => {
 					<div style={{ display: 'flex', alignItems: 'center' }}>
 
 						<Badge level={user.ownership} >
-							{access.translate(user.ownership)}
+							{translate(user.ownership)}
 						</Badge>
 			
 						
@@ -87,7 +87,7 @@ const UserListItem = props => {
 									
 				</TextsContainer> 
 			</Left>
-			<Tooltip title={ access.translate('Contributes')} placement={ 'top' } enterDelay={ 500 }>
+			<Tooltip title={ translate('Contributes')} placement={ 'top' } enterDelay={ 500 }>
 				<ContributeBadge level={'member'}>
 					{ user.contribute }
 				</ContributeBadge>

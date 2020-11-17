@@ -3,7 +3,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { useBranch } from 'baobab-react/hooks';
 
-import * as access from 'plugins/access';
+import access, { translate } from 'plugins/access';
 import styled from 'styled-components';
 
 import Column from 'plugins/Layouts/Column';
@@ -126,7 +126,7 @@ function LeftPanel({ viewKey }) {
 				));
 			case 'inspector':
 				console.log(items);
-				console.log('focus ->',focus)
+				console.log('focus ->',focus);
 				return <Inspector item={items[focus.item]} />;
 			default:
 				return null;
@@ -158,21 +158,21 @@ function LeftPanel({ viewKey }) {
 			case 'libs':
 				return (
 					<AddRow
-						label={access.translate('Add Library')}
+						label={translate('Add Library')}
 						handleAdd={handleAddLib}
 					/>
 				);
 			case 'cats':
 				return (
 					<AddRow
-						label={access.translate('Add Schema')}
+						label={translate('Add Schema')}
 						handleAdd={handleAddCat}
 					/>
 				);
 			case 'items':
 				return (
 					<AddRow
-						label={access.translate('Add Field')}
+						label={translate('Add Field')}
 						handleAdd={handleAddItem}
 					/>
 				);

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import * as access from 'plugins/access';
+import access from 'plugins/access';
 
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { projectUsersState, selectedProjectId, librariesPackState } from 'plugins/dashboard/tree/atoms';

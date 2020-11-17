@@ -25,7 +25,7 @@ import MultiSelect from 'plugins/inputs/MultiSelect';
 import Input from 'plugins/inputs/Input';
 import Label from 'plugins/tools/Label';
 
-import * as access from 'plugins/access';
+import { translate } from 'plugins/access';
 
 const ButtonsRow = styled(Row)`
   display: flex;
@@ -65,7 +65,6 @@ function Inspector({ item }) {
 	const groups = Object.keys(types).map(t => {
 		return getOptionFormat(t);
 	});
-	console.log('types', types)
 
 	const typesToSelect = getTypesToSelect(group.value);
 
@@ -215,7 +214,7 @@ function Inspector({ item }) {
 				return (
 					<Input
 						key={i}
-						label={access.translate(label)}
+						label={translate(label)}
 						initValue={value}
 						type={'number'}
 						placeholder={placeholder}
@@ -230,7 +229,7 @@ function Inspector({ item }) {
 				return (
 					<Input
 						key={i}
-						label={access.translate(label)}
+						label={translate(label)}
 						initValue={value}
 						placeholder={placeholder}
 						onChange={v =>
@@ -244,7 +243,7 @@ function Inspector({ item }) {
 				return (
 					<Input
 						key={i}
-						label={access.translate(label)}
+						label={translate(label)}
 						type={'array'}
 						initValue={value}
 						placeholder={placeholder}
@@ -267,7 +266,7 @@ function Inspector({ item }) {
 				return (
 					<Select
 						key={i}
-						label={access.translate(label)}
+						label={translate(label)}
 						options={options}
 						initValue={getOptionFormat(value)}
 						onSelect={v =>
@@ -299,7 +298,7 @@ function Inspector({ item }) {
 				return (
 					<MultiSelect
 						key={i}
-						label={access.translate(label)}
+						label={translate(label)}
 						options={options}
 						initValue={initValue}
 						onSelect={val =>
@@ -365,10 +364,10 @@ function Inspector({ item }) {
 		return (
 			<ButtonsRow show={showButtons}>
 				<Button variant="outlined" color="secondary" onClick={revertChanges}>
-					{access.translate('Cancel')}
+					{translate('Cancel')}
 				</Button>
 				<Button variant="outlined" color="secondary" onClick={changeSchema}>
-					{access.translate('Save')}
+					{translate('Save')}
 				</Button>
 			</ButtonsRow>
 		);
@@ -380,12 +379,12 @@ function Inspector({ item }) {
 		return (
 			<Fragment>
 				<Input
-					label={access.translate('prefix')}
+					label={translate('prefix')}
 					initValue={prefix}
 					onChange={changePrefix}
 				/>
 				<Input
-					label={access.translate('suffix')}
+					label={translate('suffix')}
 					initValue={suffix}
 					onChange={changeSuffix}
 				/>
@@ -406,14 +405,14 @@ function Inspector({ item }) {
 				}}
 			>
 				<Input
-					label={access.translate('size')}
+					label={translate('size')}
 					initValue={size}
 					type={'number'}
 					onChange={changeSize}
 				/>
 
 				<Label width={'140px'} fontSize={'13px'}>
-					{access.translate('Random Size:')}
+					{translate('Random Size:')}
 				</Label>
 
 				<Checkbox
@@ -432,7 +431,7 @@ function Inspector({ item }) {
 		return(
 			<Row>
 				<Label width={'50%'} fontSize={'13px'}>
-					{access.translate('Add possible empty items:')}
+					{translate('Add possible empty items:')}
 				</Label>
 				<Checkbox
 					style={{ marginRight: 5 }}
@@ -447,13 +446,13 @@ function Inspector({ item }) {
 	return (
 		<Column flex={1}>
 			<Select
-				label={access.translate('group')}
+				label={translate('group')}
 				options={groups}
 				initValue={group}
 				onSelect={handleOnSelectGroup}
 			/>
 			<Select
-				label={access.translate('type')}
+				label={translate('type')}
 				options={typesToSelect}
 				initValue={type}
 				onSelect={changeTypeInSchema}

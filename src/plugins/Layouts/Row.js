@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { color } from 'plugins/access';
+import access from 'plugins/access';
 
 const Row = styled.div`  
   z-index: ${props => props.zIndex};
@@ -18,12 +18,12 @@ const Row = styled.div`
   cursor:  ${(props) => (props.menuItem && 'pointer')};
   box-shadow: 0px 1px 4px 0px ${props => props.shadowColor};
   :hover {
-    background: ${(props) => (props.menuItem && color('backgrounds.hover'))};
-    color: ${(props) => (props.menuItem && color('texts.primary'))};
+    background: ${(props) => (props.menuItem && access.color('backgrounds.hover'))};
+    color: ${(props) => (props.menuItem && access.color('texts.primary'))};
   }
   :active {
-    background: ${(props) => (props.menuItem && color('backgrounds.active'))};
-    color: ${(props) => (props.menuItem && color('texts.primary'))};
+    background: ${(props) => (props.menuItem && access.color('backgrounds.active'))};
+    color: ${(props) => (props.menuItem && access.color('texts.primary'))};
   }
 `;
 
@@ -32,7 +32,7 @@ Row.defaultProps = {
 	width: '100%',
 	height: '50px',
 	background: 'inherit',
-	color: color('texts.secondary'),
+	color: access.color('texts.secondary'),
 	shadowColor: 'rgb(93, 107, 140)',
 };
 

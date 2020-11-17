@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 import { projectListState } from 'plugins/dashboard/tree/atoms';
 
 import styled from 'styled-components';
-import * as access from 'plugins/access';
+import access, { translate } from 'plugins/access';
 import { Divider, Tooltip, Avatar, IconButton, Typography, Paper, ClickAwayListener, MenuList, MenuItem } from '@material-ui/core';
 import LinearScaleIcon from '@material-ui/icons/LinearScale';
 // import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -124,7 +124,7 @@ const TopPanel = () => {
 					</>
 				}
 				
-				<Tooltip title={access.translate('Menu')}>
+				<Tooltip title={translate('Menu')}>
 					<MenuIcon
 						ref={anchorRef}
 						size={'small'}
@@ -141,9 +141,9 @@ const TopPanel = () => {
 					<ClickAwayListener onClickAway={handleClose}>
 						<MenuList dense={ true } autoFocusItem={open} id="menu-list-grow">
 							{ displayActions && actions.map(action => (
-								<MenuItem key={ action } >{access.translate(action)}</MenuItem>
+								<MenuItem key={ action } >{translate(action)}</MenuItem>
 							)) }
-							<MenuItem onClick={ handleLogout }>{access.translate('Logout')}</MenuItem>
+							<MenuItem onClick={ handleLogout }>{translate('Logout')}</MenuItem>
 						</MenuList>
 					</ClickAwayListener>
 				</Paper>

@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Redirect, Switch } from 'react-router-dom';
 import { useRoot } from 'baobab-react/hooks';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
-import * as access from 'plugins/access';
+import access from 'plugins/access';
 
 import ErrorBoundaries from 'plugins/tools/ErrorBoundaries';
 import { setHeaders } from 'plugins/request';

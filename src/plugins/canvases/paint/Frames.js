@@ -1,4 +1,4 @@
-import * as access from 'plugins/access';
+import access from 'plugins/access';
 import * as d3 from 'd3';
 
 export const paintFrame = (canvas, width, height, id = 'mainFrame') => {

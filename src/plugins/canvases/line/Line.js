@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import * as access from 'plugins/access';
+import access from 'plugins/access';
 import moment from 'moment';
 import { maxBy, get, isEmpty } from 'lodash';
 

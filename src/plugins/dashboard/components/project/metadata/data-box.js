@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import * as access from 'plugins/access';
+import access, { translate } from 'plugins/access';
 import styled from 'styled-components';
 import { Icon } from '@material-ui/core';
 import Badge from 'plugins/tools/Badge';
@@ -61,7 +61,7 @@ const DataBox = props => {
 		<>
 			<Icon fontSize={'small'}>{icon}</Icon>
 			<StyledTitle>
-				{access.translate(title)}
+				{translate(title)}
 			</StyledTitle>
 			{ (badge && (badge.length || badge > 0) ) ? <Badge size={ 'small' } >{ badge } </Badge> : null }
 		</>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types'; 
 import { isUndefined, isEmpty } from 'lodash';
 import styled from 'styled-components';
-import * as access from 'plugins/access';
+import access from 'plugins/access';
 import * as gen from 'gen-engine';
 import {Divider} from '@material-ui/core';
 import FieldsForm from './fields-form';

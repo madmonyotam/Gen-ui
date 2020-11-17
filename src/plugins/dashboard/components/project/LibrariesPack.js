@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import * as access from 'plugins/access';
+import access, { translate } from 'plugins/access';
 import { useRecoilValue } from 'recoil';
 
 import useResizeWindow from 'plugins/hooks/useResizeWindow';
@@ -36,7 +36,7 @@ const LibrariesPack = () => {
 
 	return (
 		<Container>
-			<WidgetHeader title={access.translate('Libraries')} icon={'bubble_chart'}/>
+			<WidgetHeader title={translate('Libraries')} icon={'bubble_chart'}/>
 			<WidgetCont>
 				<LibrariesCanvas key={sizeKey} data={ libs }/>
 			</WidgetCont>

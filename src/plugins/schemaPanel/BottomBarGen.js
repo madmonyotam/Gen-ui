@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useBranch } from 'baobab-react/hooks';
 
 import { generate } from 'tree/actions/items';
-import * as access from 'plugins/access';
+import access from 'plugins/access';
 
 import styled from 'styled-components';
 import IconButton from 'plugins/icons/IconButton';

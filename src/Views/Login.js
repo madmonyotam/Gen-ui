@@ -5,7 +5,7 @@ import Firebase from 'plugins/request';
 import styled from 'styled-components';
 import { Button, Divider, LinearProgress } from '@material-ui/core';
 
-import * as access from 'plugins/access';
+import access, { translate } from 'plugins/access';
 
 import CustomInput from 'plugins/inputs/CustomInput';
 
@@ -149,14 +149,14 @@ const Login = ({ onLoggedIn }) => {
 					disableElevation={ true }
 					style={{ minHeight: 40,color: '#ededed', minWidth: 100, marginBottom: 25 }}
 					onClick={ onClick }>
-					{ access.translate('Login') }
+					{ translate('Login') }
 				</Button>
 				<Button variant={ regVariant } 
 					disableElevation={ true }
 					color='secondary' 
 					style={{ minHeight: 40,color: '#ededed', minWidth: 100 }}
 					onClick={ onClick }> 
-					{ access.translate('Register') }
+					{ translate('Register') }
 				</Button>
 			</ButtonsCont>
 		);
@@ -193,7 +193,7 @@ const Login = ({ onLoggedIn }) => {
 		);
 	};
 
-	const label = register ? access.translate('Sign Up') : access.translate('Sign In'); 
+	const label = register ? translate('Sign Up') : translate('Sign In'); 
 	const sign_func = register ? handleRegister : handleLogin;
   
 	return (

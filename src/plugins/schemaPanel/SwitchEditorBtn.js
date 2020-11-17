@@ -5,7 +5,7 @@ import { useBranch } from 'baobab-react/hooks';
 import { makeStyles } from '@material-ui/core/styles';
 import { Tab, Tabs } from '@material-ui/core';
 
-import * as access from 'plugins/access';
+import access, { translate } from 'plugins/access';
 
 import { SpaceAround } from 'plugins/Layouts/Spaces';
 
@@ -53,12 +53,12 @@ function SwitchEditorBtn({ onSwitch, value }) {
 			<Tabs value={value} onChange={handleChange} classes={{indicator: classes.indicator}}>
 				<Tab
 					classes={{ root: schemaClass }}
-					label={access.translate('schema')}
+					label={translate('schema')}
 					value={'schema'}
 				/>
 				<Tab
 					classes={{ root: codeClass }}
-					label={access.translate('Generate')}
+					label={translate('Generate')}
 					value={'code'}
 					disabled={disabled}
 				/>

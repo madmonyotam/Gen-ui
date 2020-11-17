@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import * as access from 'plugins/access';
+import access, { translate } from 'plugins/access';
 
 import { Center } from 'plugins/Layouts';
 import { Button } from '@material-ui/core';
@@ -49,8 +49,8 @@ class ErrorBoundary extends React.Component {
 			return (
 				<Screen>
 					<CenterColumn>
-						<Label> { access.translate('Opps... my bad...') } </Label>
-						<Button variant="outlined" color="primary" onClick={ this.reload }> { access.translate('reload') } </Button>
+						<Label> { translate('Opps... my bad...') } </Label>
+						<Button variant="outlined" color="primary" onClick={ this.reload }> { translate('reload') } </Button>
 					</CenterColumn>
 				</Screen>
 			);
